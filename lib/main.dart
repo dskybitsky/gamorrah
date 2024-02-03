@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gamorrah/models/game.dart';
+import 'package:gamorrah/models/game_service.dart';
 import 'package:gamorrah/screens/games_list.dart';
+import 'package:get/instance_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -25,8 +27,16 @@ class _MyAppState extends State<MyApp> {
     super.dispose();
   }
 
+   @override
+  void initState() {
+    super.initState();
+
+    Get.put(GameService());
+  }
+
   @override
   Widget build(BuildContext context) {
+    
     return MaterialApp(
       title: 'Namer App',
       theme: ThemeData(

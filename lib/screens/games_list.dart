@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gamorrah/models/game.dart';
+import 'package:gamorrah/models/game_service.dart';
 import 'package:gamorrah/screens/game_form.dart';
-import 'package:hive/hive.dart';
+import 'package:get/instance_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class GamesListScreen extends StatefulWidget {
@@ -10,13 +11,13 @@ class GamesListScreen extends StatefulWidget {
 }
 
 class _GamesListScreenState extends State<GamesListScreen> {
-  late final Box<Game> gameBox;
+  late final GameService service;
 
   @override
   void initState() {
     super.initState();
 
-    gameBox = Hive.box<Game>('games');
+    service = Get.find();
   }
 
   @override
@@ -26,7 +27,7 @@ class _GamesListScreenState extends State<GamesListScreen> {
         title: Text('Note List'),
       ),
       body: ValueListenableBuilder(
-        valueListenable: gameBox.listenable(),
+        valueListenable: service.listenable(),
         builder: (context, Box box, widget) {
           if (box.isEmpty) {
             return Center(
@@ -34,23 +35,27 @@ class _GamesListScreenState extends State<GamesListScreen> {
             );
           }
 
-          return ListView.builder(
-            itemCount: box.length,
-            itemBuilder: (context, index) {
-              Game game = gameBox.getAt(index)!;
+          var games = service.getAll();
 
-                return ListTile(
-                  title: Text(game.title),
-                  subtitle: Text(game.thumbUrl ?? 'None'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      // Delete the note when the delete button is pressed.
-                      gameBox.deleteAt(index);
-                      setState(() {});
-                    },
-                  ),
-                );
+          return ListView.builder(
+            itemCount: games.length,
+            itemBuilder: (context, index) {
+              Game game = games.elementAt(index);
+
+              return ListTile(
+                title: Text(game.title),
+                subtitle: Text(game.id),
+                leading: game.thumbUrl != null ? Image.network(game.thumbUrl!) : null,
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    service.delete(game.id);
+                  },
+                ),
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => GameFormScreen(id: game.id)));
+                },
+              );
             },
           );
         },

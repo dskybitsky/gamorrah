@@ -17,15 +17,16 @@ class Game extends HiveObject {
   Game({
     required this.id,
     required this.title,
-    required this.thumbUrl
+    this.thumbUrl
   });
 
   factory Game.create({
-    required String? title,
-    required String? thumbUrl
+    String? id,
+    required String title,
+    String? thumbUrl
   }) => Game(
-    id: const Uuid().v4(),
-    title: title ?? '', 
+    id: id ?? const Uuid().v4(),
+    title: title, 
     thumbUrl: thumbUrl
   );
 }
