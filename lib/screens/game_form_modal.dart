@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/models/game.dart';
-import 'package:gamorrah/models/game_service.dart';
+import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/models/game/game_service.dart';
 import 'package:get/instance_manager.dart';
 
 class GameFormModal extends StatefulWidget {

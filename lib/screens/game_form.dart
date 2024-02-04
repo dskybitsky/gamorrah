@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gamorrah/components/game_thumb.dart';
-import 'package:gamorrah/models/game.dart';
-import 'package:gamorrah/models/game_service.dart';
+import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/screens/game_form_modal.dart';
 import 'package:get/instance_manager.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class GameFormScreen extends StatefulWidget {
-  const GameFormScreen({ this.id });
+  const GameFormScreen({ required this.id });
 
-  final String? id;
+  final String id;
 
   @override
   State<GameFormScreen> createState() => _GameFormScreenScreenState();
@@ -17,21 +16,8 @@ class GameFormScreen extends StatefulWidget {
 
 class _GameFormScreenScreenState extends State<GameFormScreen> {
   late final GameService service;
-  late final Game originalGame;
 
-  Game? _getGame(String? id) {
-    return id != null 
-        ? service.get(id)
-        : null;
-  }
-
-  Game _createDefaultGame() {
-    Game game = Game.create(title: "New Game", thumbUrl: null);
-
-    service.save(game);
-
-    return game;
-  }
+  GameStatus status = GameStatus.backlog;
 
   @override
   void initState() {
@@ -39,15 +25,19 @@ class _GameFormScreenScreenState extends State<GameFormScreen> {
 
     service = Get.find();
 
-    originalGame = _getGame(widget.id) ?? _createDefaultGame();
+    Game game = service.get(widget.id)!;
+
+    status = game.status;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: service.listenable(), 
-      builder: (context, Box box, widget) {
-        Game game = _getGame(originalGame.id)!;
+    String id = widget.id;
+
+    return ListenableBuilder(
+      listenable: service, 
+      builder: (context, widget) {
+        Game game = service.get(id)!;
 
         return Scaffold(
           appBar: AppBar(
@@ -67,13 +57,25 @@ class _GameFormScreenScreenState extends State<GameFormScreen> {
                   }
                 ),
                 SizedBox(height: 16),
+                DropdownButton<GameStatus>(
+                  value: status,
+                  items: [
+                    DropdownMenuItem(value: GameStatus.backlog, child: Text('Backlog')),
+                    DropdownMenuItem(value: GameStatus.playing, child: Text("Playing")),
+                    DropdownMenuItem(value: GameStatus.finished, child: Text("Finished")),
+                    DropdownMenuItem(value: GameStatus.wishlist, child: Text("Wishlist")),
+                  ],
+                  onChanged: ( value) {
+                    setState(() {
+                      status = value ?? GameStatus.backlog;
+                    });
+                  },
+                ),
                 ElevatedButton(
                   onPressed: () {
-                    // service.save(Game.create(
-                    //   id: game.id,
-                    //   title: _titleController.text,
-                    //   thumbUrl: _thumbUrlController.text,
-                    // ));
+                    service.save(game.copyWith(
+                      status: status
+                    ));
                     
                     Navigator.pop(context);
                   },
@@ -82,8 +84,8 @@ class _GameFormScreenScreenState extends State<GameFormScreen> {
               ],
             ),
           ),
-        );    
+        ); 
       }
-    );    
+    );
   }
 }

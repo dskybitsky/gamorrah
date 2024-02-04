@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/models/game.dart';
-import 'package:gamorrah/models/game_service.dart';
+import 'package:gamorrah/models/game/game_service.dart';
+import 'package:gamorrah/models/game/hive_game_service.dart';
 import 'package:gamorrah/screens/games_list.dart';
 import 'package:get/instance_manager.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  GameService gameService = HiveGameService();
 
-  Hive.registerAdapter(GameAdapter());
+  await gameService.init();
 
-  await Hive.openBox<Game>('games');
+  Get.put(gameService);
 
   runApp(MyApp());
 }
@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    Get.put(GameService());
+    
   }
 
   @override

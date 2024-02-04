@@ -1,41 +1,44 @@
 import 'package:uuid/uuid.dart';
 import 'package:hive/hive.dart';
 
-part 'game.g.dart';
+enum GameStatus { backlog, playing, finished, wishlist }
 
-@HiveType(typeId: 1)
 class Game extends HiveObject {
-  @HiveField(0)
   final String id;
 
-  @HiveField(1)
   final String title;
 
-  @HiveField(2)
   final String? thumbUrl;
+
+  final GameStatus status;
 
   Game({
     required this.id,
     required this.title,
-    this.thumbUrl
+    this.thumbUrl,
+    required this.status,
   });
 
   factory Game.create({
     String? id,
     required String title,
-    String? thumbUrl
+    String? thumbUrl,
+    GameStatus? status,
   }) => Game(
     id: id ?? const Uuid().v4(),
     title: title, 
-    thumbUrl: thumbUrl
+    thumbUrl: thumbUrl,
+    status: status ?? GameStatus.backlog,
   );
 
   Game copyWith({
     String? title,
-    String? thumbUrl
+    String? thumbUrl,
+    GameStatus? status,
   }) => Game(
     id: id,
     title: title ?? this.title,
     thumbUrl: thumbUrl ?? this.thumbUrl,
+    status: status ?? this.status,
   );
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/models/game.dart';
-import 'package:gamorrah/models/game_service.dart';
+import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/screens/game_form.dart';
 import 'package:get/instance_manager.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class GamesListScreen extends StatefulWidget {
   @override
@@ -26,31 +25,30 @@ class _GamesListScreenState extends State<GamesListScreen> {
       appBar: AppBar(
         title: Text('Games List'),
       ),
-      body: ValueListenableBuilder(
-        valueListenable: service.listenable(),
-        builder: (context, Box box, widget) {
-          if (box.isEmpty) {
+      body: ListenableBuilder(
+        listenable: service,
+        builder: (context, widget) {
+          var games = service.getAll();
+          
+          if (games.isEmpty) {
             return Center(
               child: Text('Empty'),
             );
           }
 
-          var games = service.getAll();
-
           return ListView.builder(
             itemCount: games.length,
             itemBuilder: (context, index) {
               Game game = games.elementAt(index);
-
+              print(game.thumbUrl);
               return ListTile(
                 title: Text(game.title),
-                subtitle: Text(game.id),
+                subtitle: Text(game.status.name),
                 // leading: game.thumbUrl != null ? Image.network(game.thumbUrl!) : null,
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
                     service.delete(game.id);
-                    //service.clear();
                   },
                 ),
                 onTap: () {
@@ -63,8 +61,11 @@ class _GamesListScreenState extends State<GamesListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate to the note creation screen.
-          Navigator.push(context, MaterialPageRoute(builder: (_) => GameFormScreen()));
+          Game game = Game.create(title: "New Game", thumbUrl: null);
+
+          service.save(game);
+
+          Navigator.push(context, MaterialPageRoute(builder: (_) => GameFormScreen(id: game.id)));
         },
         child: Icon(Icons.add),
       ),

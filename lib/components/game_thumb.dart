@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/models/game.dart';
+import 'package:gamorrah/models/game/game.dart';
 
 class GameThumb extends StatelessWidget {
   const GameThumb({
