@@ -24,6 +24,10 @@ class GameService {
     await _box.delete(id);
   }
 
+  Future<void> clear() async {
+    await _box.clear();
+  }
+
   ValueListenable<Box<Game>> listenable() {
     return _box.listenable();
   }

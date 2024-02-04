@@ -29,4 +29,13 @@ class Game extends HiveObject {
     title: title, 
     thumbUrl: thumbUrl
   );
+
+  Game copyWith({
+    String? title,
+    String? thumbUrl
+  }) => Game(
+    id: id,
+    title: title ?? this.title,
+    thumbUrl: thumbUrl ?? this.thumbUrl,
+  );
 }

@@ -24,7 +24,7 @@ class _GamesListScreenState extends State<GamesListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Note List'),
+        title: Text('Games List'),
       ),
       body: ValueListenableBuilder(
         valueListenable: service.listenable(),
@@ -45,11 +45,12 @@ class _GamesListScreenState extends State<GamesListScreen> {
               return ListTile(
                 title: Text(game.title),
                 subtitle: Text(game.id),
-                leading: game.thumbUrl != null ? Image.network(game.thumbUrl!) : null,
+                // leading: game.thumbUrl != null ? Image.network(game.thumbUrl!) : null,
                 trailing: IconButton(
                   icon: Icon(Icons.delete),
                   onPressed: () {
                     service.delete(game.id);
+                    //service.clear();
                   },
                 ),
                 onTap: () {
