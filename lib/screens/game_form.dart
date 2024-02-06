@@ -6,6 +6,8 @@ import 'package:gamorrah/screens/game_form_modal.dart';
 import 'package:get/instance_manager.dart';
 
 class GameFormScreen extends StatefulWidget {
+  static const pageName = 'game';
+
   const GameFormScreen({ required this.id });
 
   final String id;

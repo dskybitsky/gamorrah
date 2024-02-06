@@ -5,6 +5,16 @@ import 'package:gamorrah/screens/game_form.dart';
 import 'package:get/instance_manager.dart';
 
 class GamesListScreen extends StatefulWidget {
+  static const pageName = 'games';
+
+  final GameStatus status;
+  final Function? toolbarBuilder;
+
+  const GamesListScreen({ 
+    required this.status,
+    this.toolbarBuilder,
+  });
+
   @override
   State<GamesListScreen> createState() => _GamesListScreenState();
 }
@@ -21,14 +31,14 @@ class _GamesListScreenState extends State<GamesListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    GameStatus status = widget.status;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Games List'),
-      ),
       body: ListenableBuilder(
         listenable: service,
         builder: (context, widget) {
-          var games = service.getAll();
+          var games = service.getAll()
+            .where((element) => element.status == status);
           
           if (games.isEmpty) {
             return Center(
@@ -40,7 +50,7 @@ class _GamesListScreenState extends State<GamesListScreen> {
             itemCount: games.length,
             itemBuilder: (context, index) {
               Game game = games.elementAt(index);
-              print(game.thumbUrl);
+              
               return ListTile(
                 title: Text(game.title),
                 subtitle: Text(game.status.name),
@@ -52,6 +62,8 @@ class _GamesListScreenState extends State<GamesListScreen> {
                   },
                 ),
                 onTap: () {
+                  // Navigator.pushNamed(context, 'game', arguments: game.id);
+                  
                   Navigator.push(context, MaterialPageRoute(builder: (_) => GameFormScreen(id: game.id)));
                 },
               );
