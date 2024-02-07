@@ -8,18 +8,18 @@ import 'package:get/instance_manager.dart';
 class GameForm extends StatefulWidget {
   static const pageName = 'game';
 
-  const GameForm({ required this.id });
+  const GameForm({ this.id });
 
-  final String id;
+  final String? id;
 
   @override
   State<GameForm> createState() => _GameFormScreenState();
 }
 
 class _GameFormScreenState extends State<GameForm> {
+  late final String id;
   late final GameService service;
-
-  GameStatus status = GameStatus.backlog;
+  late final GameStatus status;
 
   @override
   void initState() {
@@ -27,15 +27,28 @@ class _GameFormScreenState extends State<GameForm> {
 
     service = Get.find();
 
-    Game game = service.get(widget.id)!;
+    Game game = _initGame();
 
+    id = game.id;
     status = game.status;
+  }
+
+  Game _initGame() {
+    String? widgetId = widget.id;
+
+    if (widgetId != null) {
+      return service.get(widgetId)!;
+    }
+
+    Game game = Game.create(title: "New Game", thumbUrl: null);
+
+    service.save(game);
+
+    return game;
   }
 
   @override
   Widget build(BuildContext context) {
-    String id = widget.id;
-
     return ListenableBuilder(
       listenable: service, 
       builder: (context, widget) {

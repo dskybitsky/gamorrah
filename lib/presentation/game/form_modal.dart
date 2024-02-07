@@ -30,8 +30,8 @@ class _GameFormModalScreenState extends State<GameFormModal> {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-      content: Padding(
+    return Acrylic(
+      child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [

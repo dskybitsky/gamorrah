@@ -49,7 +49,11 @@ class _GameGridState extends State<GameGrid> {
                 child: GameThumb(
                   game: game,
                   onPressed: () {
-                    Navigator.push(context, FluentPageRoute(builder: (_) => GameForm(id: game.id)));
+                    Navigator.push(
+                      context, 
+                      FluentPageRoute(
+                        builder: (_) => GameForm(id: game.id)),
+                      );
                   },
                 )
               )
@@ -79,16 +83,6 @@ class _GameGridState extends State<GameGrid> {
           // );
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Game game = Game.create(title: "New Game", thumbUrl: null);
-
-      //     service.save(game);
-
-      //     Navigator.push(context, FluentPageRoute(builder: (_) => GameForm(id: game.id)));
-      //   },
-      //   child: Icon(Icons.add),
-      // ),
     );
   }
 }
