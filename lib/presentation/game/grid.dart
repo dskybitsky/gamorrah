@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/presentation/game/form.dart';
+import 'package:gamorrah/presentation/game/thumb.dart';
 import 'package:get/instance_manager.dart';
 
 class GameGrid extends StatefulWidget {
@@ -31,8 +32,8 @@ class _GameGridState extends State<GameGrid> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListenableBuilder(
+    return ScaffoldPage(
+      content: ListenableBuilder(
         listenable: service,
         builder: (context, widget) {
           if (games.isEmpty) {
@@ -41,41 +42,53 @@ class _GameGridState extends State<GameGrid> {
             );
           }
 
-          return ListView.builder(
-            itemCount: games.length,
-            itemBuilder: (context, index) {
-              Game game = games.elementAt(index);
-              
-              return ListTile(
-                title: Text(game.title),
-                subtitle: Text(game.status.name),
-                // leading: game.thumbUrl != null ? Image.network(game.thumbUrl!) : null,
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
+          return GridView.count(
+            crossAxisCount: 2,
+            children: games.map(
+              (game) => Card(
+                child: GameThumb(
+                  game: game,
                   onPressed: () {
-                    service.delete(game.id);
+                    Navigator.push(context, FluentPageRoute(builder: (_) => GameForm(id: game.id)));
                   },
-                ),
-                onTap: () {
-                  // Navigator.pushNamed(context, 'game', arguments: game.id);
-                  
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => GameForm(id: game.id)));
-                },
-              );
-            },
+                )
+              )
+            ).toList(),
           );
+
+          // return ListView.builder(
+          //   itemCount: games.length,
+          //   itemBuilder: (context, index) {
+          //     Game game = games.elementAt(index);
+              
+          //     return ListTile(
+          //       title: Text(game.title),
+          //       subtitle: Text(game.status.name),
+          //       // leading: game.thumbUrl != null ? Image.network(game.thumbUrl!) : null,
+          //       trailing: IconButton(
+          //         icon: Icon(Icons.delete),
+          //         onPressed: () {
+          //           service.delete(game.id);
+          //         },
+          //       ),
+          //       onTap: () {
+          //         Navigator.push(context, MaterialPageRoute(builder: (_) => GameForm(id: game.id)));
+          //       },
+          //     );
+          //   },
+          // );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Game game = Game.create(title: "New Game", thumbUrl: null);
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Game game = Game.create(title: "New Game", thumbUrl: null);
 
-          service.save(game);
+      //     service.save(game);
 
-          Navigator.push(context, MaterialPageRoute(builder: (_) => GameForm(id: game.id)));
-        },
-        child: Icon(Icons.add),
-      ),
+      //     Navigator.push(context, FluentPageRoute(builder: (_) => GameForm(id: game.id)));
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
     );
   }
 }

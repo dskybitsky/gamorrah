@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:get/instance_manager.dart';
@@ -30,21 +30,29 @@ class _GameFormModalScreenState extends State<GameFormModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return ScaffoldPage(
+      content: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(labelText: 'Title'),
+            InfoLabel(
+              label: 'Title:',
+              child: TextBox(
+                controller: _titleController,
+                placeholder: 'Title',
+                expands: false,
+              ),
             ),
-            TextField(
-              controller: _thumbUrlController,
-              decoration: InputDecoration(labelText: 'Thumbnail URL'),
+            InfoLabel(
+              label: 'Thumbnail URL:',
+              child: TextBox(
+                controller: _thumbUrlController,
+                placeholder: 'URL',
+                expands: false,
+              ),
             ),
             SizedBox(height: 16),
-            ElevatedButton(
+            Button(
               onPressed: () {
                 service.save(widget.game.copyWith(
                   title: _titleController.text,

@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:gamorrah/components/game_thumb.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/presentation/game/form_modal.dart';
+import 'package:gamorrah/presentation/game/thumb.dart';
 import 'package:get/instance_manager.dart';
 
 class GameForm extends StatefulWidget {
@@ -41,31 +41,28 @@ class _GameFormScreenState extends State<GameForm> {
       builder: (context, widget) {
         Game game = service.get(id)!;
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(game.title),
-          ),
-          body: Padding(
+        return ScaffoldPage(
+          content: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
                 GameThumb(
                   game: game,
                   onPressed: () {
-                    showModalBottomSheet(
+                    showDialog(
                       context: context,
                       builder: (context) => GameFormModal(game: game),
                     );
                   }
                 ),
                 SizedBox(height: 16),
-                DropdownButton<GameStatus>(
+                ComboBox<GameStatus>(
                   value: status,
                   items: [
-                    DropdownMenuItem(value: GameStatus.backlog, child: Text('Backlog')),
-                    DropdownMenuItem(value: GameStatus.playing, child: Text("Playing")),
-                    DropdownMenuItem(value: GameStatus.finished, child: Text("Finished")),
-                    DropdownMenuItem(value: GameStatus.wishlist, child: Text("Wishlist")),
+                    ComboBoxItem(value: GameStatus.backlog, child: Text('Backlog')),
+                    ComboBoxItem(value: GameStatus.playing, child: Text("Playing")),
+                    ComboBoxItem(value: GameStatus.finished, child: Text("Finished")),
+                    ComboBoxItem(value: GameStatus.wishlist, child: Text("Wishlist")),
                   ],
                   onChanged: ( value) {
                     setState(() {
@@ -73,7 +70,7 @@ class _GameFormScreenState extends State<GameForm> {
                     });
                   },
                 ),
-                ElevatedButton(
+                Button(
                   onPressed: () {
                     service.save(game.copyWith(
                       status: status
