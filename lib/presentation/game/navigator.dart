@@ -1,9 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/screens/games_list.dart';
+import 'package:gamorrah/presentation/game/grid.dart';
 
-class GamesNavigator extends StatelessWidget {
-  const GamesNavigator({
+class GameNavigator extends StatelessWidget {
+  const GameNavigator({
     Key? key, 
     required this.navigatorKey, 
     required this.status,
@@ -20,8 +20,10 @@ class GamesNavigator extends StatelessWidget {
       onGenerateRoute: (RouteSettings routeSettings) {
         return FluentPageRoute(
             settings: routeSettings,
-            builder: (context) {
-              return GamesListScreen(status: status);
+            builder: (context) {      
+              return GameGrid(
+                status: status,
+              );
             });
       }
     );

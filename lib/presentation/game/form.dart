@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:gamorrah/components/game_thumb.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/screens/game_form_modal.dart';
+import 'package:gamorrah/presentation/game/form_modal.dart';
 import 'package:get/instance_manager.dart';
 
-class GameFormScreen extends StatefulWidget {
+class GameForm extends StatefulWidget {
   static const pageName = 'game';
 
-  const GameFormScreen({ required this.id });
+  const GameForm({ required this.id });
 
   final String id;
 
   @override
-  State<GameFormScreen> createState() => _GameFormScreenScreenState();
+  State<GameForm> createState() => _GameFormScreenState();
 }
 
-class _GameFormScreenScreenState extends State<GameFormScreen> {
+class _GameFormScreenState extends State<GameForm> {
   late final GameService service;
 
   GameStatus status = GameStatus.backlog;
