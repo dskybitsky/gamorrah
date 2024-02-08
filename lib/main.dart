@@ -2,8 +2,10 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/models/game/hive_game_service.dart';
 import 'package:gamorrah/presentation/main_screen.dart';
+import 'package:gamorrah/theme.dart';
 import 'package:get/instance_manager.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:system_theme/system_theme.dart';
 
 void main() async {
   GameService gameService = HiveGameService();
@@ -12,36 +14,42 @@ void main() async {
 
   Get.put(gameService);
 
+  SystemTheme.accentColor.load();
+
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
+class MyApp extends StatelessWidget {
 
-class _MyAppState extends State<MyApp> {
-  @override
-  void dispose() {
-    Hive.close();
-    super.dispose();
-  }
-
-   @override
-  void initState() {
-    super.initState();
-  }
+  final _appTheme = AppTheme();
 
   @override
   Widget build(BuildContext context) {
-    
-    return FluentApp(
-      title: 'Gamorrah',
-      // theme: ThemeData(
-      //   useMaterial3: true,
-      //   colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 181, 177, 235)),
-      // ),
-      home: MainScreen(),
+    return ChangeNotifierProvider.value(
+      value: _appTheme,
+      builder: (context, child) {
+        final appTheme = context.watch<AppTheme>();
+        return FluentApp(
+          title: 'Gamorrah',
+          darkTheme: FluentThemeData(
+            brightness: Brightness.dark,
+            accentColor: appTheme.color,
+            visualDensity: VisualDensity.standard,
+            focusTheme: FocusThemeData(
+              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+            ),
+          ),
+          theme: FluentThemeData(
+            accentColor: appTheme.color,
+            visualDensity: VisualDensity.standard,
+            focusTheme: FocusThemeData(
+              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+            ),
+          ),
+          locale: appTheme.locale,
+          home: MainScreen(),
+        );
+      }
     );
   }
 }

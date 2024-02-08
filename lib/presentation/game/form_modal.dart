@@ -30,41 +30,58 @@ class _GameFormModalScreenState extends State<GameFormModal> {
 
   @override
   Widget build(BuildContext context) {
-    return Acrylic(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            InfoLabel(
-              label: 'Title:',
-              child: TextBox(
-                controller: _titleController,
-                placeholder: 'Title',
-                expands: false,
-              ),
-            ),
-            InfoLabel(
-              label: 'Thumbnail URL:',
-              child: TextBox(
-                controller: _thumbUrlController,
-                placeholder: 'URL',
-                expands: false,
-              ),
-            ),
-            SizedBox(height: 16),
-            Button(
-              onPressed: () {
-                service.save(widget.game.copyWith(
-                  title: _titleController.text,
-                  thumbUrl: _thumbUrlController.text,
-                ));
-                Navigator.pop(context);
-              },
-              child: Text('Update'),
-            ),
-          ],
+    return ContentDialog(
+      content: _buildDialogContent(context),
+      actions: [
+        Button(
+          child: const Text('Cancel'),
+          onPressed: () => Navigator.pop(context),
         ),
-      ),
+        FilledButton(
+          onPressed: () {
+            service.save(widget.game.copyWith(
+              title: _titleController.text,
+              thumbUrl: _thumbUrlController.text,
+            ));
+            Navigator.pop(context);
+          },
+          child: Text('Save'),
+        ),
+      ],
+    );
+
+    // return Container(
+    //   padding: const EdgeInsets.all(96.0),
+    //   decoration: BoxDecoration(
+    //     borderRadius: BorderRadius.circular(16.0),
+    //     color: theme.scaffoldBackgroundColor,
+    //   ),
+    //   child: ScaffoldPage(content: _buildForm(context)),
+    // );
+  }
+
+  Widget _buildDialogContent(BuildContext context) {
+    return Column(
+      children: [
+        InfoLabel(
+          label: 'Title:',
+          child: TextBox(
+            controller: _titleController,
+            placeholder: 'Title',
+            expands: false,
+          ),
+        ),
+        SizedBox(height: 10),
+        InfoLabel(
+          label: 'Thumbnail URL:',
+          child: TextBox(
+            controller: _thumbUrlController,
+            placeholder: 'URL',
+            expands: false,
+          ),
+        ),
+        SizedBox(height: 16),
+      ],
     );
   }
 }
