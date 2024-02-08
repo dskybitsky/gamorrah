@@ -8,6 +8,12 @@ class Game extends HiveObject {
 
   final String title;
 
+  final String? franchise;
+
+  final String? edition;
+
+  final int? year;
+
   final String? thumbUrl;
 
   final GameStatus status;
@@ -15,6 +21,9 @@ class Game extends HiveObject {
   Game({
     required this.id,
     required this.title,
+    this.franchise,
+    this.edition,
+    this.year,
     this.thumbUrl,
     required this.status,
   });
