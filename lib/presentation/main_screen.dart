@@ -2,6 +2,16 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
 
+class MainScreenAppBarParams {
+  const MainScreenAppBarParams({
+    required this.title,
+    this.actions
+  });
+
+  final String title;
+  final Widget? actions;
+}
+
 class MainScreen extends StatefulWidget {
   final int initialPage;
 
@@ -15,7 +25,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  final ValueNotifier<String?> _appBarTitleNotifier = ValueNotifier<String?>(null);
+  final ValueNotifier<MainScreenAppBarParams?> _appBarParamsNotifier = ValueNotifier(null);
 
   int _page = 0;
   
@@ -34,11 +44,17 @@ class MainScreenState extends State<MainScreen> {
         //   // actions: _appBarParams.actions,
         // ),
         appBar: NavigationAppBar(
-          title: ValueListenableBuilder<String?>(
-            builder: (BuildContext context, String? value, Widget? child) {
-              return Text(value ?? 'Main');
+          title: ValueListenableBuilder<MainScreenAppBarParams?>(
+            builder: (BuildContext context, MainScreenAppBarParams? appBarParams, Widget? child) {
+              return Text(appBarParams?.title ?? 'Main');
             },
-            valueListenable: _appBarTitleNotifier,
+            valueListenable: _appBarParamsNotifier,
+          ),
+          actions: ValueListenableBuilder<MainScreenAppBarParams?>(
+            builder: (BuildContext context, MainScreenAppBarParams? appBarParams, Widget? child) {
+              return appBarParams?.actions ?? Container();
+            },
+            valueListenable: _appBarParamsNotifier,
           ),
         ),
         pane: NavigationPane(
@@ -52,7 +68,7 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.backlog,
-                titleNotifier: _appBarTitleNotifier,
+                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),
             PaneItem(
@@ -61,7 +77,7 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.playing,
-                titleNotifier: _appBarTitleNotifier,
+                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),
             PaneItem(
@@ -70,7 +86,7 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.finished,
-                titleNotifier: _appBarTitleNotifier,
+                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),
             PaneItem(
@@ -79,7 +95,7 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.wishlist,
-                titleNotifier: _appBarTitleNotifier,
+                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),   
           ],

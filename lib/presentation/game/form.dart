@@ -3,14 +3,18 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/presentation/game/form_modal.dart';
 import 'package:gamorrah/presentation/game/thumb.dart';
+import 'package:gamorrah/presentation/main_screen.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
 class GameForm extends StatefulWidget {
-  static const pageName = 'game';
-
-  const GameForm({ this.id });
+  const GameForm({ 
+    required this.appBarParamsNotifier,
+    this.id,
+  });
 
   final String? id;
+  final ValueNotifier<MainScreenAppBarParams?> appBarParamsNotifier;
 
   @override
   State<GameForm> createState() => _GameFormScreenState();
@@ -31,6 +35,36 @@ class _GameFormScreenState extends State<GameForm> {
 
     id = game.id;
     status = game.status;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        widget.appBarParamsNotifier.value = MainScreenAppBarParams( 
+          title: game.title,
+          actions: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 48),
+                child: 
+                  CommandBar(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    primaryItems: [
+                      CommandBarButton(
+                        icon: const Icon(FluentIcons.delete),
+                        label: const Text('Delete'),
+                        onPressed: () {
+                          service.delete(game.id);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  )
+              )
+            ]
+          ),
+        );
+      }
+    });
   }
 
   Game _initGame() {
@@ -52,7 +86,11 @@ class _GameFormScreenState extends State<GameForm> {
     return ListenableBuilder(
       listenable: service, 
       builder: (context, widget) {
-        Game game = service.get(id)!;
+        Game? game = service.get(id);
+
+        if (game == null) {
+          return Container();
+        }
 
         return ScaffoldPage(
           content: Padding(
