@@ -28,3 +28,18 @@ class MainScreenContext extends InheritedWidget {
     return true;
   }
 }
+
+mixin MainScreenContextUpdateMixin<T extends StatefulWidget> on State<T> {
+  void updateScreenContext(void Function(MainScreenContext mainScreenContext) callback) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      bool shouldUpdate = mounted && (
+        ModalRoute.of(context)?.isCurrent ?? false
+      );
+
+      if (shouldUpdate) {
+        MainScreenContext mainScreenContext = MainScreenContext.of(context);
+        callback(mainScreenContext);
+      }
+    });
+  }
+}

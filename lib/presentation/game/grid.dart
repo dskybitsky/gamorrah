@@ -17,7 +17,7 @@ class GameGrid extends StatefulWidget {
   State<GameGrid> createState() => _GameGridState();
 }
 
-class _GameGridState extends State<GameGrid> {
+class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
   late final GameService service;
   late final Iterable<Game> games;
 
@@ -37,15 +37,9 @@ class _GameGridState extends State<GameGrid> {
       content: ListenableBuilder(
         listenable: service,
         builder: (context, innterWidget) {
-          print('Grid builder called');
-            
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            MainScreenContext mainScreenContext = MainScreenContext.of(context);
-
-            if (mounted) {
-              mainScreenContext.appBarTitleNotifier.value = _getTitle();
-              mainScreenContext.appBarActionsNotifier.value = _getActions();
-            }
+          updateScreenContext((mainScreenContext) {
+            mainScreenContext.appBarTitleNotifier.value = _getTitle();
+            mainScreenContext.appBarActionsNotifier.value = _getActions();
           });
 
           if (games.isEmpty) {

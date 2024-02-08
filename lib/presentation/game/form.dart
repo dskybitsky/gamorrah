@@ -18,7 +18,7 @@ class GameForm extends StatefulWidget {
   State<GameForm> createState() => _GameFormScreenState();
 }
 
-class _GameFormScreenState extends State<GameForm> {
+class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateMixin {
   late final String id;
   late final GameService service;
   late GameStatus status;
@@ -54,21 +54,15 @@ class _GameFormScreenState extends State<GameForm> {
     return ListenableBuilder(
       listenable: service, 
       builder: (context, widget) {
-        print('Form builder called');
-
         Game? game = service.get(id);
 
         if (game == null) {
           return Container();
         }
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          MainScreenContext mainScreenContext = MainScreenContext.of(context);
-
-          if (mounted) {
-            mainScreenContext.appBarTitleNotifier.value = game.title;
-            mainScreenContext.appBarActionsNotifier.value = _getActions(game);
-          }
+        updateScreenContext((mainScreenContext) {
+          mainScreenContext.appBarTitleNotifier.value = game.title;
+          mainScreenContext.appBarActionsNotifier.value = _getActions(game);
         });
 
         return ScaffoldPage(
