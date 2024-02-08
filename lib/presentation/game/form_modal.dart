@@ -58,9 +58,6 @@ class _GameFormModalScreenState extends State<GameFormModal> {
                   title: _titleController.text,
                   thumbUrl: _thumbUrlController.text,
                 ));
-                setState(() {
-                  
-                });
                 Navigator.pop(context);
               },
               child: Text('Update'),

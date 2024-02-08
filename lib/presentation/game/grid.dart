@@ -1,19 +1,17 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/presentation/game/form.dart';
+import 'package:gamorrah/presentation/game/navigator.dart';
 import 'package:gamorrah/presentation/game/thumb.dart';
-import 'package:gamorrah/presentation/main_screen.dart';
+import 'package:gamorrah/presentation/main_screen_context.dart';
 import 'package:get/instance_manager.dart';
 
 class GameGrid extends StatefulWidget {
   const GameGrid({ 
     required this.status,
-    required this.appBarParamsNotifier,
   });
 
   final GameStatus status;
-  final ValueNotifier<MainScreenAppBarParams?> appBarParamsNotifier;
 
   @override
   State<GameGrid> createState() => _GameGridState();
@@ -31,42 +29,6 @@ class _GameGridState extends State<GameGrid> {
     
     games = service.getAll()
       .where((element) => element.status == widget.status);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        widget.appBarParamsNotifier.value = MainScreenAppBarParams( 
-          title: _getTitle(),
-          actions: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 48),
-                child: 
-                  CommandBar(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    primaryItems: [
-                      CommandBarButton(
-                        icon: const Icon(FluentIcons.add),
-                        label: const Text('Create'),
-                        onPressed: () {
-                          Navigator.push(context, FluentPageRoute(builder: (_) => GameForm(
-                            appBarParamsNotifier: widget.appBarParamsNotifier,
-                          )));
-                        },
-                      ),
-                      // CommandBarButton(
-                      //   icon: const Icon(FluentIcons.delete),
-                      //   label: const Text('Delete'),
-                      //   onPressed: () {},
-                      // ),
-                    ],
-                  )
-              )
-            ]
-          ),
-        );
-      }
-    });
   }
 
   @override
@@ -75,6 +37,17 @@ class _GameGridState extends State<GameGrid> {
       content: ListenableBuilder(
         listenable: service,
         builder: (context, innterWidget) {
+          print('Grid builder called');
+            
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            MainScreenContext mainScreenContext = MainScreenContext.of(context);
+
+            if (mounted) {
+              mainScreenContext.appBarTitleNotifier.value = _getTitle();
+              mainScreenContext.appBarActionsNotifier.value = _getActions();
+            }
+          });
+
           if (games.isEmpty) {
             return Center(
               child: Text('Empty'),
@@ -88,42 +61,38 @@ class _GameGridState extends State<GameGrid> {
                 child: GameThumb(
                   game: game,
                   onPressed: () {
-                    Navigator.push(
-                      context, 
-                      FluentPageRoute(
-                        builder: (_) => GameForm(
-                          appBarParamsNotifier: widget.appBarParamsNotifier, 
-                          id: game.id)),
-                      );
+                    GameNavigator.goGameForm(context, game.id);
                   },
                 )
               )
             ).toList(),
           );
-
-          // return ListView.builder(
-          //   itemCount: games.length,
-          //   itemBuilder: (context, index) {
-          //     Game game = games.elementAt(index);
-              
-          //     return ListTile(
-          //       title: Text(game.title),
-          //       subtitle: Text(game.status.name),
-          //       // leading: game.thumbUrl != null ? Image.network(game.thumbUrl!) : null,
-          //       trailing: IconButton(
-          //         icon: Icon(Icons.delete),
-          //         onPressed: () {
-          //           service.delete(game.id);
-          //         },
-          //       ),
-          //       onTap: () {
-          //         Navigator.push(context, MaterialPageRoute(builder: (_) => GameForm(id: game.id)));
-          //       },
-          //     );
-          //   },
-          // );
         },
       ),
+    );
+  }
+
+  Widget _getActions() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 48),
+          child: 
+            CommandBar(
+              mainAxisAlignment: MainAxisAlignment.end,
+              primaryItems: [
+                CommandBarButton(
+                  icon: const Icon(FluentIcons.add),
+                  label: const Text('Create'),
+                  onPressed: () {
+                    GameNavigator.goGameForm(context, null);
+                  },
+                ),
+              ],
+            )
+        )
+      ]
     );
   }
 

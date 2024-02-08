@@ -1,16 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
-
-class MainScreenAppBarParams {
-  const MainScreenAppBarParams({
-    required this.title,
-    this.actions
-  });
-
-  final String title;
-  final Widget? actions;
-}
+import 'package:gamorrah/presentation/main_screen_context.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialPage;
@@ -25,8 +16,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class MainScreenState extends State<MainScreen> {
-  final ValueNotifier<MainScreenAppBarParams?> _appBarParamsNotifier = ValueNotifier(null);
-
+  final ValueNotifier<String?> _appBarTitleNotifier = ValueNotifier(null);
+  final ValueNotifier<Widget?> _appBarActionsNotifier = ValueNotifier(null);
+  
   int _page = 0;
   
   @override
@@ -38,23 +30,22 @@ class MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationView(
-        // appBar: NavigationAppBar(
-        //   title: _appBarParams?.title,
-        //   // actions: _appBarParams.actions,
-        // ),
+    return MainScreenContext(
+      appBarTitleNotifier: _appBarTitleNotifier,
+      appBarActionsNotifier: _appBarActionsNotifier, 
+      child: NavigationView(
         appBar: NavigationAppBar(
-          title: ValueListenableBuilder<MainScreenAppBarParams?>(
-            builder: (BuildContext context, MainScreenAppBarParams? appBarParams, Widget? child) {
-              return Text(appBarParams?.title ?? 'Main');
+          title: ValueListenableBuilder<String?>(
+            builder: (BuildContext context, String? value, Widget? child) {
+              return Text(value ?? 'Main');
             },
-            valueListenable: _appBarParamsNotifier,
+            valueListenable: _appBarTitleNotifier,
           ),
-          actions: ValueListenableBuilder<MainScreenAppBarParams?>(
-            builder: (BuildContext context, MainScreenAppBarParams? appBarParams, Widget? child) {
-              return appBarParams?.actions ?? Container();
+          actions: ValueListenableBuilder<Widget?>(
+            builder: (BuildContext context, Widget? value, Widget? child) {
+              return value ?? Container();
             },
-            valueListenable: _appBarParamsNotifier,
+            valueListenable: _appBarActionsNotifier,
           ),
         ),
         pane: NavigationPane(
@@ -68,7 +59,6 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.backlog,
-                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),
             PaneItem(
@@ -77,7 +67,6 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.playing,
-                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),
             PaneItem(
@@ -86,7 +75,6 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.finished,
-                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),
             PaneItem(
@@ -95,7 +83,6 @@ class MainScreenState extends State<MainScreen> {
               body: GameNavigator(
                 navigatorKey: GlobalKey(),
                 status: GameStatus.wishlist,
-                appBarParamsNotifier: _appBarParamsNotifier,
               ),
             ),   
           ],
@@ -107,7 +94,8 @@ class MainScreenState extends State<MainScreen> {
             ),
           ],
         ), 
-      );
+      )
+    );
   }
 
   void _onPageChanged(int page) {

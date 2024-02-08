@@ -3,19 +3,17 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/presentation/game/form_modal.dart';
 import 'package:gamorrah/presentation/game/thumb.dart';
-import 'package:gamorrah/presentation/main_screen.dart';
+import 'package:gamorrah/presentation/main_screen_context.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
 class GameForm extends StatefulWidget {
   const GameForm({ 
-    required this.appBarParamsNotifier,
     this.id,
   });
 
   final String? id;
-  final ValueNotifier<MainScreenAppBarParams?> appBarParamsNotifier;
-
+  
   @override
   State<GameForm> createState() => _GameFormScreenState();
 }
@@ -23,7 +21,7 @@ class GameForm extends StatefulWidget {
 class _GameFormScreenState extends State<GameForm> {
   late final String id;
   late final GameService service;
-  late final GameStatus status;
+  late GameStatus status;
 
   @override
   void initState() {
@@ -35,36 +33,6 @@ class _GameFormScreenState extends State<GameForm> {
 
     id = game.id;
     status = game.status;
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        widget.appBarParamsNotifier.value = MainScreenAppBarParams( 
-          title: game.title,
-          actions: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 48),
-                child: 
-                  CommandBar(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    primaryItems: [
-                      CommandBarButton(
-                        icon: const Icon(FluentIcons.delete),
-                        label: const Text('Delete'),
-                        onPressed: () {
-                          service.delete(game.id);
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  )
-              )
-            ]
-          ),
-        );
-      }
-    });
   }
 
   Game _initGame() {
@@ -86,11 +54,22 @@ class _GameFormScreenState extends State<GameForm> {
     return ListenableBuilder(
       listenable: service, 
       builder: (context, widget) {
+        print('Form builder called');
+
         Game? game = service.get(id);
 
         if (game == null) {
           return Container();
         }
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          MainScreenContext mainScreenContext = MainScreenContext.of(context);
+
+          if (mounted) {
+            mainScreenContext.appBarTitleNotifier.value = game.title;
+            mainScreenContext.appBarActionsNotifier.value = _getActions(game);
+          }
+        });
 
         return ScaffoldPage(
           content: Padding(
@@ -103,6 +82,7 @@ class _GameFormScreenState extends State<GameForm> {
                     showDialog(
                       context: context,
                       builder: (context) => GameFormModal(game: game),
+                      useRootNavigator: false,
                     );
                   }
                 ),
@@ -126,7 +106,7 @@ class _GameFormScreenState extends State<GameForm> {
                     service.save(game.copyWith(
                       status: status
                     ));
-                    
+
                     Navigator.pop(context);
                   },
                   child: Text('Save Game'),
@@ -136,6 +116,31 @@ class _GameFormScreenState extends State<GameForm> {
           ),
         ); 
       }
+    );
+  }
+
+  Widget _getActions(Game game) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(right: 48),
+          child: 
+            CommandBar(
+              mainAxisAlignment: MainAxisAlignment.end,
+              primaryItems: [
+                CommandBarButton(
+                  icon: const Icon(FluentIcons.delete),
+                  label: const Text('Delete'),
+                  onPressed: () {
+                    service.delete(game.id);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            )
+        )
+      ]
     );
   }
 }
