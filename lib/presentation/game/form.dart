@@ -21,8 +21,12 @@ class GameForm extends StatefulWidget {
 class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateMixin {
   late final String id;
   late final GameService service;
-  late GameStatus status;
 
+  late GamePersonalBeaten? _personalBeaten;
+  late int? _personalTimeSpent;
+  late double? _personalRating;
+  late GameStatus _status;
+  
   @override
   void initState() {
     super.initState();
@@ -32,7 +36,11 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
     Game game = _initGame();
 
     id = game.id;
-    status = game.status;
+
+    _personalBeaten = game.personal?.beaten;
+    _personalRating = game.personal?.rating;
+    _personalTimeSpent = game.personal?.timeSpent;
+    _status = game.status;
   }
 
   Game _initGame() {
@@ -62,49 +70,97 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
 
         updateScreenContext((mainScreenContext) {
           mainScreenContext.appBarTitleNotifier.value = game.title;
-          mainScreenContext.appBarActionsNotifier.value = _getActions(game);
+          mainScreenContext.appBarActionsNotifier.value = _buildActions(game);
         });
 
         return ScaffoldPage(
           content: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: Row(
               children: [
-                GameThumb(
-                  game: game,
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => GameFormModal(game: game),
-                      useRootNavigator: false,
-                    );
-                  }
+                Expanded(flex: 2, child: Container()),
+                Expanded(
+                  flex: 6,
+                  child: ListView(
+                    children: [
+                      GameThumb(
+                        game: game,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => GameFormModal(game: game),
+                            useRootNavigator: false,
+                          );
+                        }
+                      ),
+                      SizedBox(height: 32),
+                      Container(
+                        alignment: Alignment.centerLeft, 
+                        child: Text('PERSONAL'),
+                      ),
+                      SizedBox(height: 8),
+                      _buildFormRow('Beaten:', ComboBox<GamePersonalBeaten>(
+                          value: _personalBeaten,
+                          items: [
+                            ComboBoxItem(value: GamePersonalBeaten.story, child: Text('Story')),
+                            ComboBoxItem(value: GamePersonalBeaten.storySides, child: Text('Story + Sides')),
+                            ComboBoxItem(value: GamePersonalBeaten.completionist, child: Text('Completionist')),
+                          ],
+                          onChanged: ( value) {
+                            setState(() {
+                              _personalBeaten = value;
+                            });
+                          },
+                          isExpanded: true,
+                        )),
+                      SizedBox(height: 8),
+                      _buildFormRow('Rating:', NumberBox(
+                        placeholder: 'Rating',
+                        value: _personalRating,
+                        onChanged: (value) => { _personalRating = value },
+                      )),
+                      SizedBox(height: 8),
+                      _buildFormRow('Time Spent:', NumberBox(
+                        placeholder: 'Hours',
+                        value: _personalTimeSpent,
+                        onChanged: (value) => { _personalTimeSpent = value },
+                      )),
+                      SizedBox(height: 32),
+                      _buildFormRow('Status:', ComboBox<GameStatus>(
+                          value: _status,
+                          items: [
+                            ComboBoxItem(value: GameStatus.backlog, child: Text('Backlog')),
+                            ComboBoxItem(value: GameStatus.playing, child: Text("Playing")),
+                            ComboBoxItem(value: GameStatus.finished, child: Text("Finished")),
+                            ComboBoxItem(value: GameStatus.wishlist, child: Text("Wishlist")),
+                          ],
+                          onChanged: ( value) {
+                            setState(() {
+                              _status = value ?? GameStatus.backlog;
+                            });
+                          },
+                          isExpanded: true,
+                        )
+                      ),
+                      SizedBox(height: 16),
+                      FilledButton(
+                        onPressed: () {
+                          service.save(game.copyWith(
+                            status: _status,
+                            personal: game.copyPersonalWith(
+                              beaten: _personalBeaten,
+                              rating: _personalRating,
+                              timeSpent: _personalTimeSpent,
+                            )
+                          ));
+                          Navigator.pop(context);
+                        },
+                        child: Text('Save'),
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 16),
-                ComboBox<GameStatus>(
-                  value: status,
-                  items: [
-                    ComboBoxItem(value: GameStatus.backlog, child: Text('Backlog')),
-                    ComboBoxItem(value: GameStatus.playing, child: Text("Playing")),
-                    ComboBoxItem(value: GameStatus.finished, child: Text("Finished")),
-                    ComboBoxItem(value: GameStatus.wishlist, child: Text("Wishlist")),
-                  ],
-                  onChanged: ( value) {
-                    setState(() {
-                      status = value ?? GameStatus.backlog;
-                    });
-                  },
-                ),
-                Button(
-                  onPressed: () {
-                    service.save(game.copyWith(
-                      status: status
-                    ));
-
-                    Navigator.pop(context);
-                  },
-                  child: Text('Save Game'),
-                ),
+                Expanded(flex: 2, child: Container()),
               ],
             ),
           ),
@@ -113,7 +169,16 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
     );
   }
 
-  Widget _getActions(Game game) {
+  Widget _buildFormRow(String label, Widget child) {
+    return Row(
+      children: [
+        Expanded(child: Text(label)),
+        Expanded(child: child),
+      ] 
+    );
+  }
+
+  Widget _buildActions(Game game) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

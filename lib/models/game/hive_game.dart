@@ -24,7 +24,34 @@ class HiveGame extends HiveObject {
   final String? thumbUrl;
 
   @HiveField(6)
+  final String? kind;
+
+  @HiveField(7)
+  final int? index;
+
+  @HiveField(8)
+  final String? personalBeaten;
+
+  @HiveField(9)
+  final double? personalRating;
+
+  @HiveField(10)
+  final int? personalTimeSpent;
+
+  @HiveField(11)
+  final double? howLongToBeatStory;
+
+  @HiveField(12)
+  final double? howLongToBeatStorySides;
+
+  @HiveField(13)
+  final double? howLongToBeatCompletionist;
+
+  @HiveField(14)
   final String status;
+
+  @HiveField(15)
+  final String? parentId;
 
   HiveGame({
     required this.id,
@@ -33,7 +60,16 @@ class HiveGame extends HiveObject {
     this.edition,
     this.year,
     this.thumbUrl,
+    this.kind,
+    this.index,
+    this.personalBeaten,
+    this.personalRating,
+    this.personalTimeSpent,
+    this.howLongToBeatStory,
+    this.howLongToBeatStorySides,
+    this.howLongToBeatCompletionist,
     required this.status,
+    this.parentId,
   });
 
   factory HiveGame.fromGame(Game game) => HiveGame(
@@ -43,7 +79,16 @@ class HiveGame extends HiveObject {
     edition: game.edition,
     year: game.year,
     thumbUrl: game.thumbUrl,
-    status: game.status.name
+    kind: game.kind?.name,
+    index: game.index,
+    personalBeaten: game.personal?.beaten?.name,
+    personalRating: game.personal?.rating,
+    personalTimeSpent: game.personal?.timeSpent,
+    howLongToBeatStory: game.howLongToBeat?.story,
+    howLongToBeatStorySides: game.howLongToBeat?.storySides,
+    howLongToBeatCompletionist: game.howLongToBeat?.completionist,
+    status: game.status.name,
+    parentId: game.parentId,
   );
 
   Game toGame() => Game(
@@ -53,6 +98,31 @@ class HiveGame extends HiveObject {
     edition: edition,
     year: year,
     thumbUrl: thumbUrl,
+    kind: kind != null ? GameKind.values.byName(kind!) : null,
+    index: index,
+    personal: _toGamePersonal(),
+    howLongToBeat: _toGameHowLongToBeat(),
     status: GameStatus.values.byName(status),
+    parentId: parentId,
   );
+
+  GamePersonal? _toGamePersonal() => _hasPersonal() ? GamePersonal(
+    beaten: personalBeaten != null
+      ? GamePersonalBeaten.values.byName(personalBeaten!)
+      : null,
+    rating: personalRating,
+    timeSpent: personalTimeSpent,
+  ) : null;
+
+  GameHowLongToBeat? _toGameHowLongToBeat() => _hasHowLongToBeat() ? GameHowLongToBeat(
+    story: howLongToBeatStory,
+    storySides: howLongToBeatStorySides,
+    completionist: howLongToBeatCompletionist,
+  ) : null;
+
+  bool _hasPersonal() => personalBeaten != null || personalRating != null || personalTimeSpent != null;
+
+  bool _hasHowLongToBeat() => howLongToBeatStory != null
+    || howLongToBeatStorySides != null
+    || howLongToBeatCompletionist != null;
 }

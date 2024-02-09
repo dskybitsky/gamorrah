@@ -26,7 +26,10 @@ class GameThumb extends StatelessWidget {
       );
     }
 
-    return Image.network(thumbUrl);
+    return Image.network(
+      thumbUrl,
+      height: 350,
+    );
   }
 
   @override

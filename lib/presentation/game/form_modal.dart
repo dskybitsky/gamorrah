@@ -13,11 +13,14 @@ class GameFormModal extends StatefulWidget {
 }
 
 class _GameFormModalScreenState extends State<GameFormModal> {
-  late TextEditingController _titleController;
-  late TextEditingController _thumbUrlController;
-
   late final GameService service;
 
+  late TextEditingController _titleController;
+  late TextEditingController _franchiseController;
+  late TextEditingController _editionController;
+  late int? _year;
+  late TextEditingController _thumbUrlController;
+  
   @override
   void initState() {
     super.initState();
@@ -25,6 +28,9 @@ class _GameFormModalScreenState extends State<GameFormModal> {
     service = Get.find();
 
      _titleController = TextEditingController(text: widget.game.title);
+     _franchiseController = TextEditingController(text: widget.game.franchise);
+     _editionController = TextEditingController(text: widget.game.edition);
+     _year = widget.game.year;
      _thumbUrlController = TextEditingController(text: widget.game.thumbUrl);
   }
 
@@ -41,6 +47,9 @@ class _GameFormModalScreenState extends State<GameFormModal> {
           onPressed: () {
             service.save(widget.game.copyWith(
               title: _titleController.text,
+              franchise: _franchiseController.text,
+              edition: _editionController.text,
+              year: _year,
               thumbUrl: _thumbUrlController.text,
             ));
             Navigator.pop(context);
@@ -49,19 +58,10 @@ class _GameFormModalScreenState extends State<GameFormModal> {
         ),
       ],
     );
-
-    // return Container(
-    //   padding: const EdgeInsets.all(96.0),
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.circular(16.0),
-    //     color: theme.scaffoldBackgroundColor,
-    //   ),
-    //   child: ScaffoldPage(content: _buildForm(context)),
-    // );
   }
 
   Widget _buildDialogContent(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
         InfoLabel(
           label: 'Title:',
@@ -73,6 +73,33 @@ class _GameFormModalScreenState extends State<GameFormModal> {
         ),
         SizedBox(height: 10),
         InfoLabel(
+          label: 'Franchise:',
+          child: TextBox(
+            controller: _franchiseController,
+            placeholder: 'Franchise Name',
+            expands: false,
+          ),
+        ),
+        SizedBox(height: 10),
+        InfoLabel(
+          label: 'Edition:',
+          child: TextBox(
+            controller: _editionController,
+            placeholder: 'Edition',
+            expands: false,
+          ),
+        ),
+        SizedBox(height: 10),
+        InfoLabel(
+          label: 'Year:',
+          child: NumberBox(
+            placeholder: 'Year',
+            value: _year,
+            onChanged: (value) => { _year = value },
+          ),
+        ),
+        SizedBox(height: 10),
+        InfoLabel(
           label: 'Thumbnail URL:',
           child: TextBox(
             controller: _thumbUrlController,
@@ -80,7 +107,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        
       ],
     );
   }
