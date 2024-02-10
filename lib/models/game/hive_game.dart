@@ -5,6 +5,25 @@ part 'hive_game.g.dart';
 
 @HiveType(typeId: 0)
 class HiveGame extends HiveObject {
+  HiveGame({
+    required this.id,
+    required this.title,
+    this.franchise,
+    this.edition,
+    this.year,
+    this.thumbUrl,
+    this.kind,
+    this.index,
+    this.personalBeaten,
+    this.personalRating,
+    this.personalTimeSpent,
+    this.howLongToBeatStory,
+    this.howLongToBeatStorySides,
+    this.howLongToBeatCompletionist,
+    required this.status,
+    this.parentId,
+  });
+
   @HiveField(0)
   final String id;
 
@@ -52,25 +71,6 @@ class HiveGame extends HiveObject {
 
   @HiveField(15)
   final String? parentId;
-
-  HiveGame({
-    required this.id,
-    required this.title,
-    this.franchise,
-    this.edition,
-    this.year,
-    this.thumbUrl,
-    this.kind,
-    this.index,
-    this.personalBeaten,
-    this.personalRating,
-    this.personalTimeSpent,
-    this.howLongToBeatStory,
-    this.howLongToBeatStorySides,
-    this.howLongToBeatCompletionist,
-    required this.status,
-    this.parentId,
-  });
 
   factory HiveGame.fromGame(Game game) => HiveGame(
     id: game.id, 

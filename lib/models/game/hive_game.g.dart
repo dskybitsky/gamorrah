@@ -23,14 +23,23 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       edition: fields[3] as String?,
       year: fields[4] as int?,
       thumbUrl: fields[5] as String?,
-      status: fields[6] as String,
+      kind: fields[6] as String?,
+      index: fields[7] as int?,
+      personalBeaten: fields[8] as String?,
+      personalRating: fields[9] as double?,
+      personalTimeSpent: fields[10] as int?,
+      howLongToBeatStory: fields[11] as double?,
+      howLongToBeatStorySides: fields[12] as double?,
+      howLongToBeatCompletionist: fields[13] as double?,
+      status: fields[14] as String,
+      parentId: fields[15] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveGame obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +53,25 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       ..writeByte(5)
       ..write(obj.thumbUrl)
       ..writeByte(6)
-      ..write(obj.status);
+      ..write(obj.kind)
+      ..writeByte(7)
+      ..write(obj.index)
+      ..writeByte(8)
+      ..write(obj.personalBeaten)
+      ..writeByte(9)
+      ..write(obj.personalRating)
+      ..writeByte(10)
+      ..write(obj.personalTimeSpent)
+      ..writeByte(11)
+      ..write(obj.howLongToBeatStory)
+      ..writeByte(12)
+      ..write(obj.howLongToBeatStorySides)
+      ..writeByte(13)
+      ..write(obj.howLongToBeatCompletionist)
+      ..writeByte(14)
+      ..write(obj.status)
+      ..writeByte(15)
+      ..write(obj.parentId);
   }
 
   @override

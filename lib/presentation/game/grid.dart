@@ -1,8 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
+import 'package:gamorrah/presentation/game/list.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
-import 'package:gamorrah/presentation/game/thumb.dart';
 import 'package:gamorrah/presentation/main_screen_context.dart';
 import 'package:get/instance_manager.dart';
 
@@ -28,7 +28,7 @@ class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
     service = Get.find();
     
     games = service.getAll()
-      .where((element) => element.status == widget.status);
+      .where((game) => game.status == widget.status && game.parentId == null);
   }
 
   @override
@@ -40,6 +40,9 @@ class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
           updateScreenContext((mainScreenContext) {
             mainScreenContext.appBarTitleNotifier.value = _getTitle();
             mainScreenContext.appBarActionsNotifier.value = _getActions();
+            mainScreenContext.appBarBackTapHandlerNotifier.value = Navigator.canPop(context)
+              ? () { Navigator.pop(context); }
+              : null;
           });
 
           if (games.isEmpty) {
@@ -49,24 +52,7 @@ class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
           }
 
           return SingleChildScrollView(
-            child: Wrap(
-              spacing: 32.0, // gap between adjacent chips
-              runSpacing: 16.0, // gap between lines
-              children: games.map(
-                (game) => Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GameThumb(
-                      game: game,
-                      size: GameThumbSize.medium,
-                      onPressed: () {
-                        GameNavigator.goGameForm(context, game.id);
-                      },
-                    ),
-                  ]
-                )
-              ).toList(),
-            ),
+            child: GameList(games: games),
           );
         },
       ),
@@ -87,7 +73,7 @@ class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
                   icon: const Icon(FluentIcons.add),
                   label: const Text('Add New Game'),
                   onPressed: () {
-                    GameNavigator.goGameForm(context, null);
+                    GameNavigator.goGameForm(context, status: widget.status);
                   },
                 ),
               ],

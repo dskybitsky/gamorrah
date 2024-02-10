@@ -69,11 +69,13 @@ class Game {
     required String title,
     String? thumbUrl,
     GameStatus? status,
+    String? parentId,
   }) => Game(
     id: id ?? const Uuid().v4(),
     title: title, 
     thumbUrl: thumbUrl,
     status: status ?? GameStatus.backlog,
+    parentId: parentId,
   );
 
   Game copyWith({

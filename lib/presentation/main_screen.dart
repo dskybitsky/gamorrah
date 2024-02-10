@@ -7,9 +7,9 @@ class MainScreen extends StatefulWidget {
   final int initialPage;
 
   const MainScreen({
-    Key? key,
+    super.key,
     this.initialPage = 0,
-  }) : super(key: key);
+  });
 
   @override
   State<MainScreen> createState() => MainScreenState();
@@ -18,6 +18,7 @@ class MainScreen extends StatefulWidget {
 class MainScreenState extends State<MainScreen> {
   final ValueNotifier<String?> _appBarTitleNotifier = ValueNotifier(null);
   final ValueNotifier<Widget?> _appBarActionsNotifier = ValueNotifier(null);
+  final ValueNotifier<VoidCallback?> _appBarBackTapHandlerNotifier = ValueNotifier(null);
   
   int _page = 0;
   
@@ -33,8 +34,25 @@ class MainScreenState extends State<MainScreen> {
     return MainScreenContext(
       appBarTitleNotifier: _appBarTitleNotifier,
       appBarActionsNotifier: _appBarActionsNotifier, 
+      appBarBackTapHandlerNotifier: _appBarBackTapHandlerNotifier,
       child: NavigationView(
         appBar: NavigationAppBar(
+          automaticallyImplyLeading: false,
+          leading: ValueListenableBuilder<VoidCallback?>(
+            builder: (BuildContext context, VoidCallback? backTapHandler, Widget? child) {
+              if (backTapHandler == null) {
+                return Container();
+              }
+
+              return PaneItem(
+                icon: const Icon(FluentIcons.back, size: 14.0),
+                title: Text('Back'),
+                body: const SizedBox.shrink(),
+              )
+                .build(context, false, backTapHandler, displayMode: PaneDisplayMode.compact);
+            },
+            valueListenable: _appBarBackTapHandlerNotifier,
+          ),
           title: ValueListenableBuilder<String?>(
             builder: (BuildContext context, String? value, Widget? child) {
               return Text(value ?? 'Main');

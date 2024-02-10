@@ -2,7 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/presentation/game/form_modal.dart';
+import 'package:gamorrah/presentation/game/list.dart';
 import 'package:gamorrah/presentation/game/thumb.dart';
+import 'package:gamorrah/presentation/game/navigator.dart';
 import 'package:gamorrah/presentation/main_screen_context.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
@@ -10,9 +12,13 @@ import 'package:get/instance_manager.dart';
 class GameForm extends StatefulWidget {
   const GameForm({ 
     this.id,
+    this.status,
+    this.parentId,
   });
 
   final String? id;
+  final GameStatus? status;
+  final String? parentId;
   
   @override
   State<GameForm> createState() => _GameFormScreenState();
@@ -21,6 +27,7 @@ class GameForm extends StatefulWidget {
 class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateMixin {
   late final String id;
   late final GameService service;
+  late final Iterable<Game> nestedGames;
 
   late GamePersonalBeaten? _personalBeaten;
   late double? _personalRating;
@@ -42,6 +49,9 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
 
     id = game.id;
 
+    nestedGames = service.getAll()
+      .where((nestedGame) => nestedGame.parentId == game.id);
+    
     _personalBeaten = game.personal?.beaten;
     _personalRating = game.personal?.rating;
     _personalTimeSpent = game.personal?.timeSpent;
@@ -60,7 +70,12 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
       return service.get(widgetId)!;
     }
 
-    Game game = Game.create(title: "New Game", thumbUrl: null);
+    Game game = Game.create(
+      title: "New Game", 
+      thumbUrl: null,
+      status: widget.status,
+      parentId: widget.parentId,
+    );
 
     service.save(game);
 
@@ -81,6 +96,9 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
         updateScreenContext((mainScreenContext) {
           mainScreenContext.appBarTitleNotifier.value = game.title;
           mainScreenContext.appBarActionsNotifier.value = _buildActions(game);
+          mainScreenContext.appBarBackTapHandlerNotifier.value = Navigator.canPop(context)
+              ? () { Navigator.pop(context); }
+              : null;
         });
 
         return ScaffoldPage(
@@ -114,6 +132,8 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
             );
           }
         ),
+        SizedBox(height: 32),
+        Center(child: GameList(games: nestedGames, thumbSize: GameThumbSize.small)),
         SizedBox(height: 32),
         Container(
           alignment: Alignment.centerLeft, 
@@ -228,6 +248,17 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
             CommandBar(
               mainAxisAlignment: MainAxisAlignment.end,
               primaryItems: [
+                CommandBarButton(
+                  icon: const Icon(FluentIcons.add),
+                  label: const Text('Add Included Item'),
+                  onPressed: () {
+                    GameNavigator.goGameForm(
+                      context, 
+                      parentId: game.id, 
+                      status: GameStatus.backlog,
+                    );
+                  },
+                ),
                 CommandBarButton(
                   icon: const Icon(FluentIcons.delete),
                   label: const Text('Delete'),

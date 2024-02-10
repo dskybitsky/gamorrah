@@ -5,11 +5,13 @@ class MainScreenContext extends InheritedWidget {
     super.key,
     required this.appBarTitleNotifier,
     required this.appBarActionsNotifier,
+    required this.appBarBackTapHandlerNotifier,
     required super.child,
   });
 
   final ValueNotifier<String?> appBarTitleNotifier;
   final ValueNotifier<Widget?> appBarActionsNotifier;
+  final ValueNotifier<VoidCallback?> appBarBackTapHandlerNotifier;
   
   static MainScreenContext? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<MainScreenContext>();

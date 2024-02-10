@@ -5,10 +5,10 @@ import 'package:gamorrah/presentation/game/grid.dart';
 
 class GameNavigator extends StatelessWidget {
   const GameNavigator({ 
-    Key? key, 
+    super.key, 
     required this.navigatorKey, 
     required this.status,
-  }): super(key: key);
+  });
 
   final GameStatus status;
   final GlobalKey<NavigatorState> navigatorKey;
@@ -18,20 +18,24 @@ class GameNavigator extends StatelessWidget {
     return Navigator(
       key: navigatorKey,
       onGenerateRoute: (RouteSettings routeSettings) {
-        return GameNavigator.gameGridRoute(status);
+        return GameNavigator.gameGridRoute(status: status);
       }
     );
   }
 
-  static void goGameGrid(BuildContext context, GameStatus status) {
-    Navigator.push(context, gameGridRoute(status));
+  static void goGameGrid(BuildContext context, { required GameStatus status }) {
+    Navigator.push(context, gameGridRoute(status: status));
   }
 
-  static void goGameForm(BuildContext context, String? id) {
-    Navigator.push(context, gameFormRoute(id));
+  static void goGameForm(BuildContext context, {
+    String? id,
+    GameStatus? status,
+    String? parentId,
+  }) {
+    Navigator.push(context, gameFormRoute(id: id, status: status, parentId: parentId));
   }
 
-  static FluentPageRoute gameGridRoute(GameStatus status) {
+  static FluentPageRoute gameGridRoute({ required GameStatus status }) {
     return FluentPageRoute(
       builder: (context) {      
         return GameGrid(
@@ -41,10 +45,18 @@ class GameNavigator extends StatelessWidget {
     );
   }
 
-  static FluentPageRoute gameFormRoute(String? id) {
+  static FluentPageRoute gameFormRoute({
+    String? id,
+    GameStatus? status,
+    String? parentId,
+  }) {
     return FluentPageRoute(
       builder: (context) {      
-        return GameForm(id: id);
+        return GameForm(
+          id: id,
+          status: status,
+          parentId: parentId,
+        );
       }
     );
   }
