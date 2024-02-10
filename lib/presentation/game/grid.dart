@@ -48,18 +48,25 @@ class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
             );
           }
 
-          return GridView.count(
-            crossAxisCount: 2,
-            children: games.map(
-              (game) => Card(
-                child: GameThumb(
-                  game: game,
-                  onPressed: () {
-                    GameNavigator.goGameForm(context, game.id);
-                  },
+          return SingleChildScrollView(
+            child: Wrap(
+              spacing: 32.0, // gap between adjacent chips
+              runSpacing: 16.0, // gap between lines
+              children: games.map(
+                (game) => Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GameThumb(
+                      game: game,
+                      size: GameThumbSize.medium,
+                      onPressed: () {
+                        GameNavigator.goGameForm(context, game.id);
+                      },
+                    ),
+                  ]
                 )
-              )
-            ).toList(),
+              ).toList(),
+            ),
           );
         },
       ),
@@ -78,7 +85,7 @@ class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
               primaryItems: [
                 CommandBarButton(
                   icon: const Icon(FluentIcons.add),
-                  label: const Text('Create'),
+                  label: const Text('Add New Game'),
                   onPressed: () {
                     GameNavigator.goGameForm(context, null);
                   },
