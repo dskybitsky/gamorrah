@@ -4,16 +4,16 @@ import 'package:gamorrah/models/game/game_service.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
-class GameFormModal extends StatefulWidget {
-  const GameFormModal({ required this.game });
+class GameModal extends StatefulWidget {
+  const GameModal({ required this.game });
 
   final Game game;
 
   @override
-  State<GameFormModal> createState() => _GameFormModalScreenState();
+  State<GameModal> createState() => _GameModalState();
 }
 
-class _GameFormModalScreenState extends State<GameFormModal> {
+class _GameModalState extends State<GameModal> {
   late final GameService service;
 
   late TextEditingController _titleController;

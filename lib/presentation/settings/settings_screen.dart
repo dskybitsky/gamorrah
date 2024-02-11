@@ -55,7 +55,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ListView(
       padding: EdgeInsets.only(left: 16, right: 16),
       children: [
-        FilledButton(
+        Button(
           onPressed: () async {
             FilePickerResult? result = await FilePicker.platform.pickFiles();
 
@@ -77,13 +77,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // User canceled the picker
             }
           },
-          child: Text('Import from JSON'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(FluentIcons.data_flow, size: 24.0,),
+              SizedBox(width: 16),
+              Text('Import from JSON'),
+            ]
+          ),
         ),
+        SizedBox(height: 16),
         FilledButton(
           onPressed: () async {
             service.clear();
           },
-          child: Text('Clear Database'),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(FluentIcons.delete, size: 24.0,),
+              SizedBox(width: 16),
+              Text('Clear database'),
+            ]
+          ),
         ),
       ],
     );

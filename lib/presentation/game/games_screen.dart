@@ -5,18 +5,18 @@ import 'package:gamorrah/presentation/game/list.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
 import 'package:get/instance_manager.dart';
 
-class GameGrid extends StatefulWidget {
-  const GameGrid({ 
+class GamesScreen extends StatefulWidget {
+  const GamesScreen({ 
     required this.status,
   });
 
   final GameStatus status;
 
   @override
-  State<GameGrid> createState() => _GameGridState();
+  State<GamesScreen> createState() => _GamesScreenState();
 }
 
-class _GameGridState extends State<GameGrid> {
+class _GamesScreenState extends State<GamesScreen> {
   late final GameService service;
   late final Iterable<Game> games;
 
@@ -71,7 +71,7 @@ class _GameGridState extends State<GameGrid> {
                   icon: const Icon(FluentIcons.add),
                   label: const Text('Add New Game'),
                   onPressed: () {
-                    GameNavigator.goGameForm(context, status: widget.status);
+                    GameNavigator.goGameScreen(context, status: widget.status);
                   },
                 ),
               ],

@@ -1,15 +1,15 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/presentation/game/form_modal.dart';
+import 'package:gamorrah/presentation/game/modal.dart';
 import 'package:gamorrah/presentation/game/list.dart';
 import 'package:gamorrah/presentation/game/thumb.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
-class GameForm extends StatefulWidget {
-  const GameForm({ 
+class GameScreen extends StatefulWidget {
+  const GameScreen({ 
     this.id,
     this.status,
     this.parentId,
@@ -20,10 +20,10 @@ class GameForm extends StatefulWidget {
   final String? parentId;
   
   @override
-  State<GameForm> createState() => _GameFormScreenState();
+  State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameFormScreenState extends State<GameForm> {
+class _GameScreenState extends State<GameScreen> {
   late final String id;
   late final GameService service;
   late final Iterable<Game> nestedGames;
@@ -124,7 +124,7 @@ class _GameFormScreenState extends State<GameForm> {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => GameFormModal(game: game),
+              builder: (context) => GameModal(game: game),
               useRootNavigator: false,
             );
           }
@@ -249,7 +249,7 @@ class _GameFormScreenState extends State<GameForm> {
                   icon: const Icon(FluentIcons.add),
                   label: const Text('Add Included Item'),
                   onPressed: () {
-                    GameNavigator.goGameForm(
+                    GameNavigator.goGameScreen(
                       context, 
                       parentId: game.id, 
                       status: GameStatus.backlog,

@@ -25,7 +25,7 @@ class GameList extends StatelessWidget {
               game: game,
               size: thumbSize,
               onPressed: () {
-                GameNavigator.goGameForm(context, id: game.id);
+                GameNavigator.goGameScreen(context, id: game.id);
               },
             ),
           ]

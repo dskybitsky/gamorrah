@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/presentation/game/form.dart';
-import 'package:gamorrah/presentation/game/grid.dart';
+import 'package:gamorrah/presentation/game/game_screen.dart';
+import 'package:gamorrah/presentation/game/games_screen.dart';
 
 class GameNavigator extends StatelessWidget {
   const GameNavigator({ 
@@ -18,41 +18,41 @@ class GameNavigator extends StatelessWidget {
     return Navigator(
       key: navigatorKey,
       onGenerateRoute: (RouteSettings routeSettings) {
-        return GameNavigator.gameGridRoute(status: status);
+        return GameNavigator.gamesScreenRoute(status: status);
       }
     );
   }
 
-  static void goGameGrid(BuildContext context, { required GameStatus status }) {
-    Navigator.push(context, gameGridRoute(status: status));
+  static void goGamesScreen(BuildContext context, { required GameStatus status }) {
+    Navigator.push(context, gamesScreenRoute(status: status));
   }
 
-  static void goGameForm(BuildContext context, {
+  static void goGameScreen(BuildContext context, {
     String? id,
     GameStatus? status,
     String? parentId,
   }) {
-    Navigator.push(context, gameFormRoute(id: id, status: status, parentId: parentId));
+    Navigator.push(context, gameScreenRoute(id: id, status: status, parentId: parentId));
   }
 
-  static FluentPageRoute gameGridRoute({ required GameStatus status }) {
+  static FluentPageRoute gamesScreenRoute({ required GameStatus status }) {
     return FluentPageRoute(
       builder: (context) {      
-        return GameGrid(
+        return GamesScreen(
           status: status,
         );
       }
     );
   }
 
-  static FluentPageRoute gameFormRoute({
+  static FluentPageRoute gameScreenRoute({
     String? id,
     GameStatus? status,
     String? parentId,
   }) {
     return FluentPageRoute(
       builder: (context) {      
-        return GameForm(
+        return GameScreen(
           id: id,
           status: status,
           parentId: parentId,
