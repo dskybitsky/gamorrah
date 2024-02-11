@@ -5,7 +5,6 @@ import 'package:gamorrah/presentation/game/form_modal.dart';
 import 'package:gamorrah/presentation/game/list.dart';
 import 'package:gamorrah/presentation/game/thumb.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
-import 'package:gamorrah/presentation/main_screen_context.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
@@ -24,7 +23,7 @@ class GameForm extends StatefulWidget {
   State<GameForm> createState() => _GameFormScreenState();
 }
 
-class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateMixin {
+class _GameFormScreenState extends State<GameForm> {
   late final String id;
   late final GameService service;
   late final Iterable<Game> nestedGames;
@@ -93,25 +92,23 @@ class _GameFormScreenState extends State<GameForm> with MainScreenContextUpdateM
           return Container();
         }
 
-        updateScreenContext((mainScreenContext) {
-          mainScreenContext.appBarTitleNotifier.value = game.title;
-          mainScreenContext.appBarActionsNotifier.value = _buildActions(game);
-          mainScreenContext.appBarBackTapHandlerNotifier.value = Navigator.canPop(context)
-              ? () { Navigator.pop(context); }
-              : null;
-        });
-
-        return ScaffoldPage(
-          content: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(flex: 1, child: Container()),
-                Expanded(flex: 3, child: _buildForm(game)),
-                Expanded(flex: 1, child: Container()),
-              ],
-            ),
+        return NavigationView(
+          appBar: NavigationAppBar(
+              title: Text(game.title),
+              actions: _buildActions(game),
           ),
+          content: ScaffoldPage(
+            content: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(flex: 1, child: Container()),
+                  Expanded(flex: 3, child: _buildForm(game)),
+                  Expanded(flex: 1, child: Container()),
+                ],
+              ),
+            ),
+          )
         ); 
       }
     );

@@ -3,7 +3,6 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/presentation/game/list.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
-import 'package:gamorrah/presentation/main_screen_context.dart';
 import 'package:get/instance_manager.dart';
 
 class GameGrid extends StatefulWidget {
@@ -17,7 +16,7 @@ class GameGrid extends StatefulWidget {
   State<GameGrid> createState() => _GameGridState();
 }
 
-class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
+class _GameGridState extends State<GameGrid> {
   late final GameService service;
   late final Iterable<Game> games;
 
@@ -33,28 +32,27 @@ class _GameGridState extends State<GameGrid> with MainScreenContextUpdateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-      content: ListenableBuilder(
-        listenable: service,
-        builder: (context, innterWidget) {
-          updateScreenContext((mainScreenContext) {
-            mainScreenContext.appBarTitleNotifier.value = _getTitle();
-            mainScreenContext.appBarActionsNotifier.value = _getActions();
-            mainScreenContext.appBarBackTapHandlerNotifier.value = Navigator.canPop(context)
-              ? () { Navigator.pop(context); }
-              : null;
-          });
+    return NavigationView(
+      appBar: NavigationAppBar(
+        automaticallyImplyLeading: false,
+        title: Text(_getTitle()),
+        actions: _getActions(),
+      ),
+      content: ScaffoldPage(
+        content: ListenableBuilder(
+          listenable: service,
+          builder: (context, innterWidget) {
+            if (games.isEmpty) {
+              return Center(
+                child: Text('Empty'),
+              );
+            }
 
-          if (games.isEmpty) {
-            return Center(
-              child: Text('Empty'),
+            return SingleChildScrollView(
+              child: GameList(games: games),
             );
-          }
-
-          return SingleChildScrollView(
-            child: GameList(games: games),
-          );
-        },
+          },
+        ),
       ),
     );
   }

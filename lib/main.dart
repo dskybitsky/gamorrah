@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
       value: _appTheme,
       builder: (context, child) {
         final appTheme = context.watch<AppTheme>();
+
         return FluentApp(
           title: 'Gamorrah',
           darkTheme: FluentThemeData(
@@ -47,7 +48,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           locale: appTheme.locale,
-          home: MainScreen(),
+          home: const MainScreen(),
         );
       }
     );
