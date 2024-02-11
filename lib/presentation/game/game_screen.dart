@@ -26,7 +26,7 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   late final String id;
   late final GameService service;
-  late final Iterable<Game> nestedGames;
+  late final List<Game> includedGames;
 
   late GamePersonalBeaten? _personalBeaten;
   late double? _personalRating;
@@ -48,8 +48,12 @@ class _GameScreenState extends State<GameScreen> {
 
     id = game.id;
 
-    nestedGames = service.getAll()
-      .where((nestedGame) => nestedGame.parentId == game.id);
+    includedGames = service.getAll()
+      .where((nestedGame) => nestedGame.parentId == game.id)
+      .toList();
+
+    includedGames
+      .sort((gameA, gameB) => (gameA.index ?? 0).compareTo(gameB.index ?? 0));
     
     _personalBeaten = game.personal?.beaten;
     _personalRating = game.personal?.rating;
@@ -130,7 +134,7 @@ class _GameScreenState extends State<GameScreen> {
           }
         ),
         SizedBox(height: 32),
-        Center(child: GameList(games: nestedGames, thumbSize: GameThumbSize.small)),
+        Center(child: GameList(games: includedGames, thumbSize: GameThumbSize.small)),
         SizedBox(height: 32),
         Container(
           alignment: Alignment.centerLeft, 

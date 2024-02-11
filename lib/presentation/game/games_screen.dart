@@ -18,7 +18,7 @@ class GamesScreen extends StatefulWidget {
 
 class _GamesScreenState extends State<GamesScreen> {
   late final GameService service;
-  late final Iterable<Game> games;
+  late final List<Game> games;
 
   @override
   void initState() {
@@ -27,7 +27,23 @@ class _GamesScreenState extends State<GamesScreen> {
     service = Get.find();
     
     games = service.getAll()
-      .where((game) => game.status == widget.status && game.parentId == null);
+      .where((game) => game.status == widget.status && game.parentId == null)
+      .toList();
+    
+    games
+      .sort((gameA, gameB) {
+        final franchisedTitleA = gameA.franchise ?? gameA.title;
+        final franchisedTitleB = gameB.franchise ?? gameB.title;
+                
+        if (franchisedTitleA == franchisedTitleB) {
+          final franchisedIndexA = gameA.index ?? gameA.year ?? 0;
+          final franchisedIndexB = gameB.index ?? gameB.year ?? 0;
+                    
+          return franchisedIndexA.compareTo(franchisedIndexB);
+        }
+                
+        return franchisedTitleA.compareTo(franchisedTitleB);
+      });
   }
 
   @override

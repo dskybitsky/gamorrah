@@ -1,6 +1,5 @@
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
-import 'package:get/get.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_game.dart';
 
