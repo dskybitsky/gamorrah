@@ -134,7 +134,21 @@ class _GameScreenState extends State<GameScreen> {
           }
         ),
         SizedBox(height: 32),
-        Center(child: GameList(games: includedGames, thumbSize: GameThumbSize.small)),
+        Center(
+          child: GameList(
+            games: includedGames, 
+            thumbSize: GameThumbSize.small,
+            onReorder: (oldIndex, newIndex) {
+              final includedGame = includedGames.removeAt(oldIndex);
+
+              includedGames.insert(newIndex, includedGame);
+
+              for (final (index, includedGame) in includedGames.indexed) {
+                service.save(includedGame.copyWith(index: index));
+              }
+            },
+          )
+        ),
         SizedBox(height: 32),
         Container(
           alignment: Alignment.centerLeft, 
