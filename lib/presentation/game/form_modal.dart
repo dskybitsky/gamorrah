@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
 class GameFormModal extends StatefulWidget {
@@ -20,6 +21,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
   late TextEditingController _editionController;
   late int? _year;
   late TextEditingController _thumbUrlController;
+  late Set<GamePlatform> _platforms;
   
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
      _editionController = TextEditingController(text: widget.game.edition);
      _year = widget.game.year;
      _thumbUrlController = TextEditingController(text: widget.game.thumbUrl);
+     _platforms = Set.from(widget.game.platforms);
   }
 
   @override
@@ -51,6 +54,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
               edition: _editionController.text,
               year: _year,
               thumbUrl: _thumbUrlController.text,
+              platforms: _platforms,
             ));
             Navigator.pop(context);
           },
@@ -71,7 +75,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 16),
         InfoLabel(
           label: 'Franchise:',
           child: TextBox(
@@ -80,7 +84,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 16),
         InfoLabel(
           label: 'Edition:',
           child: TextBox(
@@ -89,7 +93,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 16),
         InfoLabel(
           label: 'Year:',
           child: NumberBox(
@@ -98,7 +102,7 @@ class _GameFormModalScreenState extends State<GameFormModal> {
             onChanged: (value) => { _year = value },
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 16),
         InfoLabel(
           label: 'Thumbnail URL:',
           child: TextBox(
@@ -107,7 +111,48 @@ class _GameFormModalScreenState extends State<GameFormModal> {
             expands: false,
           ),
         ),
-        
+        SizedBox(height: 16),
+        InfoLabel(
+          label: 'Platforms:',
+          child: Expander(
+            header: Wrap(
+              children: _platforms
+                .map((e) => Padding(
+                  padding: EdgeInsets.only(right: 2),
+                  child: Text(
+                    '${e.title}; ',
+                    style: FluentTheme.of(context).typography.caption
+                  ),
+                )).toList(),
+            ),
+            content:
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start, 
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: GamePlatform.values
+                        .map(
+                          (e) => Padding(
+                            padding: const EdgeInsetsDirectional.only(bottom: 8.0),
+                            child: Checkbox(
+                              checked: _platforms.contains(e),
+                              onChanged: (selected) {
+                                if (selected == true) { 
+                                  setState(() => _platforms.add(e));
+                                } else {
+                                  setState(() => _platforms.remove(e));
+                                }
+                              },
+                              content: Text(e.title),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+            ]),
+          ),
+        ),
       ],
     );
   }

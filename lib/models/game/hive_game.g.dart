@@ -25,21 +25,22 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       thumbUrl: fields[5] as String?,
       kind: fields[6] as String?,
       index: fields[7] as int?,
-      personalBeaten: fields[8] as String?,
-      personalRating: fields[9] as double?,
-      personalTimeSpent: fields[10] as int?,
-      howLongToBeatStory: fields[11] as double?,
-      howLongToBeatStorySides: fields[12] as double?,
-      howLongToBeatCompletionist: fields[13] as double?,
-      status: fields[14] as String,
-      parentId: fields[15] as String?,
+      platforms: (fields[8] as List).cast<String>(),
+      personalBeaten: fields[9] as String?,
+      personalRating: fields[10] as double?,
+      personalTimeSpent: fields[11] as int?,
+      howLongToBeatStory: fields[12] as double?,
+      howLongToBeatStorySides: fields[13] as double?,
+      howLongToBeatCompletionist: fields[14] as double?,
+      status: fields[15] as String,
+      parentId: fields[16] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveGame obj) {
     writer
-      ..writeByte(16)
+      ..writeByte(17)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -57,20 +58,22 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       ..writeByte(7)
       ..write(obj.index)
       ..writeByte(8)
-      ..write(obj.personalBeaten)
+      ..write(obj.platforms)
       ..writeByte(9)
-      ..write(obj.personalRating)
+      ..write(obj.personalBeaten)
       ..writeByte(10)
-      ..write(obj.personalTimeSpent)
+      ..write(obj.personalRating)
       ..writeByte(11)
-      ..write(obj.howLongToBeatStory)
+      ..write(obj.personalTimeSpent)
       ..writeByte(12)
-      ..write(obj.howLongToBeatStorySides)
+      ..write(obj.howLongToBeatStory)
       ..writeByte(13)
-      ..write(obj.howLongToBeatCompletionist)
+      ..write(obj.howLongToBeatStorySides)
       ..writeByte(14)
-      ..write(obj.status)
+      ..write(obj.howLongToBeatCompletionist)
       ..writeByte(15)
+      ..write(obj.status)
+      ..writeByte(16)
       ..write(obj.parentId);
   }
 

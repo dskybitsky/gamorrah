@@ -14,6 +14,7 @@ class HiveGame extends HiveObject {
     this.thumbUrl,
     this.kind,
     this.index,
+    this.platforms = const [],
     this.personalBeaten,
     this.personalRating,
     this.personalTimeSpent,
@@ -49,27 +50,30 @@ class HiveGame extends HiveObject {
   final int? index;
 
   @HiveField(8)
-  final String? personalBeaten;
+  final List<String> platforms;
 
   @HiveField(9)
-  final double? personalRating;
+  final String? personalBeaten;
 
   @HiveField(10)
-  final int? personalTimeSpent;
+  final double? personalRating;
 
   @HiveField(11)
-  final double? howLongToBeatStory;
+  final int? personalTimeSpent;
 
   @HiveField(12)
-  final double? howLongToBeatStorySides;
+  final double? howLongToBeatStory;
 
   @HiveField(13)
-  final double? howLongToBeatCompletionist;
+  final double? howLongToBeatStorySides;
 
   @HiveField(14)
-  final String status;
+  final double? howLongToBeatCompletionist;
 
   @HiveField(15)
+  final String status;
+
+  @HiveField(16)
   final String? parentId;
 
   factory HiveGame.fromGame(Game game) => HiveGame(
@@ -81,6 +85,7 @@ class HiveGame extends HiveObject {
     thumbUrl: game.thumbUrl,
     kind: game.kind?.name,
     index: game.index,
+    platforms: game.platforms.map((platform) => platform.name).toList(),
     personalBeaten: game.personal?.beaten?.name,
     personalRating: game.personal?.rating,
     personalTimeSpent: game.personal?.timeSpent,
@@ -100,6 +105,9 @@ class HiveGame extends HiveObject {
     thumbUrl: thumbUrl,
     kind: kind != null ? GameKind.values.byName(kind!) : null,
     index: index,
+    platforms: Set.from( 
+      platforms.map((platformName) => GamePlatform.values.byName(platformName))
+    ),
     personal: _toGamePersonal(),
     howLongToBeat: _toGameHowLongToBeat(),
     status: GameStatus.values.byName(status),
