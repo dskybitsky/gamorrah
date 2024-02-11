@@ -30,7 +30,7 @@ class _GameFormScreenState extends State<GameForm> {
 
   late GamePersonalBeaten? _personalBeaten;
   late double? _personalRating;
-  late int? _personalTimeSpent;
+  late double? _personalTimeSpent;
 
   late double? _howLongToBeatStory;
   late double? _howLongToBeatStorySides;

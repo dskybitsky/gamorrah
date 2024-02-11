@@ -11,7 +11,21 @@ class GamePersonal {
 
   final GamePersonalBeaten? beaten;
   final double? rating;
-  final int? timeSpent;
+  final double? timeSpent;
+
+  factory GamePersonal.fromJson(Map<String, dynamic> data) {
+    final beatenName = data['beaten'];
+    final rating = data['rating'];
+    final timeSpent = data['timeSpent'];
+    
+    return GamePersonal(
+      beaten: beatenName != null
+        ? GamePersonalBeaten.values.byName(beatenName)
+        : null,
+      rating: rating?.toDouble(),
+      timeSpent: timeSpent?.toDouble(),
+    );
+  }
 }
 
 class GameHowLongToBeat {
@@ -24,6 +38,18 @@ class GameHowLongToBeat {
   final double? story;
   final double? storySides;
   final double? completionist;
+
+  factory GameHowLongToBeat.fromJson(Map<String, dynamic> data) {
+    final story = data['story'];
+    final storySides = data['storySides'];
+    final completionist = data['completionist'];
+
+    return GameHowLongToBeat(
+      story: story?.toDouble(),
+      storySides: storySides?.toDouble(),
+      completionist: completionist?.toDouble(),
+    );
+  }
 }
 
 enum GameKind { bundle, dlc, content }
@@ -109,16 +135,66 @@ class Game {
   factory Game.create({
     String? id,
     required String title,
+    String? franchise,
+    String? edition,
+    int? year,
     String? thumbUrl,
+    GameKind? kind,
+    int? index,
+    Set<GamePlatform> platforms = const {},
+    GamePersonal? personal,
+    GameHowLongToBeat? howLongToBeat,
     GameStatus? status,
     String? parentId,
   }) => Game(
     id: id ?? const Uuid().v4(),
     title: title, 
+    franchise: franchise,
+    edition: edition,
+    year: year,
     thumbUrl: thumbUrl,
+    kind: kind,
+    index: index,
+    platforms: platforms,
+    personal: personal,
+    howLongToBeat: howLongToBeat,
     status: status ?? GameStatus.backlog,
     parentId: parentId,
   );
+
+  factory Game.fromJson(Map<String, dynamic> data) {
+    final kindName = data['kind'];
+    final platformNames = data['platforms'];
+    final personalJson = data['personal'];
+    final howLongToBeatJson = data['howLongToBeat'];
+
+    return Game(
+      id: data['id'], 
+      title: data['title'],
+      franchise: data['franchise'],
+      edition: data['edition'],
+      year: data['year'],
+      thumbUrl: data['thumbUrl'],
+      kind: kindName != null
+        ? GameKind.values.byName(kindName)
+        : null,
+      index: data['index'],
+      platforms: Set.from(
+          platformNames.map((name) => switch(name) {
+            'switch' => GamePlatform.swtch,
+            _ => GamePlatform.values.byName(name)
+          })
+      ),
+      personal: personalJson != null 
+        ? GamePersonal.fromJson(personalJson)
+        : null,
+      howLongToBeat: howLongToBeatJson != null
+        ? GameHowLongToBeat.fromJson(howLongToBeatJson)
+        : null,
+      status: GameStatus.values.byName(data['status']),
+      parentId: data['parentId'],
+    );
+  }
 
   Game copyWith({
     String? title,
@@ -152,7 +228,7 @@ class Game {
   GamePersonal? copyPersonalWith({
     GamePersonalBeaten? beaten,
     double? rating,
-    int? timeSpent
+    double? timeSpent
   }) => beaten != null || rating != null || timeSpent != null
     ? GamePersonal(
       beaten: beaten ?? personal?.beaten,

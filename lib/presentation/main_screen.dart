@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/presentation/game/navigator.dart';
+import 'package:gamorrah/presentation/settings/settings_screen.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialPage;
@@ -69,7 +70,7 @@ class MainScreenState extends State<MainScreen> {
           PaneItem(
             icon: const Icon(FluentIcons.settings),
             title: const Text('Settings'),
-            body: Container(),
+            body: SettingsScreen(),
           ),
         ],
       ),

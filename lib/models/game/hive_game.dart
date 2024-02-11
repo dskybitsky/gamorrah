@@ -59,7 +59,7 @@ class HiveGame extends HiveObject {
   final double? personalRating;
 
   @HiveField(11)
-  final int? personalTimeSpent;
+  final double? personalTimeSpent;
 
   @HiveField(12)
   final double? howLongToBeatStory;

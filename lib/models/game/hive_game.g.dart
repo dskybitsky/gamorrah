@@ -28,7 +28,7 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       platforms: (fields[8] as List).cast<String>(),
       personalBeaten: fields[9] as String?,
       personalRating: fields[10] as double?,
-      personalTimeSpent: fields[11] as int?,
+      personalTimeSpent: fields[11] as double?,
       howLongToBeatStory: fields[12] as double?,
       howLongToBeatStorySides: fields[13] as double?,
       howLongToBeatCompletionist: fields[14] as double?,
