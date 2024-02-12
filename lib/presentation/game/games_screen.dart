@@ -47,6 +47,7 @@ class _GamesScreenState extends State<GamesScreen> {
             }
 
             return SingleChildScrollView(
+              padding: EdgeInsets.all(8.0),
               child: GameList(games: games),
             );
           },
