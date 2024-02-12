@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/models/wrapped.dart';
+import 'package:gamorrah/models/optional.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 
@@ -50,12 +50,12 @@ class _GameModalState extends State<GameModal> {
         FilledButton(
           onPressed: () {
             service.save(widget.game.copyWith(
-              title: Wrapped.value(_titleController.text),
-              franchise: Wrapped.value(_franchiseController.text),
-              edition: Wrapped.value(_editionController.text),
-              year: Wrapped.value(_year),
-              thumbUrl: Wrapped.value(_thumbUrlController.text),
-              platforms: Wrapped.value(_platforms),
+              title: Optional(_titleController.text),
+              franchise: Optional(_franchiseController.text),
+              edition: Optional(_editionController.text),
+              year: Optional(_year),
+              thumbUrl: Optional(_thumbUrlController.text),
+              platforms: Optional(_platforms),
             ));
             Navigator.pop(context);
           },

@@ -1,6 +1,6 @@
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/models/wrapped.dart';
+import 'package:gamorrah/models/optional.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_game.dart';
 
@@ -83,7 +83,7 @@ class HiveGameService extends GameService {
     games.insert(newIndex, movingGame);
 
     for (final (index, includedGame) in games.indexed) {
-      await save(includedGame.copyWith(index: Wrapped.value(index)));
+      await save(includedGame.copyWith(index: Optional(index)));
     }
   }
 

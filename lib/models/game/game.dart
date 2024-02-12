@@ -1,4 +1,4 @@
-import 'package:gamorrah/models/wrapped.dart';
+import 'package:gamorrah/models/optional.dart';
 import 'package:uuid/uuid.dart';
 
 enum GamePersonalBeaten { story, storySides, completionist }
@@ -198,18 +198,18 @@ class Game {
   }
 
   Game copyWith({
-    Wrapped<String>? title,
-    Wrapped<String?>? franchise,
-    Wrapped<String?>? edition,
-    Wrapped<int?>? year,
-    Wrapped<String?>? thumbUrl,
-    Wrapped<GameKind?>? kind,
-    Wrapped<int?>? index,
-    Wrapped<Set<GamePlatform>>? platforms,
-    Wrapped<GamePersonal?>? personal,
-    Wrapped<GameHowLongToBeat?>? howLongToBeat,
-    Wrapped<GameStatus?>? status,
-    Wrapped<String?>? parentId,
+    Optional<String>? title,
+    Optional<String?>? franchise,
+    Optional<String?>? edition,
+    Optional<int?>? year,
+    Optional<String?>? thumbUrl,
+    Optional<GameKind?>? kind,
+    Optional<int?>? index,
+    Optional<Set<GamePlatform>>? platforms,
+    Optional<GamePersonal?>? personal,
+    Optional<GameHowLongToBeat?>? howLongToBeat,
+    Optional<GameStatus?>? status,
+    Optional<String?>? parentId,
   }) => Game.create(
     id: id,
     title: title != null ? title.value : this.title,
@@ -227,9 +227,9 @@ class Game {
   );
 
   GamePersonal? copyPersonalWith({
-    Wrapped<GamePersonalBeaten?>? beaten,
-    Wrapped<double?>? rating,
-    Wrapped<double?>? timeSpent
+    Optional<GamePersonalBeaten?>? beaten,
+    Optional<double?>? rating,
+    Optional<double?>? timeSpent
   }) => beaten != null || rating != null || timeSpent != null
     ? GamePersonal(
       beaten: beaten != null ? beaten.value : personal?.beaten,
@@ -238,9 +238,9 @@ class Game {
     ): personal;
   
   GameHowLongToBeat? copyHowLongToBeatWith({
-    Wrapped<double?>? story,
-    Wrapped<double?>? storySides,
-    Wrapped<double?>? completionist
+    Optional<double?>? story,
+    Optional<double?>? storySides,
+    Optional<double?>? completionist
   }) => story != null || storySides != null || completionist != null
     ? GameHowLongToBeat(
       story: story != null ? story.value : howLongToBeat?.story,

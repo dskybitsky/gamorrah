@@ -1,7 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/models/wrapped.dart';
+import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/presentation/game/modal.dart';
 import 'package:gamorrah/presentation/game/list.dart';
 import 'package:gamorrah/presentation/game/thumb.dart';
@@ -304,18 +304,18 @@ class _GameScreenState extends State<GameScreen> {
       FilledButton(
         onPressed: () {
           service.save(game.copyWith(
-            kind: Wrapped.value(_kind),
-            personal: Wrapped.value(game.copyPersonalWith(
-              beaten: Wrapped.value(_personalBeaten),
-              rating: Wrapped.value(_personalRating),
-              timeSpent: Wrapped.value(_personalTimeSpent),
+            kind: Optional(_kind),
+            personal: Optional(game.copyPersonalWith(
+              beaten: Optional(_personalBeaten),
+              rating: Optional(_personalRating),
+              timeSpent: Optional(_personalTimeSpent),
             )),
-            howLongToBeat: Wrapped.value(game.copyHowLongToBeatWith(
-              story: Wrapped.value(_howLongToBeatStory),
-              storySides: Wrapped.value(_howLongToBeatStorySides),
-              completionist: Wrapped.value(_howLongToBeatCompletionist),
+            howLongToBeat: Optional(game.copyHowLongToBeatWith(
+              story: Optional(_howLongToBeatStory),
+              storySides: Optional(_howLongToBeatStorySides),
+              completionist: Optional(_howLongToBeatCompletionist),
             )),
-            status: Wrapped.value(_status),
+            status: Optional(_status),
           ));
           Navigator.pop(context);
         },
