@@ -1,3 +1,4 @@
+import 'package:gamorrah/models/wrapped.dart';
 import 'package:uuid/uuid.dart';
 
 enum GamePersonalBeaten { story, storySides, completionist }
@@ -149,10 +150,10 @@ class Game {
   }) => Game(
     id: id ?? const Uuid().v4(),
     title: title, 
-    franchise: franchise,
-    edition: edition,
+    franchise: _normalize(franchise),
+    edition: _normalize(edition),
     year: year,
-    thumbUrl: thumbUrl,
+    thumbUrl: _normalize(thumbUrl),
     kind: kind,
     index: index,
     platforms: platforms,
@@ -168,7 +169,7 @@ class Game {
     final personalJson = data['personal'];
     final howLongToBeatJson = data['howLongToBeat'];
 
-    return Game(
+    return Game.create(
       id: data['id'], 
       title: data['title'],
       franchise: data['franchise'],
@@ -197,53 +198,55 @@ class Game {
   }
 
   Game copyWith({
-    String? title,
-    String? franchise,
-    String? edition,
-    int? year,
-    String? thumbUrl,
-    GameKind? kind,
-    int? index,
-    Set<GamePlatform>? platforms,
-    GamePersonal? personal,
-    GameHowLongToBeat? howLongToBeat,
-    GameStatus? status,
-    String? parentId,
-  }) => Game(
+    Wrapped<String>? title,
+    Wrapped<String?>? franchise,
+    Wrapped<String?>? edition,
+    Wrapped<int?>? year,
+    Wrapped<String?>? thumbUrl,
+    Wrapped<GameKind?>? kind,
+    Wrapped<int?>? index,
+    Wrapped<Set<GamePlatform>>? platforms,
+    Wrapped<GamePersonal?>? personal,
+    Wrapped<GameHowLongToBeat?>? howLongToBeat,
+    Wrapped<GameStatus?>? status,
+    Wrapped<String?>? parentId,
+  }) => Game.create(
     id: id,
-    title: title ?? this.title,
-    franchise: franchise ?? this.franchise,
-    edition: edition ?? this.edition,
-    year: year ?? this.year,
-    thumbUrl: thumbUrl ?? this.thumbUrl,
-    kind: kind ?? this.kind,
-    index: index ?? this.index,
-    platforms: platforms ?? this.platforms,
-    personal: personal ?? this.personal,
-    howLongToBeat: howLongToBeat ?? this.howLongToBeat,
-    status: status ?? this.status,
-    parentId: parentId ?? this.parentId,
+    title: title != null ? title.value : this.title,
+    franchise: franchise != null ? franchise.value : this.franchise,
+    edition: edition != null ? edition.value : this.edition,
+    year: year != null ? year.value : this.year,
+    thumbUrl: thumbUrl != null ? thumbUrl.value : this.thumbUrl,
+    kind: kind != null ? kind.value : this.kind,
+    index: index != null ? index.value : this.index,
+    platforms: platforms != null ? platforms.value : this.platforms,
+    personal: personal != null ? personal.value : this.personal,
+    howLongToBeat: howLongToBeat != null ? howLongToBeat.value : this.howLongToBeat,
+    status: status != null ? status.value : this.status,
+    parentId: parentId != null ? parentId.value : this.parentId,
   );
 
   GamePersonal? copyPersonalWith({
-    GamePersonalBeaten? beaten,
-    double? rating,
-    double? timeSpent
+    Wrapped<GamePersonalBeaten?>? beaten,
+    Wrapped<double?>? rating,
+    Wrapped<double?>? timeSpent
   }) => beaten != null || rating != null || timeSpent != null
     ? GamePersonal(
-      beaten: beaten ?? personal?.beaten,
-      rating: rating ?? personal?.rating,
-      timeSpent: timeSpent ?? personal?.timeSpent,
+      beaten: beaten != null ? beaten.value : personal?.beaten,
+      rating: rating != null ? rating.value : personal?.rating,
+      timeSpent: timeSpent != null ? timeSpent.value : personal?.timeSpent,
     ): personal;
   
   GameHowLongToBeat? copyHowLongToBeatWith({
-    double? story,
-    double? storySides,
-    double? completionist
+    Wrapped<double?>? story,
+    Wrapped<double?>? storySides,
+    Wrapped<double?>? completionist
   }) => story != null || storySides != null || completionist != null
     ? GameHowLongToBeat(
-      story: story ?? howLongToBeat?.story,
-      storySides: storySides ?? howLongToBeat?.storySides,
-      completionist: completionist ?? howLongToBeat?.completionist,
+      story: story != null ? story.value : howLongToBeat?.story,
+      storySides: storySides != null ? storySides.value : howLongToBeat?.storySides,
+      completionist: completionist != null ? completionist.value : howLongToBeat?.completionist,
     ): howLongToBeat;
+
+  static String? _normalize(String? s) => s == '' ? null : s;
 }

@@ -8,6 +8,12 @@ abstract class GameService extends ChangeNotifier {
 
   Iterable<Game> getAll();
 
+  Iterable<Game> getMainList(GameStatus status);
+
+  Iterable<Game> getIncludedList(String id);
+
+  Future<void> reorderIncluded(String id, int oldIndex, int newIndex);
+
   Future<void> save(Game game);
 
   Future<void> delete(String id);

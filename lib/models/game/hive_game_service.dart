@@ -1,5 +1,6 @@
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
+import 'package:gamorrah/models/wrapped.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_game.dart';
 
@@ -35,6 +36,55 @@ class HiveGameService extends GameService {
   @override
   Iterable<Game> getAll() {
     return _box.values.map((e) => e.toGame());
+  }
+
+  @override
+  Iterable<Game> getMainList(GameStatus status) {
+    var games = getAll()
+      .where((game) => game.status == status && game.parentId == null)
+      .toList();
+    
+    games
+      .sort((gameA, gameB) {
+        final franchisedTitleA = gameA.franchise ?? gameA.title;
+        final franchisedTitleB = gameB.franchise ?? gameB.title;
+                
+        if (franchisedTitleA == franchisedTitleB) {
+          final franchisedIndexA = gameA.index ?? gameA.year ?? 0;
+          final franchisedIndexB = gameB.index ?? gameB.year ?? 0;
+                    
+          return franchisedIndexA.compareTo(franchisedIndexB);
+        }
+                
+        return franchisedTitleA.compareTo(franchisedTitleB);
+      });
+
+    return games;
+  }
+
+  @override
+  Iterable<Game> getIncludedList(String id) {
+    var games = getAll()
+      .where((nestedGame) => nestedGame.parentId == id)
+      .toList();
+
+    games
+      .sort((gameA, gameB) => (gameA.index ?? 0).compareTo(gameB.index ?? 0));
+
+    return games;
+  }
+
+  @override
+  Future<void> reorderIncluded(String id, int oldIndex, int newIndex) async {
+    var games = getIncludedList(id).toList();
+
+    final movingGame = games.removeAt(oldIndex);
+
+    games.insert(newIndex, movingGame);
+
+    for (final (index, includedGame) in games.indexed) {
+      await save(includedGame.copyWith(index: Wrapped.value(index)));
+    }
   }
 
   @override

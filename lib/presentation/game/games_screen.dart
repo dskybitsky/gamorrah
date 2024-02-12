@@ -18,32 +18,12 @@ class GamesScreen extends StatefulWidget {
 
 class _GamesScreenState extends State<GamesScreen> {
   late final GameService service;
-  late final List<Game> games;
 
   @override
   void initState() {
     super.initState();
 
     service = Get.find();
-    
-    games = service.getAll()
-      .where((game) => game.status == widget.status && game.parentId == null)
-      .toList();
-    
-    games
-      .sort((gameA, gameB) {
-        final franchisedTitleA = gameA.franchise ?? gameA.title;
-        final franchisedTitleB = gameB.franchise ?? gameB.title;
-                
-        if (franchisedTitleA == franchisedTitleB) {
-          final franchisedIndexA = gameA.index ?? gameA.year ?? 0;
-          final franchisedIndexB = gameB.index ?? gameB.year ?? 0;
-                    
-          return franchisedIndexA.compareTo(franchisedIndexB);
-        }
-                
-        return franchisedTitleA.compareTo(franchisedTitleB);
-      });
   }
 
   @override
@@ -58,6 +38,8 @@ class _GamesScreenState extends State<GamesScreen> {
         content: ListenableBuilder(
           listenable: service,
           builder: (context, innterWidget) {
+            final games = service.getMainList(widget.status);
+
             if (games.isEmpty) {
               return Center(
                 child: Text('Empty'),
