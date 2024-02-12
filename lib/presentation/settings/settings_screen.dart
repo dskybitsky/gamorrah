@@ -68,9 +68,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(FluentIcons.data_flow, size: 24.0,),
+              Icon(FluentIcons.import, size: 24.0),
               SizedBox(width: 16),
               Text('Import from JSON'),
+            ]
+          ),
+        ),
+        SizedBox(height: 16),
+        Button(
+          onPressed: () async {
+            String? outputFile = await FilePicker.platform.saveFile(
+              fileName: 'gamorrah.json',
+            );
+
+            if (outputFile != null) {
+              File file = File(outputFile);
+
+              final json = service.exportJson();
+
+              file.writeAsStringSync(json);
+            }
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(FluentIcons.export, size: 24.0),
+              SizedBox(width: 16),
+              Text('Export to JSON'),
             ]
           ),
         ),

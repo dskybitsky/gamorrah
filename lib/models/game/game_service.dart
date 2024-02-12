@@ -21,4 +21,6 @@ abstract class GameService extends ChangeNotifier {
   Future<void> clear();
 
   Future<void> importJson(String json);
+
+  String exportJson();
 }

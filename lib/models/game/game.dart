@@ -27,6 +27,12 @@ class GamePersonal {
       timeSpent: timeSpent?.toDouble(),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'beaten': beaten?.name,
+    'rating': rating,
+    'timeSpent': timeSpent,
+  };
 }
 
 class GameHowLongToBeat {
@@ -51,6 +57,12 @@ class GameHowLongToBeat {
       completionist: completionist?.toDouble(),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'story': story,
+    'storySides': storySides,
+    'completionist': completionist,
+  };
 }
 
 enum GameKind { bundle, dlc, content }
@@ -196,6 +208,22 @@ class Game {
       parentId: data['parentId'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'franchise': franchise,
+    'edition': edition,
+    'year': year,
+    'thumbUrl': thumbUrl,
+    'kind': kind?.name,
+    'index': index,
+    'platforms': platforms.map((e) => e.name).toList(),
+    'personal': personal?.toJson(),
+    'howLongToBeat': howLongToBeat?.toJson(),
+    'status': status.name,
+    'parentId': parentId,
+  };
 
   Game copyWith({
     Optional<String>? title,

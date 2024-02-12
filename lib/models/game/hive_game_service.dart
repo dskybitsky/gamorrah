@@ -113,6 +113,19 @@ class HiveGameService extends GameService {
   }
 
   @override
+  String exportJson() {
+    final games = getAll().toList();
+
+    games.sort((gameA, gameB) => gameA.title.compareTo(gameB.title));
+
+    final data = { 
+      'games': games.map((e) => e.toJson()).toList(),
+    };
+
+    return jsonEncode(data);
+  }
+
+  @override
   Future<void> clear() async {
     await _box.clear();
   }
