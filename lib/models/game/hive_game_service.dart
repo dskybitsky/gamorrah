@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/models/optional.dart';
@@ -95,6 +97,19 @@ class HiveGameService extends GameService {
   @override
   Future<void> delete(String id) async {
     await _box.delete(id);
+  }
+
+  @override
+  Future<void> importJson(String json) async {
+    await clear();
+
+    final data = jsonDecode(json);
+
+    for (var item in data['games']) {
+      Game game = Game.fromJson(item);
+
+      await save(game);
+    }
   }
 
   @override

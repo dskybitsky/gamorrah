@@ -19,4 +19,6 @@ abstract class GameService extends ChangeNotifier {
   Future<void> delete(String id);
 
   Future<void> clear();
+
+  Future<void> importJson(String json);
 }

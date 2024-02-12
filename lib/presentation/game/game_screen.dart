@@ -221,11 +221,15 @@ class _GameScreenState extends State<GameScreen> {
       widgets.add(SizedBox(height: 16));
 
       widgets.add(
-        _buildFormRow('Rating:', NumberBox(
-          placeholder: 'Rating',
-          value: _personalRating,
-          onChanged: (value) => { _personalRating = value },
-        ))
+        _buildFormRow('Rating:', RatingBar(
+          rating: _personalRating ?? 0,
+          unratedIconColor: FluentTheme.of(context).inactiveBackgroundColor,
+          onChanged: (value) {
+            setState(() {
+              _personalRating = ((value * 2).round() / 2 );
+            });
+          },
+        ), expandChild: false)
       );
 
       widgets.add(SizedBox(height: 16));

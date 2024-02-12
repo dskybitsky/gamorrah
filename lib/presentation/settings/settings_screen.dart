@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
@@ -60,21 +57,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
             FilePickerResult? result = await FilePicker.platform.pickFiles();
 
             if (result != null) {
-              await service.clear();
-
               File file = File(result.files.single.path!);
 
-              final fileContents = file.readAsStringSync();
+              final json = file.readAsStringSync();
 
-              final data = jsonDecode(fileContents);
-
-              for (var item in data['games']) {
-                Game game = Game.fromJson(item);
-
-                await service.save(game);
-              }
-            } else {
-              // User canceled the picker
+              await service.importJson(json);
             }
           },
           child: Row(
