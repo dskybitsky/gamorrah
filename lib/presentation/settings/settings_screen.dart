@@ -31,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return NavigationView(
           appBar: NavigationAppBar(
               title: Text('Settings'),
+              automaticallyImplyLeading: false,
           ),
           content: ScaffoldPage(
             content: Padding(

@@ -273,10 +273,46 @@ class _GameScreenState extends State<GameScreen> {
       _buildFormRow('Status:', ComboBox<GameStatus>(
         value: _status,
         items: [
-          ComboBoxItem(value: GameStatus.backlog, child: Text('Backlog')),
-          ComboBoxItem(value: GameStatus.playing, child: Text("Playing")),
-          ComboBoxItem(value: GameStatus.finished, child: Text("Finished")),
-          ComboBoxItem(value: GameStatus.wishlist, child: Text("Wishlist")),
+          ComboBoxItem(
+            value: GameStatus.backlog, 
+            child: Row(
+              children: [
+                const Icon(FluentIcons.history),
+                const SizedBox(width: 8),
+                const Text('Backlog'),
+              ]
+            ),
+          ),
+          ComboBoxItem(
+            value: GameStatus.playing, 
+            child: Row(
+              children: [
+                const Icon(FluentIcons.play),
+                const SizedBox(width: 8),
+                const Text('Playing'),
+              ]
+            )
+          ),
+          ComboBoxItem(
+            value: GameStatus.finished,
+            child: Row(
+              children: [
+                const Icon(FluentIcons.completed),
+                const SizedBox(width: 8),
+                const Text('Finished'),
+              ]
+            )
+          ),
+          ComboBoxItem(
+            value: GameStatus.wishlist,
+            child: Row(
+              children: [
+                const Icon(FluentIcons.waitlist_confirm),
+                const SizedBox(width: 8),
+                const Text('Wishlist'),
+              ]
+            )
+          ),
         ],
         onChanged: ( value) {
           setState(() {
