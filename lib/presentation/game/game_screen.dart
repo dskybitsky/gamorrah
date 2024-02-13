@@ -81,18 +81,9 @@ class _GameScreenState extends State<GameScreen> {
           content: ScaffoldPage(
             content: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(
-                    flex: 3, 
-                    child: ListView(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      children: _buildFormWidgets(game),
-                    ),
-                  ),
-                  Expanded(flex: 1, child: Container()),
-                ],
+              child: ListView(
+                padding: EdgeInsets.only(left: 32, right: 32),
+                children: _buildFormWidgets(game),
               ),
             ),
           )
@@ -192,10 +183,7 @@ class _GameScreenState extends State<GameScreen> {
       widgets.add(SizedBox(height: 32));
 
       widgets.add(
-        Container(
-          alignment: Alignment.centerLeft, 
-          child: Text('PERSONAL'),
-        )
+        _buildFormRow('PERSONAL', Container())
       );
 
       widgets.add(SizedBox(height: 16));
@@ -245,10 +233,7 @@ class _GameScreenState extends State<GameScreen> {
       widgets.add(SizedBox(height: 32));
 
       widgets.add(
-        Container(
-          alignment: Alignment.centerLeft, 
-          child: Text('HOWLONGTOBEAT'),
-        )
+        _buildFormRow('HOWLONGTOBEAT', Container())
       );
 
       widgets.add(SizedBox(height: 16));
@@ -305,7 +290,7 @@ class _GameScreenState extends State<GameScreen> {
     widgets.add(SizedBox(height: 32));
 
     widgets.add(
-      FilledButton(
+      _buildFormRow(null, FilledButton(
         onPressed: () {
           service.save(game.copyWith(
             kind: Optional(_kind),
@@ -324,17 +309,31 @@ class _GameScreenState extends State<GameScreen> {
           Navigator.pop(context);
         },
         child: Text('Save'),
-      )
+      ))
     );
 
     return widgets;
   }
 
-  Widget _buildFormRow(String label, Widget child, { bool expandChild = true }) {
+  Widget _buildFormRow(String? label, Widget child, { bool expandChild = true }) {
+    final innerChildren = <Widget>[];
+
+    if (label != null) {
+      innerChildren.add(Expanded(flex: 2, child: Text(label)));
+    }
+
+    innerChildren.add(expandChild ? Expanded(flex: 3, child: child) : child);
+
     return Row(
       children: [
-        Expanded(flex: 2, child: Text(label)),
-        expandChild ? Expanded(flex: 3, child: child) : child,
+        Expanded(flex: 1, child: Container(),),
+        Expanded(
+          flex: 3,
+          child: Row(
+            children: innerChildren,
+          )
+        ),
+        Expanded(flex: 1, child: Container()),
       ] 
     );
   }
