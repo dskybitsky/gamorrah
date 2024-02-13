@@ -79,21 +79,9 @@ class _GameScreenState extends State<GameScreen> {
               actions: _buildActions(game),
           ),
           content: ScaffoldPage(
-            content: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(
-                    flex: 3, 
-                    child: ListView(
-                      padding: EdgeInsets.only(left: 16, right: 16),
-                      children: _buildFormWidgets(game),
-                    ),
-                  ),
-                  Expanded(flex: 1, child: Container()),
-                ],
-              ),
+            content: ListView(
+              padding: EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 16),
+              children: _buildFormWidgets(game),
             ),
           )
         ); 
@@ -173,6 +161,7 @@ class _GameScreenState extends State<GameScreen> {
       widgets.add(
         _buildFormRow('Kind:', ComboBox<GameKind?>(
           value: _kind,
+          placeholder: Text('Game'),
           items: [
             ComboBoxItem(value: null, child: Text('Game')),
             ComboBoxItem(value: GameKind.dlc, child: Text('DLC/Expansion/Addon')),
@@ -188,14 +177,11 @@ class _GameScreenState extends State<GameScreen> {
       );
     }
 
-    if (_kind != GameKind.bundle) {
-      widgets.add(SizedBox(height: 32));
+    if (_kind != GameKind.bundle && _kind != GameKind.content) {
+      widgets.add(SizedBox(height: 24));
 
       widgets.add(
-        Container(
-          alignment: Alignment.centerLeft, 
-          child: Text('PERSONAL'),
-        )
+        _buildFormRow('PERSONAL', Container())
       );
 
       widgets.add(SizedBox(height: 16));
@@ -203,11 +189,39 @@ class _GameScreenState extends State<GameScreen> {
       widgets.add(
         _buildFormRow('Beaten:', ComboBox<GamePersonalBeaten?>(
           value: _personalBeaten,
+          placeholder: Text('No'),
           items: [
-            ComboBoxItem(value: null, child: Text('')),
-            ComboBoxItem(value: GamePersonalBeaten.story, child: Text('Story')),
-            ComboBoxItem(value: GamePersonalBeaten.storySides, child: Text('Story + Sides')),
-            ComboBoxItem(value: GamePersonalBeaten.completionist, child: Text('Completionist')),
+            ComboBoxItem(value: null, child: Text('No')),
+            ComboBoxItem(
+              value: GamePersonalBeaten.story, 
+              child: Row(
+                children: [
+                  const Icon(FluentIcons.check_mark),
+                  const SizedBox(width: 8),
+                  const Text('Story'),
+                ]
+              ),
+            ),
+            ComboBoxItem(
+              value: GamePersonalBeaten.storySides, 
+              child: Row(
+                children: [
+                  const Icon(FluentIcons.check_list),
+                  const SizedBox(width: 8),
+                  const Text('Story + Sides'),
+                ]
+              ),
+            ),
+            ComboBoxItem(
+              value: GamePersonalBeaten.completionist,
+              child: Row(
+                children: [
+                  const Icon(FluentIcons.medal),
+                  const SizedBox(width: 8),
+                  const Text('Completionist'),
+                ]
+              ),
+            ),
           ],
           onChanged: ( value) {
             setState(() {
@@ -242,13 +256,10 @@ class _GameScreenState extends State<GameScreen> {
         ))
       );
 
-      widgets.add(SizedBox(height: 32));
+      widgets.add(SizedBox(height: 24));
 
       widgets.add(
-        Container(
-          alignment: Alignment.centerLeft, 
-          child: Text('HOWLONGTOBEAT'),
-        )
+        _buildFormRow('HOWLONGTOBEAT', Container())
       );
 
       widgets.add(SizedBox(height: 16));
@@ -288,10 +299,46 @@ class _GameScreenState extends State<GameScreen> {
       _buildFormRow('Status:', ComboBox<GameStatus>(
         value: _status,
         items: [
-          ComboBoxItem(value: GameStatus.backlog, child: Text('Backlog')),
-          ComboBoxItem(value: GameStatus.playing, child: Text("Playing")),
-          ComboBoxItem(value: GameStatus.finished, child: Text("Finished")),
-          ComboBoxItem(value: GameStatus.wishlist, child: Text("Wishlist")),
+          ComboBoxItem(
+            value: GameStatus.backlog, 
+            child: Row(
+              children: [
+                const Icon(FluentIcons.history),
+                const SizedBox(width: 8),
+                const Text('Backlog'),
+              ]
+            ),
+          ),
+          ComboBoxItem(
+            value: GameStatus.playing, 
+            child: Row(
+              children: [
+                const Icon(FluentIcons.play),
+                const SizedBox(width: 8),
+                const Text('Playing'),
+              ]
+            )
+          ),
+          ComboBoxItem(
+            value: GameStatus.finished,
+            child: Row(
+              children: [
+                const Icon(FluentIcons.completed),
+                const SizedBox(width: 8),
+                const Text('Finished'),
+              ]
+            )
+          ),
+          ComboBoxItem(
+            value: GameStatus.wishlist,
+            child: Row(
+              children: [
+                const Icon(FluentIcons.waitlist_confirm),
+                const SizedBox(width: 8),
+                const Text('Wishlist'),
+              ]
+            )
+          ),
         ],
         onChanged: ( value) {
           setState(() {
@@ -302,10 +349,10 @@ class _GameScreenState extends State<GameScreen> {
       ))
     );
 
-    widgets.add(SizedBox(height: 32));
+    widgets.add(SizedBox(height: 24));
 
     widgets.add(
-      FilledButton(
+      _buildFormRow(null, FilledButton(
         onPressed: () {
           service.save(game.copyWith(
             kind: Optional(_kind),
@@ -324,17 +371,31 @@ class _GameScreenState extends State<GameScreen> {
           Navigator.pop(context);
         },
         child: Text('Save'),
-      )
+      ))
     );
 
     return widgets;
   }
 
-  Widget _buildFormRow(String label, Widget child, { bool expandChild = true }) {
+  Widget _buildFormRow(String? label, Widget child, { bool expandChild = true }) {
+    final innerChildren = <Widget>[];
+
+    if (label != null) {
+      innerChildren.add(Expanded(flex: 2, child: Text(label)));
+    }
+
+    innerChildren.add(expandChild ? Expanded(flex: 3, child: child) : child);
+
     return Row(
       children: [
-        Expanded(flex: 2, child: Text(label)),
-        expandChild ? Expanded(flex: 3, child: child) : child,
+        Expanded(flex: 1, child: Container(),),
+        Expanded(
+          flex: 3,
+          child: Row(
+            children: innerChildren,
+          )
+        ),
+        Expanded(flex: 1, child: Container()),
       ] 
     );
   }

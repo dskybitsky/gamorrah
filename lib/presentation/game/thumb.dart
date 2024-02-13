@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gamorrah/models/game/game.dart';
 
@@ -20,33 +21,61 @@ class GameThumb extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Center(
-        child: Container(
+        child: _buildImage(),
+      ),
+    );
+  }
+
+  Widget _buildImage() {
+    String? thumbUrl = game.thumbUrl;
+
+    if (thumbUrl == null || !_isValidUrl(thumbUrl)) {
+      return Container(
+        height: _getHeight(),
+        width: _getWidth(),
+        decoration: _buildBoxDecoration(null),
+      );
+    }
+
+    return CachedNetworkImage(
+        imageUrl: thumbUrl,
+        imageBuilder: (context, imageProvider) => Container(
           height: _getHeight(),
           width: _getWidth(),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
-            boxShadow: [
-              BoxShadow(
-                color: _getShadowColor(),
-                offset: const Offset(
-                  1.0,
-                  1.0,
-                ),
-                blurRadius: 5.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-              BoxShadow(
-                color: Colors.white,
-                offset: const Offset(0.0, 0.0),
-                blurRadius: 0.0,
-                spreadRadius: 0.0,
-              ), //BoxShadow
-            ],
-            color: Colors.grey,
-            image: _getDecorationImage(),
+          decoration: _buildBoxDecoration(
+            DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.fill,
+            ),
           ),
         ),
-      ),
+        placeholder: (context, url) => CircularProgressIndicator(),
+        errorWidget: (context, url, error) => Icon(Icons.error),
+      );
+  }
+
+  BoxDecoration _buildBoxDecoration(DecorationImage? decorationImage) {
+    return BoxDecoration(
+      borderRadius: BorderRadius.circular(14),
+      boxShadow: [
+        BoxShadow(
+          color: _getShadowColor(),
+          offset: const Offset(
+            1.0,
+            1.0,
+          ),
+          blurRadius: 5.0,
+          spreadRadius: 2.0,
+        ),
+        BoxShadow(
+          color: Colors.white,
+          offset: const Offset(0.0, 0.0),
+          blurRadius: 0.0,
+          spreadRadius: 0.0,
+        ),
+      ],
+      color: Colors.grey,
+      image: decorationImage,
     );
   }
 
@@ -73,19 +102,6 @@ class GameThumb extends StatelessWidget {
       GameThumbSize.medium => 150,
       GameThumbSize.large => 264,
     };
-  }
-
-  DecorationImage? _getDecorationImage() {
-    String? thumbUrl = game.thumbUrl;
-
-    if (thumbUrl == null || !_isValidUrl(thumbUrl)) {
-      return null;
-    }
-
-    return DecorationImage(
-      image: NetworkImage(thumbUrl),
-      fit: BoxFit.fill,
-    );
   }
 
   _isValidUrl(String url) {

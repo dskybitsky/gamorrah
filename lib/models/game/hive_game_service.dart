@@ -101,8 +101,6 @@ class HiveGameService extends GameService {
 
   @override
   Future<void> importJson(String json) async {
-    await clear();
-
     final data = jsonDecode(json);
 
     for (var item in data['games']) {

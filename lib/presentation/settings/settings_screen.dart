@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gamorrah/models/game/game_service.dart';
 import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
@@ -30,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return NavigationView(
           appBar: NavigationAppBar(
               title: Text('Settings'),
+              automaticallyImplyLeading: false,
           ),
           content: ScaffoldPage(
             content: Padding(
@@ -52,69 +54,122 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return ListView(
       padding: EdgeInsets.only(left: 16, right: 16),
       children: [
-        Button(
-          onPressed: () async {
-            FilePickerResult? result = await FilePicker.platform.pickFiles();
+        Row(
+          children: [
+            Icon(FluentIcons.import, size: 24.0),
+            SizedBox(width: 16),
+            Expanded(child: Button(
+              onPressed: () async {
+                FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-            if (result != null) {
-              File file = File(result.files.single.path!);
+                if (result != null) {
+                  File file = File(result.files.single.path!);
 
-              final json = file.readAsStringSync();
+                  final json = file.readAsStringSync();
 
-              await service.importJson(json);
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(FluentIcons.import, size: 24.0),
-              SizedBox(width: 16),
-              Text('Import from JSON'),
-            ]
-          ),
+                  await service.importJson(json);
+
+                  _notificationDialog('Import finished succesfully');
+                }
+              },
+              child: Text('Import from JSON'),
+            )),
+          ],
+        ),        
+        SizedBox(height: 16),
+        Row(
+          children: [
+            Icon(FluentIcons.export, size: 24.0),
+            SizedBox(width: 16),
+            Expanded(child: Button(
+              onPressed: () async {
+                String? outputFile = await FilePicker.platform.saveFile(
+                  fileName: 'gamorrah.json',
+                );
+
+                if (outputFile != null) {
+                  File file = File(outputFile);
+
+                  final json = service.exportJson();
+
+                  file.writeAsStringSync(json);
+
+                  _notificationDialog('Export finished succesfully');
+                }
+              },
+              child: Text('Export to JSON'),
+            )),
+          ],
         ),
         SizedBox(height: 16),
-        Button(
-          onPressed: () async {
-            String? outputFile = await FilePicker.platform.saveFile(
-              fileName: 'gamorrah.json',
-            );
-
-            if (outputFile != null) {
-              File file = File(outputFile);
-
-              final json = service.exportJson();
-
-              file.writeAsStringSync(json);
-            }
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(FluentIcons.export, size: 24.0),
-              SizedBox(width: 16),
-              Text('Export to JSON'),
-            ]
-          ),
-        ),
-        SizedBox(height: 16),
-        FilledButton(
-          onPressed: () async {
-            service.clear();
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Icon(FluentIcons.delete, size: 24.0,),
-              SizedBox(width: 16),
-              Text('Clear database'),
-            ]
-          ),
+        Row(
+          children: [
+            Icon(FluentIcons.delete, size: 24.0),
+            SizedBox(width: 16),
+            Expanded(child: FilledButton(
+              style: ButtonStyle(
+                backgroundColor: ButtonState.all(Colors.warningPrimaryColor),
+              ),
+              onPressed: () async {
+                _confirmationDialog(
+                  'All application data will be deleted. Proceed?', 
+                  () async {
+                     service.clear();
+                  }
+                );
+              },
+              child: Text('Clear database'),
+            )),
+          ],
         ),
       ],
+    );
+  }
+
+  void _notificationDialog(String text) {
+    closeDialog() => Navigator.pop(context);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ContentDialog(
+          content: Text(text),
+          actions: [
+            Button(
+              autofocus: true,
+              onPressed: closeDialog,
+              child: Text('Ok'),
+            ),
+          ],
+        );
+      }
+    );
+  }
+
+  void _confirmationDialog(String text, AsyncCallback callback) {
+    closeDialog() => Navigator.pop(context);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ContentDialog(
+          content: Text(text),
+          actions: [
+            FilledButton(
+              onPressed: () async {
+                await callback();
+                closeDialog();
+              },
+              child: Text('OK'),
+            ),
+            Button(
+              autofocus: true,
+              onPressed: closeDialog,
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      }
     );
   }
 }

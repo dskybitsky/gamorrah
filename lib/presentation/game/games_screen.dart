@@ -34,24 +34,32 @@ class _GamesScreenState extends State<GamesScreen> {
         title: Text(_getTitle()),
         actions: _getActions(),
       ),
-      content: ScaffoldPage(
-        content: ListenableBuilder(
-          listenable: service,
-          builder: (context, innterWidget) {
-            final games = service.getMainList(widget.status);
+      content: ListenableBuilder(
+        listenable: service,
+        builder: (context, innterWidget) {
+          final games = service.getMainList(widget.status).toList();
 
-            if (games.isEmpty) {
-              return Center(
-                child: Text('Empty'),
-              );
-            }
+          if (games.isEmpty) {
+            return Center(
+              child: Text('Empty'),
+            );
+          }
 
-            return SingleChildScrollView(
+          return ScaffoldPage(
+            content: SingleChildScrollView(
               padding: EdgeInsets.all(8.0),
               child: GameList(games: games),
-            );
-          },
-        ),
+            ),
+            bottomBar: Container(
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.only(top: 4, bottom: 4, right: 16),
+              child: Text(
+                'Games total: ${games.length}',
+                style: FluentTheme.of(context).typography.caption,
+              ),
+            ),
+          );
+        },
       ),
     );
   }
