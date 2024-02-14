@@ -6,6 +6,7 @@ import 'package:gamorrah/theme.dart';
 import 'package:get/instance_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
+import 'package:window_manager/window_manager.dart';
 
 void main() async {
   GameService gameService = HiveGameService();
@@ -15,6 +16,21 @@ void main() async {
   Get.put(gameService);
 
   SystemTheme.accentColor.load();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = WindowOptions(
+    size: Size(800, 600),
+    minimumSize: Size(600, 400),
+    center: true,
+  );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
 
   runApp(MyApp());
 }
