@@ -405,7 +405,7 @@ class _GameScreenState extends State<GameScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: 48),
+          padding: const EdgeInsets.only(right: 24),
           child: 
             CommandBar(
               mainAxisAlignment: MainAxisAlignment.end,

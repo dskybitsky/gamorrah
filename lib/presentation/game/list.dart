@@ -20,7 +20,7 @@ class GameList extends StatelessWidget {
     if (onReorder != null) {
       return ReorderableWrap(
         spacing: 32.0,
-        runSpacing: 16.0,
+        runSpacing: 24.0,
         onReorder: onReorder!,
         children: _buildChildren(context), 
       );
@@ -28,7 +28,7 @@ class GameList extends StatelessWidget {
 
     return Wrap(
       spacing: 32.0,
-      runSpacing: 16.0,
+      runSpacing: 32.0,
       children: _buildChildren(context),
     );
   }
