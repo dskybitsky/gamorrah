@@ -19,6 +19,8 @@ class GamesScreen extends StatefulWidget {
 class _GamesScreenState extends State<GamesScreen> {
   late final GameService service;
 
+  String _filter = '';
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +39,9 @@ class _GamesScreenState extends State<GamesScreen> {
       content: ListenableBuilder(
         listenable: service,
         builder: (context, innterWidget) {
-          final games = service.getMainList(widget.status).toList();
+          final games = service.getMainList(widget.status)
+            .where((element) => _filter == '' || element.title.contains(RegExp(_filter, caseSensitive: false)))
+            .toList();
 
           if (games.isEmpty) {
             return Center(
@@ -65,25 +69,47 @@ class _GamesScreenState extends State<GamesScreen> {
   }
 
   Widget _getActions() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 48),
-          child: 
-            CommandBar(
-              mainAxisAlignment: MainAxisAlignment.end,
-              primaryItems: [
-                CommandBarButton(
-                  icon: const Icon(FluentIcons.add),
-                  label: const Text('Add New Game'),
-                  onPressed: () {
-                    GameNavigator.goGameScreen(context, status: widget.status);
-                  },
-                ),
-              ],
-            )
-        )
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 196,
+              child: TextBox(
+                placeholder: "Filter",
+                onChanged: (value) {
+                  setState(() {
+                    _filter = value;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        SizedBox(width: 8),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              child: CommandBar(
+                mainAxisAlignment: MainAxisAlignment.end,
+                overflowBehavior: CommandBarOverflowBehavior.noWrap,
+                primaryItems: [
+                  CommandBarButton(
+                    icon: const Icon(FluentIcons.add),
+                    label: const Text('Add New Game'),
+                    onPressed: () {
+                      GameNavigator.goGameScreen(context, status: widget.status);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(width: 24),
       ]
     );
   }
