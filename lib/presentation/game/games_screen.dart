@@ -56,7 +56,7 @@ class _GamesScreenState extends State<GamesScreen> {
             ),
             bottomBar: Container(
               alignment: Alignment.centerRight,
-              padding: EdgeInsets.only(top: 4, bottom: 4, right: 16),
+              padding: EdgeInsets.only(top: 8, bottom: 8, right: 24),
               child: Text(
                 'Games total: ${games.length}',
                 style: FluentTheme.of(context).typography.caption,
