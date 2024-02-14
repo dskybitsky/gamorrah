@@ -1,5 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 
 enum GameThumbSize { small, medium, large }
@@ -21,19 +21,19 @@ class GameThumb extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Center(
-        child: _buildImage(),
+        child: _buildImage(context),
       ),
     );
   }
 
-  Widget _buildImage() {
+  Widget _buildImage(BuildContext context) {
     String? thumbUrl = game.thumbUrl;
 
     if (thumbUrl == null || !_isValidUrl(thumbUrl)) {
       return Container(
         height: _getHeight(),
         width: _getWidth(),
-        decoration: _buildBoxDecoration(null),
+        decoration: _buildBoxDecoration(context, null),
       );
     }
 
@@ -43,35 +43,26 @@ class GameThumb extends StatelessWidget {
           height: _getHeight(),
           width: _getWidth(),
           decoration: _buildBoxDecoration(
+            context,
             DecorationImage(
               image: imageProvider,
               fit: BoxFit.fill,
             ),
           ),
         ),
-        placeholder: (context, url) => CircularProgressIndicator(),
-        errorWidget: (context, url, error) => Icon(Icons.error),
+        placeholder: (context, url) => ProgressRing(),
       );
   }
 
-  BoxDecoration _buildBoxDecoration(DecorationImage? decorationImage) {
+  BoxDecoration _buildBoxDecoration(BuildContext context, DecorationImage? decorationImage) {
     return BoxDecoration(
-      borderRadius: BorderRadius.circular(14),
+      borderRadius: BorderRadius.circular(12),
       boxShadow: [
         BoxShadow(
-          color: _getShadowColor(),
-          offset: const Offset(
-            1.0,
-            1.0,
-          ),
+          color: _getShadowColor(context),
+          offset: const Offset(1.0, 1.0),
           blurRadius: 5.0,
           spreadRadius: 2.0,
-        ),
-        BoxShadow(
-          color: Colors.white,
-          offset: const Offset(0.0, 0.0),
-          blurRadius: 0.0,
-          spreadRadius: 0.0,
         ),
       ],
       color: Colors.grey,
@@ -79,12 +70,14 @@ class GameThumb extends StatelessWidget {
     );
   }
 
-  Color _getShadowColor() {
+  Color _getShadowColor(BuildContext context) {
+    final isDark = FluentTheme.of(context).brightness.isDark;
+
     return switch (game.kind) {
       GameKind.bundle => Colors.blue,
       GameKind.dlc => Colors.green,
       GameKind.content => Colors.orange,
-      _ => Colors.grey,
+      _ => isDark ? Colors.grey[220] : Colors.grey[100],
     };
   }
 
