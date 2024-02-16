@@ -1,13 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/presentation/game/modal.dart';
-import 'package:gamorrah/presentation/game/list.dart';
-import 'package:gamorrah/presentation/game/thumb.dart';
-import 'package:gamorrah/presentation/game/navigator.dart';
-import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
+import 'package:gamorrah/pages/game_modal.dart';
+import 'package:gamorrah/widgets/game/game_thumb.dart';
+import 'package:gamorrah/widgets/game/games_list.dart';
 
 class GameScreen extends StatefulWidget {
   const GameScreen({ 
@@ -26,8 +22,7 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   late final String id;
-  late final GameService service;
-
+  
   late GameKind? _kind;
 
   late GamePersonalBeaten? _personalBeaten;
@@ -43,8 +38,6 @@ class _GameScreenState extends State<GameScreen> {
   @override
   void initState() {
     super.initState();
-
-    service = Get.find();
 
     Game game = _initGame();
 
@@ -134,7 +127,7 @@ class _GameScreenState extends State<GameScreen> {
 
     widgets.add(
       Center(
-        child: GameList(
+        child: GamesList(
           games: includedGames, 
           thumbSize: GameThumbSize.small,
           onReorder: (oldIndex, newIndex) {

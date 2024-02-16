@@ -1,20 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/models/game/hive_game_service.dart';
-import 'package:gamorrah/presentation/main_screen.dart';
 import 'package:gamorrah/theme.dart';
-import 'package:get/instance_manager.dart';
+import 'package:gamorrah/pages/home_page.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
-  GameService gameService = HiveGameService();
-
-  await gameService.init();
-
-  Get.put(gameService);
-
   SystemTheme.accentColor.load();
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,7 +55,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           locale: appTheme.locale,
-          home: const MainScreen(),
+          home: const HomePage(),
         );
       }
     );

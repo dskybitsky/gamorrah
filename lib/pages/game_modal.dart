@@ -1,9 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
+import 'package:gamorrah/state/game/games_bloc.dart';
 
 class GameModal extends StatefulWidget {
   const GameModal({ required this.game });
@@ -15,8 +14,6 @@ class GameModal extends StatefulWidget {
 }
 
 class _GameModalState extends State<GameModal> {
-  late final GameService service;
-
   late TextEditingController _titleController;
   late TextEditingController _franchiseController;
   late TextEditingController _editionController;
@@ -27,8 +24,6 @@ class _GameModalState extends State<GameModal> {
   @override
   void initState() {
     super.initState();
-
-    service = Get.find();
 
      _titleController = TextEditingController(text: widget.game.title);
      _franchiseController = TextEditingController(text: widget.game.franchise);
@@ -49,14 +44,19 @@ class _GameModalState extends State<GameModal> {
         ),
         FilledButton(
           onPressed: () {
-            service.save(widget.game.copyWith(
-              title: Optional(_titleController.text),
-              franchise: Optional(_franchiseController.text),
-              edition: Optional(_editionController.text),
-              year: Optional(_year),
-              thumbUrl: Optional(_thumbUrlController.text),
-              platforms: Optional(_platforms),
-            ));
+            context.read<GamesBloc>()
+              .add(
+                SaveGame(
+                  game: widget.game.copyWith(
+                  title: Optional(_titleController.text),
+                  franchise: Optional(_franchiseController.text),
+                  edition: Optional(_editionController.text),
+                  year: Optional(_year),
+                  thumbUrl: Optional(_thumbUrlController.text),
+                  platforms: Optional(_platforms),
+                )
+                )
+              );
             Navigator.pop(context);
           },
           child: Text('Save'),

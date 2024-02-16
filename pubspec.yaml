@@ -10,11 +10,13 @@ environment:
 dependencies:
   cached_network_image: ^3.3.1
   get:
+  equatable: ^2.0.3
   file_picker: ^6.1.1
   fluent_ui: ^4.4.0
   flutter:
     sdk: flutter
   flutter_acrylic: ^1.0.0+2
+  flutter_bloc: ^8.0.0
   flutter_launcher_icons: ^0.13.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0

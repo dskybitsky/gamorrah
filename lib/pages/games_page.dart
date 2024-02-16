@@ -1,49 +1,63 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/presentation/game/list.dart';
-import 'package:gamorrah/presentation/game/navigator.dart';
-import 'package:get/instance_manager.dart';
+import 'package:gamorrah/widgets/game/games_list.dart';
+import 'package:gamorrah/state/game/games_bloc.dart';
 
-class GamesScreen extends StatefulWidget {
-  const GamesScreen({ 
+class GamesPage extends StatefulWidget {
+  const GamesPage({ 
     required this.status,
   });
 
   final GameStatus status;
 
   @override
-  State<GamesScreen> createState() => _GamesScreenState();
+  State<GamesPage> createState() => _GamesScreenState();
 }
 
-class _GamesScreenState extends State<GamesScreen> {
-  late final GameService service;
-
+class _GamesScreenState extends State<GamesPage> {
   String _filter = '';
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    context.read<GamesBloc>().add(GetGames(status: widget.status));
 
-    service = Get.find();
+    return BlocBuilder<GamesBloc, GamesState>(
+      builder: (context, state) {
+        if (state.phase.isInitial) {
+          return Container();
+        }
+
+        if (state.phase.isLoading) {
+          return Center(
+            child: ProgressRing(),
+          );
+        }
+
+        if (state.phase.isError) {
+          return Center(
+            child: Text('Error'),
+          );
+        }
+        
+        return _buildContent(context, state);
+      },
+    );
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildContent(BuildContext context, GamesState state) {
+    final games = state.games
+      .where((element) => _filter == '' || element.title.contains(RegExp(_filter, caseSensitive: false)));
+
     return NavigationView(
       appBar: NavigationAppBar(
         automaticallyImplyLeading: false,
         title: Text(_getTitle()),
-        actions: _getActions(),
+        actions: _buildActions(context, state),
       ),
-      content: ListenableBuilder(
-        listenable: service,
-        builder: (context, innterWidget) {
-          final games = service.getMainList(widget.status)
-            .where((element) => _filter == '' || element.title.contains(RegExp(_filter, caseSensitive: false)))
-            .toList();
-
-          if (games.isEmpty) {
+      content: Builder(
+        builder: (context) {
+          if (state.games.isEmpty) {
             return Center(
               child: Text('Empty'),
             );
@@ -52,7 +66,7 @@ class _GamesScreenState extends State<GamesScreen> {
           return ScaffoldPage(
             content: SingleChildScrollView(
               padding: EdgeInsets.all(8.0),
-              child: GameList(games: games),
+              child: GamesList(games: games),
             ),
             bottomBar: Container(
               alignment: Alignment.centerRight,
@@ -68,7 +82,7 @@ class _GamesScreenState extends State<GamesScreen> {
     );
   }
 
-  Widget _getActions() {
+  Widget _buildActions(BuildContext context, GamesState state) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -101,7 +115,7 @@ class _GamesScreenState extends State<GamesScreen> {
                     icon: const Icon(FluentIcons.add),
                     label: const Text('Add New Game'),
                     onPressed: () {
-                      GameNavigator.goGameScreen(context, status: widget.status);
+                      // GameNavigator.goGameScreen(context, status: state.status);
                     },
                   ),
                 ],
