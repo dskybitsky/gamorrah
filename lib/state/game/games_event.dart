@@ -5,15 +5,11 @@ class GamesEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class GetGames extends GamesEvent {
-  GetGames({
-    required this.status,
-  });
-
-  final GameStatus status;
+class LoadGames extends GamesEvent {
+  LoadGames();
 
   @override
-  List<Object?> get props => [status];
+  List<Object?> get props => [];
 }
 
 class SaveGame extends GamesEvent {

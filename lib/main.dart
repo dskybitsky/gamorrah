@@ -1,6 +1,8 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/models/game/hive_game.dart';
 import 'package:gamorrah/theme.dart';
 import 'package:gamorrah/pages/home_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
@@ -8,6 +10,19 @@ import 'package:window_manager/window_manager.dart';
 void main() async {
   SystemTheme.accentColor.load();
 
+  await _initHive();
+  await _initWindow();
+
+  runApp(MyApp());
+}
+
+Future<void> _initHive() async {
+  Hive.registerAdapter(HiveGameAdapter());
+
+  await Hive.initFlutter();
+}
+
+Future<void> _initWindow() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await windowManager.ensureInitialized();
@@ -22,8 +37,6 @@ void main() async {
     await windowManager.show();
     await windowManager.focus();
   });
-
-  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

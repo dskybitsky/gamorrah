@@ -12,13 +12,11 @@ extension GamesStatePhaseX on GamesStatePhase {
 class GamesState extends Equatable {
   const GamesState({
     this.phase = GamesStatePhase.initial,
-    this.games = const [],
-    this.status = GameStatus.playing,
+    this.games = const []
   });
 
   final GamesStatePhase phase;
   final Iterable<Game> games;
-  final GameStatus status;
 
   @override
   List<Object?> get props => [games];
@@ -26,12 +24,10 @@ class GamesState extends Equatable {
   GamesState copyWith({
     GamesStatePhase? phase,
     Iterable<Game>? games,
-    GameStatus? status,
   }) {
     return GamesState(
       phase: phase ?? this.phase,
       games: games ?? this.games,
-      status: status ?? this.status,
     );
   }
 }

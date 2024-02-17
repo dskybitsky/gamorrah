@@ -20,8 +20,6 @@ class _GamesScreenState extends State<GamesPage> {
 
   @override
   Widget build(BuildContext context) {
-    context.read<GamesBloc>().add(GetGames(status: widget.status));
-
     return BlocBuilder<GamesBloc, GamesState>(
       builder: (context, state) {
         if (state.phase.isInitial) {
@@ -46,8 +44,7 @@ class _GamesScreenState extends State<GamesPage> {
   }
 
   Widget _buildContent(BuildContext context, GamesState state) {
-    final games = state.games
-      .where((element) => _filter == '' || element.title.contains(RegExp(_filter, caseSensitive: false)));
+    final games = _getGamesList(state);
 
     return NavigationView(
       appBar: NavigationAppBar(
@@ -65,7 +62,7 @@ class _GamesScreenState extends State<GamesPage> {
 
           return ScaffoldPage(
             content: SingleChildScrollView(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(16.0),
               child: GamesList(games: games),
             ),
             bottomBar: Container(
@@ -126,6 +123,35 @@ class _GamesScreenState extends State<GamesPage> {
         SizedBox(width: 24),
       ]
     );
+  }
+
+  List<Game> _getGamesList(GamesState state) {
+    final games = state.games
+      .where((game) {
+        return game.status == widget.status
+          && game.parentId == null
+          && (
+            _filter == '' 
+            || game.title.contains(RegExp(_filter, caseSensitive: false))
+          );
+      })
+      .toList();
+
+    games.sort((Game gameA, Game gameB) {
+      final franchisedTitleA = gameA.franchise ?? gameA.title;
+      final franchisedTitleB = gameB.franchise ?? gameB.title;
+              
+      if (franchisedTitleA == franchisedTitleB) {
+        final franchisedIndexA = gameA.index ?? gameA.year ?? 0;
+        final franchisedIndexB = gameB.index ?? gameB.year ?? 0;
+                  
+        return franchisedIndexA.compareTo(franchisedIndexB);
+      }
+              
+      return franchisedTitleA.compareTo(franchisedTitleB);
+    });
+
+    return games;
   }
 
   String _getTitle() {

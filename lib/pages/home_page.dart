@@ -10,15 +10,15 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScaffoldPage(
-      content: RepositoryProvider<GameRepository>(
+    return SizedBox(
+      child: RepositoryProvider<GameRepository>(
         create: (context) => HiveGameRepository(),
         child: MultiBlocProvider(
           providers: [
             BlocProvider<GamesBloc>(
               create: (context) => GamesBloc(
                 gameRepository: context.read<GameRepository>(),
-              ),
+              )..add(LoadGames()),
             ),
           ],
           child: HomePageLayout(),

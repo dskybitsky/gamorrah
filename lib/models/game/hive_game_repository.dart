@@ -8,21 +8,17 @@ class HiveGameRepository extends GameRepository {
 
   Box<HiveGame>? _box;
 
-  Box<HiveGame> get box {
-    if (_box == null) {
-      _init();
-    }
-
-    return _box!;
-  }
-
   @override
   Future<Iterable<Game>> get() async {
+    final box = await _getBox();
+
     return box.values.map((e) => e.toGame());
   }
 
   @override
   Future<Game?> getById(String id) async {
+    final box = await _getBox();
+
     HiveGame? hiveGame = box.get(id);
 
     if (hiveGame == null) {
@@ -41,24 +37,34 @@ class HiveGameRepository extends GameRepository {
 
   @override
   Future<void> save(Game game) async {
+    final box = await _getBox();
+
     await box.put(game.id, HiveGame.fromGame(game));
   }
 
   @override
   Future<void> delete(String id) async {
+    final box = await _getBox();
+
     await box.delete(id);
   }
 
   @override
   Future<void> clear() async {
+    final box = await _getBox();
+    
     await box.clear();
   }
 
+  Future<Box<HiveGame>> _getBox() async {
+    if (_box == null) {
+      await _init();
+    }
+
+    return _box!;
+  }
+
   _init() async {
-    Hive.registerAdapter(HiveGameAdapter());
-
-    await Hive.initFlutter();
-
     _box = await Hive.openBox(boxName);
   }
 }
