@@ -22,3 +22,14 @@ class SaveGame extends GamesEvent {
   @override
   List<Object?> get props => [game];
 }
+
+class DeleteGame extends GamesEvent {
+  DeleteGame({
+    required this.id,
+  });
+
+  final String id;
+
+  @override
+  List<Object?> get props => [id];
+}

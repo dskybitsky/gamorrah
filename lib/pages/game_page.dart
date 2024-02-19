@@ -1,26 +1,26 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/pages/game_modal.dart';
+import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/game_thumb.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
+import 'package:gamorrah/widgets/game/games_navigator.dart';
 
-class GameScreen extends StatefulWidget {
-  const GameScreen({ 
-    this.id,
-    this.status,
-    this.parentId,
+class GamePage extends StatefulWidget {
+  const GamePage({ 
+    required this.id,
   });
 
-  final String? id;
-  final GameStatus? status;
-  final String? parentId;
+  final String id;
   
   @override
-  State<GameScreen> createState() => _GameScreenState();
+  State<GamePage> createState() => _GamePageState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GamePageState extends State<GamePage> {
   late final String id;
   
   late GameKind? _kind;
@@ -39,28 +39,25 @@ class _GameScreenState extends State<GameScreen> {
   void initState() {
     super.initState();
 
-    Game game = _initGame();
+    final game = _getGame();
 
-    id = game.id;
+    _kind = game?.kind;
+    _personalBeaten = game?.personal?.beaten;
+    _personalRating = game?.personal?.rating;
+    _personalTimeSpent = game?.personal?.timeSpent;
 
-    _kind = game.kind;
-    _personalBeaten = game.personal?.beaten;
-    _personalRating = game.personal?.rating;
-    _personalTimeSpent = game.personal?.timeSpent;
+    _howLongToBeatStory = game?.howLongToBeat?.story;
+    _howLongToBeatStorySides = game?.howLongToBeat?.storySides;
+    _howLongToBeatCompletionist = game?.howLongToBeat?.completionist;
 
-    _howLongToBeatStory = game.howLongToBeat?.story;
-    _howLongToBeatStorySides = game.howLongToBeat?.storySides;
-    _howLongToBeatCompletionist = game.howLongToBeat?.completionist;
-
-    _status = game.status;
+    _status = game?.status ?? GameStatus.backlog;
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: service, 
-      builder: (context, widget) {
-        Game? game = service.get(id);
+    return BlocBuilder<GamesBloc, GamesState>(
+      builder: (context, state) {
+        Game? game = _getGame();
 
         if (game == null) {
           return Container();
@@ -74,7 +71,7 @@ class _GameScreenState extends State<GameScreen> {
           content: ScaffoldPage(
             content: ListView(
               padding: EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 16),
-              children: _buildFormWidgets(game),
+              children: _buildFormWidgets(game, state),
             ),
           )
         ); 
@@ -82,8 +79,9 @@ class _GameScreenState extends State<GameScreen> {
     );
   }
 
-  List<Widget> _buildFormWidgets(Game game) {
-    final includedGames = service.getIncludedList(game.id).toList();
+  List<Widget> _buildFormWidgets(Game game, GamesState state) {
+    final includedGames = state.games
+      .where((element) => element.parentId == game.id);
 
     var widgets = <Widget>[];
 
@@ -131,7 +129,7 @@ class _GameScreenState extends State<GameScreen> {
           games: includedGames, 
           thumbSize: GameThumbSize.small,
           onReorder: (oldIndex, newIndex) {
-            service.reorderIncluded(game.id, oldIndex, newIndex);
+            // service.reorderIncluded(game.id, oldIndex, newIndex);
           },
         )
       )
@@ -347,20 +345,22 @@ class _GameScreenState extends State<GameScreen> {
     widgets.add(
       _buildFormRow(null, FilledButton(
         onPressed: () {
-          service.save(game.copyWith(
-            kind: Optional(_kind),
-            personal: Optional(game.copyPersonalWith(
-              beaten: Optional(_personalBeaten),
-              rating: Optional(_personalRating),
-              timeSpent: Optional(_personalTimeSpent),
-            )),
-            howLongToBeat: Optional(game.copyHowLongToBeatWith(
-              story: Optional(_howLongToBeatStory),
-              storySides: Optional(_howLongToBeatStorySides),
-              completionist: Optional(_howLongToBeatCompletionist),
-            )),
-            status: Optional(_status),
-          ));
+          context.read<GamesBloc>().add(
+            SaveGame(game: game.copyWith(
+              kind: Optional(_kind),
+              personal: Optional(game.copyPersonalWith(
+                beaten: Optional(_personalBeaten),
+                rating: Optional(_personalRating),
+                timeSpent: Optional(_personalTimeSpent),
+              )),
+              howLongToBeat: Optional(game.copyHowLongToBeatWith(
+                story: Optional(_howLongToBeatStory),
+                storySides: Optional(_howLongToBeatStorySides),
+                completionist: Optional(_howLongToBeatCompletionist),
+              )),
+              status: Optional(_status),
+            ))
+          );
           Navigator.pop(context);
         },
         child: Text('Save'),
@@ -407,44 +407,36 @@ class _GameScreenState extends State<GameScreen> {
                   icon: const Icon(FluentIcons.add),
                   label: const Text('Add Included Item'),
                   onPressed: () {
-                    GameNavigator.goGameScreen(
-                      context, 
-                      parentId: game.id, 
+                    final game = Game.create(
+                      title: 'New included game',
                       status: GameStatus.backlog,
+                      parentId: widget.id
                     );
+
+                    context.read<GamesBloc>().add(SaveGame(game: game));
+
+                    GamesNavigator.goGame(context, id: game.id);
                   },
                 ),
                 CommandBarButton(
                   icon: const Icon(FluentIcons.delete),
                   label: const Text('Delete'),
                   onPressed: () {
-                    service.delete(game.id);
+                    context.read<GamesBloc>().add(DeleteGame(id: widget.id));
+
                     Navigator.pop(context);
                   },
                 ),
               ],
-            )
-        )
+            ),
+        ),
       ]
     );
   }
 
-  Game _initGame() {
-    String? widgetId = widget.id;
+  Game? _getGame() {
+    final games = context.read<GamesBloc>().state.games;
 
-    if (widgetId != null) {
-      return service.get(widgetId)!;
-    }
-
-    Game game = Game.create(
-      title: "New Game", 
-      thumbUrl: null,
-      status: widget.status,
-      parentId: widget.parentId,
-    );
-
-    service.save(game);
-
-    return game;
+    return games.firstWhereOrNull((element) => element.id == widget.id);
   }
 }

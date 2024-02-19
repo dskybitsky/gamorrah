@@ -19,7 +19,7 @@ class GamesState extends Equatable {
   final Iterable<Game> games;
 
   @override
-  List<Object?> get props => [games];
+  List<Object?> get props => [phase, games];
 
   GamesState copyWith({
     GamesStatePhase? phase,

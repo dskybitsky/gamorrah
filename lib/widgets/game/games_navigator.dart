@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/pages/games_page.dart';
+import 'package:gamorrah/pages/game_page.dart';
 
 class GamesNavigator extends StatelessWidget {
   const GamesNavigator({ 
@@ -23,13 +24,9 @@ class GamesNavigator extends StatelessWidget {
     Navigator.push(context, gamesRoute(status: status));
   }
 
-  // static void goGameScreen(BuildContext context, {
-  //   String? id,
-  //   GameStatus? status,
-  //   String? parentId,
-  // }) {
-  //   Navigator.push(context, gameScreenRoute(id: id, status: status, parentId: parentId));
-  // }
+  static void goGame(BuildContext context, { required String id }) {
+    Navigator.push(context, gameRoute(id: id));
+  }
 
   static FluentPageRoute gamesRoute({ required GameStatus status }) {
     return FluentPageRoute(
@@ -41,19 +38,11 @@ class GamesNavigator extends StatelessWidget {
     );
   }
 
-  // static FluentPageRoute gameScreenRoute({
-  //   String? id,
-  //   GameStatus? status,
-  //   String? parentId,
-  // }) {
-  //   return FluentPageRoute(
-  //     builder: (context) {      
-  //       return GameScreen(
-  //         id: id,
-  //         status: status,
-  //         parentId: parentId,
-  //       );
-  //     }
-  //   );
-  // }
+  static FluentPageRoute gameRoute({ required String id }) {
+    return FluentPageRoute(
+      builder: (context) {      
+        return GamePage(id: id);
+      }
+    );
+  }
 }

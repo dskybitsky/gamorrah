@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
+import 'package:gamorrah/widgets/game/games_navigator.dart';
 
 class GamesPage extends StatefulWidget {
   const GamesPage({ 
@@ -112,7 +113,15 @@ class _GamesScreenState extends State<GamesPage> {
                     icon: const Icon(FluentIcons.add),
                     label: const Text('Add New Game'),
                     onPressed: () {
-                      // GameNavigator.goGameScreen(context, status: state.status);
+                      final game = Game.create(
+                        title: "New Game", 
+                        thumbUrl: null,
+                        status: widget.status,
+                      );
+
+                      context.read<GamesBloc>().add(SaveGame(game: game));
+
+                      GamesNavigator.goGame(context, id: game.id);
                     },
                   ),
                 ],

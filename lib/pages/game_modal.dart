@@ -44,19 +44,16 @@ class _GameModalState extends State<GameModal> {
         ),
         FilledButton(
           onPressed: () {
-            context.read<GamesBloc>()
-              .add(
-                SaveGame(
-                  game: widget.game.copyWith(
-                  title: Optional(_titleController.text),
-                  franchise: Optional(_franchiseController.text),
-                  edition: Optional(_editionController.text),
-                  year: Optional(_year),
-                  thumbUrl: Optional(_thumbUrlController.text),
-                  platforms: Optional(_platforms),
-                )
-                )
-              );
+            context.read<GamesBloc>().add(
+              SaveGame(game: widget.game.copyWith(
+                title: Optional(_titleController.text),
+                franchise: Optional(_franchiseController.text),
+                edition: Optional(_editionController.text),
+                year: Optional(_year),
+                thumbUrl: Optional(_thumbUrlController.text),
+                platforms: Optional(_platforms),
+              ))
+            );
             Navigator.pop(context);
           },
           child: Text('Save'),

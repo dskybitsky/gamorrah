@@ -12,6 +12,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   }) : super(const GamesState()) {
     on<LoadGames>(_mapLoadGamesEventToState);
     on<SaveGame>(_mapSaveGameEventToState);
+    on<DeleteGame>(_mapDeleteGameEventToState);
   }
 
   final GameRepository gameRepository;
@@ -24,13 +25,11 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       emit(state.copyWith(phase: GamesStatePhase.loading));
 
       final games = (await gameRepository.get());
-    
-      emit(
-        state.copyWith(
-          phase: GamesStatePhase.success,
-          games: games,
-        ),
-      );
+
+      emit(state.copyWith(
+        phase: GamesStatePhase.success,
+        games: games,
+      ));
     } catch (error, stacktrace) {
       print(stacktrace);
       emit(state.copyWith(phase: GamesStatePhase.error));
@@ -48,6 +47,29 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
 
       final games = state.games.map((game) {
         return game.id == event.game.id ? event.game : game;
+      });
+
+      emit(state.copyWith(
+        phase: GamesStatePhase.success,
+        games: games,
+      ));
+    } catch (error, stacktrace) {
+      print(stacktrace);
+      emit(state.copyWith(phase: GamesStatePhase.error));
+    }
+  }
+
+  void _mapDeleteGameEventToState(
+    DeleteGame event,
+    Emitter<GamesState> emit
+  ) async {
+    try {
+      emit(state.copyWith(phase: GamesStatePhase.loading));
+
+      await gameRepository.delete(event.id);
+
+      final games = state.games.where((game) {
+        return game.id != event.id;
       });
 
       emit(state.copyWith(
