@@ -9,7 +9,9 @@ abstract class GameRepository {
 
   Future<void> save(Game game);
 
+  Future<void> saveMany(Iterable<Game> games);
+
   Future<void> delete(String id);
 
-  Future<void> clear();
+  Future<void> deleteAll();
 }

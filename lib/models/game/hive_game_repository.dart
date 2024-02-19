@@ -37,9 +37,16 @@ class HiveGameRepository extends GameRepository {
 
   @override
   Future<void> save(Game game) async {
+    await saveMany([game]);
+  }
+
+  @override
+  Future<void> saveMany(Iterable<Game> games) async {
     final box = await _getBox();
 
-    await box.put(game.id, HiveGame.fromGame(game));
+    Future.wait(
+      games.map((game) => box.put(game.id, HiveGame.fromGame(game)))
+    );
   }
 
   @override
@@ -50,7 +57,7 @@ class HiveGameRepository extends GameRepository {
   }
 
   @override
-  Future<void> clear() async {
+  Future<void> deleteAll() async {
     final box = await _getBox();
     
     await box.clear();

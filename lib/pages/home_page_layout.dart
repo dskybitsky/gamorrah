@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/pages/settings_page.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 
 class HomePageLayout extends StatefulWidget {
@@ -54,13 +55,13 @@ class _HomePageLayoutState extends State<HomePageLayout> {
             ),
           ),   
         ],
-        // footerItems: [
-        //   PaneItem(
-        //     icon: const Icon(FluentIcons.settings),
-        //     title: const Text('Settings'),
-        //     body: SettingsScreen(),
-        //   ),
-        // ],
+        footerItems: [
+          PaneItem(
+            icon: const Icon(FluentIcons.settings),
+            title: const Text('Settings'),
+            body: SettingsPage(),
+          ),
+        ],
       ),
     );
   }

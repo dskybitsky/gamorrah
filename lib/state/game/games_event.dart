@@ -23,6 +23,17 @@ class SaveGame extends GamesEvent {
   List<Object?> get props => [game];
 }
 
+class SaveGames extends GamesEvent {
+  SaveGames({ 
+    required this.games,
+  });
+
+  final Iterable<Game> games;
+
+  @override
+  List<Object?> get props => [games];
+}
+
 class DeleteGame extends GamesEvent {
   DeleteGame({
     required this.id,
@@ -32,4 +43,11 @@ class DeleteGame extends GamesEvent {
 
   @override
   List<Object?> get props => [id];
+}
+
+class DeleteAllGames extends GamesEvent {
+  DeleteAllGames();
+
+  @override
+  List<Object?> get props => [];
 }

@@ -12,7 +12,9 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   }) : super(const GamesState()) {
     on<LoadGames>(_mapLoadGamesEventToState);
     on<SaveGame>(_mapSaveGameEventToState);
+    on<SaveGames>(_mapSaveGamesEventToState);
     on<DeleteGame>(_mapDeleteGameEventToState);
+    on<DeleteAllGames>(_mapDeleteAllGamesEventToState);
   }
 
   final GameRepository gameRepository;
@@ -45,13 +47,26 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
 
       await gameRepository.save(event.game);
 
-      final games = state.games.map((game) {
-        return game.id == event.game.id ? event.game : game;
-      });
+      emit(state.copyWith(
+        phase: GamesStatePhase.success,
+      ));
+    } catch (error, stacktrace) {
+      print(stacktrace);
+      emit(state.copyWith(phase: GamesStatePhase.error));
+    }
+  }
+
+  void _mapSaveGamesEventToState(
+    SaveGames event,
+    Emitter<GamesState> emit
+  ) async {
+    try {
+      emit(state.copyWith(phase: GamesStatePhase.loading));
+
+      await gameRepository.saveMany(event.games);
 
       emit(state.copyWith(
         phase: GamesStatePhase.success,
-        games: games,
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
@@ -68,13 +83,26 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
 
       await gameRepository.delete(event.id);
 
-      final games = state.games.where((game) {
-        return game.id != event.id;
-      });
+      emit(state.copyWith(
+        phase: GamesStatePhase.success,
+      ));
+    } catch (error, stacktrace) {
+      print(stacktrace);
+      emit(state.copyWith(phase: GamesStatePhase.error));
+    }
+  }
+
+  void _mapDeleteAllGamesEventToState(
+    DeleteAllGames event,
+    Emitter<GamesState> emit
+  ) async {
+    try {
+      emit(state.copyWith(phase: GamesStatePhase.loading));
+
+      await gameRepository.deleteAll();
 
       emit(state.copyWith(
         phase: GamesStatePhase.success,
-        games: games,
       ));
     } catch (error, stacktrace) {
       print(stacktrace);

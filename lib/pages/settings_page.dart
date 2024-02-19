@@ -1,33 +1,20 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/foundation.dart';
-import 'package:gamorrah/models/game/game_service.dart';
-import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/state/game/games_bloc.dart';
+import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
+import 'package:gamorrah/widgets/ui/notification_dialog.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen();
-
-  @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  late final GameService service;
-  
-  @override
-  void initState() {
-    super.initState();
-
-    service = Get.find();
-  }
+class SettingsPage extends StatelessWidget {
+  const SettingsPage();
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: service, 
-      builder: (context, widget) {
+    return BlocBuilder<GamesBloc, GamesState>(
+      builder: (context, state) {
         return NavigationView(
           appBar: NavigationAppBar(
               title: Text('Settings'),
@@ -39,18 +26,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Row(
                 children: [
                   Expanded(flex: 1, child: Container()),
-                  Expanded(flex: 3, child: _buildContent()),
+                  Expanded(flex: 3, child: _buildContent(context)),
                   Expanded(flex: 1, child: Container()),
                 ],
               ),
             ),
           )
-        ); 
-      }
+        );
+      },
     );
   }
 
-  Widget _buildContent() {
+  Widget _buildContent(BuildContext context) {
     return ListView(
       padding: EdgeInsets.only(left: 16, right: 16),
       children: [
@@ -59,18 +46,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Icon(FluentIcons.import, size: 24.0),
             SizedBox(width: 16),
             Expanded(child: Button(
-              onPressed: () async {
-                FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-                if (result != null) {
-                  File file = File(result.files.single.path!);
-
-                  final json = file.readAsStringSync();
-
-                  await service.importJson(json);
-
-                  _notificationDialog('Import finished succesfully');
-                }
+              onPressed: () {
+                _handleImport(context);
               },
               child: Text('Import from JSON'),
             )),
@@ -82,20 +59,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Icon(FluentIcons.export, size: 24.0),
             SizedBox(width: 16),
             Expanded(child: Button(
-              onPressed: () async {
-                String? outputFile = await FilePicker.platform.saveFile(
-                  fileName: 'gamorrah.json',
-                );
-
-                if (outputFile != null) {
-                  File file = File(outputFile);
-
-                  final json = service.exportJson();
-
-                  file.writeAsStringSync(json);
-
-                  _notificationDialog('Export finished succesfully');
-                }
+              onPressed: () {
+                _handleExport(context);
               },
               child: Text('Export to JSON'),
             )),
@@ -111,14 +76,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 backgroundColor: ButtonState.all(Colors.warningPrimaryColor),
               ),
               onPressed: () async {
-                _confirmationDialog(
-                  'All application data will be deleted. Proceed?', 
-                  () async {
-                     service.clear();
-                  }
-                );
+                _handleDeleteAll(context);
               },
-              child: Text('Clear database'),
+              child: Text('Delete All Games'),
             )),
           ],
         ),
@@ -126,48 +86,83 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _notificationDialog(String text) {
-    closeDialog() => Navigator.pop(context);
+  void _handleImport(BuildContext context) async {
+    FilePickerResult? inputFile = await FilePicker.platform.pickFiles();
+
+    if (inputFile == null) {
+      return;
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
+    File file = File(inputFile.files.single.path!);
+
+    final json = file.readAsStringSync();
+
+    final data = jsonDecode(json);
+
+    final gamesData = data['games'] as List;
+
+    final games = gamesData
+      .map((gameData) => Game.fromJson(gameData))
+      .toList();
+
+    context.read<GamesBloc>().add(SaveGames(games: games));
 
     showDialog(
       context: context,
-      builder: (context) {
-        return ContentDialog(
-          content: Text(text),
-          actions: [
-            Button(
-              autofocus: true,
-              onPressed: closeDialog,
-              child: Text('Ok'),
-            ),
-          ],
-        );
+      builder: (_) {
+        return NotificationDialog(message: 'Import finished succesfully');
       }
     );
   }
 
-  void _confirmationDialog(String text, AsyncCallback callback) {
-    closeDialog() => Navigator.pop(context);
+  void _handleExport(BuildContext context) async {
+    String? outputFile = await FilePicker.platform.saveFile(
+      fileName: 'Gamorrah.json',
+    );
 
+    if (outputFile == null) {
+      return;
+    }
+
+    if (!context.mounted) {
+      return;
+    }
+
+    File file = File(outputFile);
+
+    final games = context.read<GamesBloc>().state.games.toList();
+
+    games.sort((gameA, gameB) => gameA.title.compareTo(gameB.title));
+
+    final data = { 
+      'games': games.map((e) => e.toJson()).toList(),
+    };
+
+    file.writeAsStringSync(jsonEncode(data));
+    
     showDialog(
       context: context,
+      builder: (_) {
+        return NotificationDialog(message: 'Export finished succesfully');
+      }
+    );
+  }
+
+  void _handleDeleteAll(BuildContext context) async {
+    final block = context.read<GamesBloc>();
+
+    showDialog(
+      context: context, 
       builder: (context) {
-        return ContentDialog(
-          content: Text(text),
-          actions: [
-            FilledButton(
-              onPressed: () async {
-                await callback();
-                closeDialog();
-              },
-              child: Text('OK'),
-            ),
-            Button(
-              autofocus: true,
-              onPressed: closeDialog,
-              child: Text('Cancel'),
-            ),
-          ],
+        return ConfirmationDialog(
+          message: 'All games will be deleted. Proceed?',
+          callback: () async {
+            block.add(DeleteAllGames());
+          }
         );
       }
     );
