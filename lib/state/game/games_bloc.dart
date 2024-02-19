@@ -26,7 +26,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     try {
       emit(state.copyWith(phase: GamesStatePhase.loading));
 
-      final games = (await gameRepository.get());
+      final games = await gameRepository.get();
 
       emit(state.copyWith(
         phase: GamesStatePhase.success,
@@ -80,6 +80,11 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
   ) async {
     try {
       emit(state.copyWith(phase: GamesStatePhase.loading));
+
+      final includedGames = state.games
+        .where((game) => game.parentId == event.id);
+
+      Future.wait(includedGames.map((e) => gameRepository.delete(e.id)));
 
       await gameRepository.delete(event.id);
 
