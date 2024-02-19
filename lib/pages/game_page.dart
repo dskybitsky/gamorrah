@@ -81,7 +81,11 @@ class _GamePageState extends State<GamePage> {
 
   List<Widget> _buildFormWidgets(Game game, GamesState state) {
     final includedGames = state.games
-      .where((element) => element.parentId == game.id);
+      .where((element) => element.parentId == game.id)
+      .toList();
+
+    includedGames
+      .sort((gameA, gameB) => (gameA.index ?? 0).compareTo(gameB.index ?? 0));
 
     var widgets = <Widget>[];
 
@@ -129,7 +133,17 @@ class _GamePageState extends State<GamePage> {
           games: includedGames, 
           thumbSize: GameThumbSize.small,
           onReorder: (oldIndex, newIndex) {
-            // service.reorderIncluded(game.id, oldIndex, newIndex);
+            var games = includedGames.toList();
+
+            final movingGame = games.removeAt(oldIndex);
+
+            games.insert(newIndex, movingGame);
+
+            context.read<GamesBloc>().add(
+              SaveGames(
+                games: games.indexed.map((e) => e.$2.copyWith(index: Optional(e.$1)))
+              )
+            );
           },
         )
       )
