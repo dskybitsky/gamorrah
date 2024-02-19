@@ -18,7 +18,14 @@ class ConfirmationDialog extends StatelessWidget {
     return ContentDialog(
       content: Text(message),
       actions: [
+        Button(
+          onPressed: () {
+            closeDialog(context);
+          },
+          child: Text('Cancel'),
+        ),
         FilledButton(
+          autofocus: true,
           onPressed: () async {
             await callback();
             
@@ -28,13 +35,7 @@ class ConfirmationDialog extends StatelessWidget {
           },
           child: Text('OK'),
         ),
-        Button(
-          autofocus: true,
-          onPressed: () {
-            closeDialog(context);
-          },
-          child: Text('Cancel'),
-        ),
+        
       ],
     );
   }
