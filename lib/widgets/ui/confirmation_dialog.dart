@@ -2,7 +2,6 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
 
 class ConfirmationDialog extends StatelessWidget {
-
   ConfirmationDialog({
     required this.message,
     required this.callback,
