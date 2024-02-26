@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 
 class GameStatusInput extends StatelessWidget {
@@ -22,7 +23,7 @@ class GameStatusInput extends StatelessWidget {
             children: [
               const Icon(FluentIcons.history),
               const SizedBox(width: 8),
-              const Text('Backlog'),
+              Text(t.types.gameStatus.backlog),
             ]
           ),
         ),
@@ -32,7 +33,7 @@ class GameStatusInput extends StatelessWidget {
             children: [
               const Icon(FluentIcons.play),
               const SizedBox(width: 8),
-              const Text('Playing'),
+              Text(t.types.gameStatus.playing),
             ]
           )
         ),
@@ -42,7 +43,7 @@ class GameStatusInput extends StatelessWidget {
             children: [
               const Icon(FluentIcons.completed),
               const SizedBox(width: 8),
-              const Text('Finished'),
+              Text(t.types.gameStatus.finished),
             ]
           )
         ),
@@ -52,7 +53,7 @@ class GameStatusInput extends StatelessWidget {
             children: [
               const Icon(FluentIcons.waitlist_confirm),
               const SizedBox(width: 8),
-              const Text('Wishlist'),
+              Text(t.types.gameStatus.wishlist),
             ]
           )
         ),

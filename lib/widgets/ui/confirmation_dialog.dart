@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   ConfirmationDialog({
@@ -21,7 +22,7 @@ class ConfirmationDialog extends StatelessWidget {
           onPressed: () {
             closeDialog(context);
           },
-          child: Text('Cancel'),
+          child: Text(t.ui.general.cancelButton),
         ),
         FilledButton(
           autofocus: true,
@@ -32,9 +33,8 @@ class ConfirmationDialog extends StatelessWidget {
               closeDialog(context);
             }
           },
-          child: Text('OK'),
+          child: Text(t.ui.general.okButton),
         ),
-        
       ],
     );
   }

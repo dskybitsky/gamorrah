@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
@@ -35,7 +36,7 @@ class _GamesScreenState extends State<GamesPage> {
 
         if (state.phase.isError) {
           return Center(
-            child: Text('Error'),
+            child: Text(t.ui.general.errorText),
           );
         }
         
@@ -57,7 +58,7 @@ class _GamesScreenState extends State<GamesPage> {
         builder: (context) {
           if (state.games.isEmpty) {
             return Center(
-              child: Text('Empty'),
+              child: Text(t.ui.general.emptyText),
             );
           }
 
@@ -70,7 +71,7 @@ class _GamesScreenState extends State<GamesPage> {
               alignment: Alignment.centerRight,
               padding: EdgeInsets.only(top: 8, bottom: 8, right: 24),
               child: Text(
-                'Games total: ${games.length}',
+                t.ui.gamesPage.gamesTotalText(count: games.length),
                 style: FluentTheme.of(context).typography.caption,
               ),
             ),
@@ -90,7 +91,7 @@ class _GamesScreenState extends State<GamesPage> {
             SizedBox(
               width: 196,
               child: TextBox(
-                placeholder: "Filter",
+                placeholder: t.ui.gamesPage.searchPlaceholder,
                 onChanged: (value) {
                   setState(() {
                     _filter = value;
@@ -111,10 +112,10 @@ class _GamesScreenState extends State<GamesPage> {
                 primaryItems: [
                   CommandBarButton(
                     icon: const Icon(FluentIcons.add),
-                    label: const Text('Add New Game'),
+                    label: Text(t.ui.gamesPage.addGameButton),
                     onPressed: () {
                       final game = Game.create(
-                        title: "New Game", 
+                        title: t.ui.gamesPage.defaultGameTitle, 
                         thumbUrl: null,
                         status: widget.status,
                       );
@@ -166,13 +167,13 @@ class _GamesScreenState extends State<GamesPage> {
   String _getTitle() {
     switch (widget.status) {
       case GameStatus.backlog:
-        return 'Backlog';
+        return t.types.gameStatus.backlog;
       case GameStatus.playing:
-        return 'Playing';
+        return t.types.gameStatus.playing;
       case GameStatus.finished:
-        return 'Finished';
+        return t.types.gameStatus.finished;
       case GameStatus.wishlist:
-        return 'Wishlist';
+        return t.types.gameStatus.wishlist;
     }
   }
 }

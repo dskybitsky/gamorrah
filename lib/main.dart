@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/hive_game.dart';
 import 'package:gamorrah/theme.dart';
 import 'package:gamorrah/pages/home_page.dart';
@@ -9,6 +10,10 @@ import 'package:window_manager/window_manager.dart';
 
 void main() async {
   SystemTheme.accentColor.load();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  LocaleSettings.useDeviceLocale();
 
   await _initHive();
   await _initWindow();
@@ -23,8 +28,7 @@ Future<void> _initHive() async {
 }
 
 Future<void> _initWindow() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+  
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = WindowOptions(

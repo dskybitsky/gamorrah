@@ -1,7 +1,9 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_view.dart';
 import 'package:gamorrah/widgets/game/game_personal_rating_input.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
 
@@ -18,27 +20,52 @@ class GamePersonalInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expander(
-      header: Text('Personal'),
+      header: _buildHeader(context),
       content: Column(
         children: [
-          LabeledInput(label: Text('Beaten'), child: GamePersonalBeatenInput(
-            value: value.beaten, 
-            onChanged: _onBeatenChanged,
-          )),
+          LabeledInput(
+            label: Text(t.ui.gamePersonalControl.beatenLabel), 
+            child: GamePersonalBeatenInput(
+              value: value.beaten, 
+              onChanged: _onBeatenChanged,
+            )
+          ),
           SizedBox(height: 16),
-          LabeledInput(label: Text('Rating'), child: GamePersonalRatingInput(
-            value: value.rating, 
-            onChanged: _onRatingChanged,
-          )),
+          LabeledInput(
+            label: Text(t.ui.gamePersonalControl.ratingLabel), 
+            child: GamePersonalRatingInput(
+              value: value.rating, 
+              onChanged: _onRatingChanged,
+            )
+          ),
           SizedBox(height: 16),
-          LabeledInput(label: Text('Time Spent'), child: NumberBox(
-            placeholder: 'Hours',
-            value: value.timeSpent,
-            onChanged: _onTimeSpentChanged
-          )),
+          LabeledInput(
+            label: Text(t.ui.gamePersonalControl.timeSpentLabel), 
+            child: NumberBox(
+              placeholder: t.ui.general.hoursText,
+              value: value.timeSpent,
+              onChanged: _onTimeSpentChanged
+            )),
         ],
       )
     );
+  }
+  
+  Widget _buildHeader(BuildContext context) {
+    var widgets = <Widget>[
+        Text(t.ui.gamePersonalControl.headerLabel),
+        SizedBox(width: 16),
+        GamePersonalBeatenView(value: value.beaten)
+    ];
+
+    final timeSpent = value.timeSpent;
+
+    if (timeSpent != null) {
+      widgets.add(SizedBox(width: 8));
+      widgets.add(Text(t.ui.general.hoursCountText(count: timeSpent)));
+    }
+
+    return Row(children: widgets);
   }
 
   void _onBeatenChanged(GamePersonalBeaten? beaten) {

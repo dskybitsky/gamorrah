@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/pages/settings_page.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
@@ -28,28 +29,28 @@ class _HomePageLayoutState extends State<HomePageLayout> {
         items: [
           PaneItem(
             icon: const Icon(FluentIcons.history),
-            title: const Text('Backlog'),
+            title: Text(t.types.gameStatus.backlog),
             body: GamesNavigator(
               status: GameStatus.backlog,
             ),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.play),
-            title: const Text('Playing'),
+            title: Text(t.types.gameStatus.playing),
             body: GamesNavigator(
               status: GameStatus.playing,
             ),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.completed),
-            title: const Text('Finished'),
+            title: Text(t.types.gameStatus.finished),
             body: GamesNavigator(
               status: GameStatus.finished,
             ),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.waitlist_confirm),
-            title: const Text('Wishlist'),
+            title: Text(t.types.gameStatus.wishlist),
             body: GamesNavigator(
               status: GameStatus.wishlist,
             ),
@@ -58,7 +59,7 @@ class _HomePageLayoutState extends State<HomePageLayout> {
         footerItems: [
           PaneItem(
             icon: const Icon(FluentIcons.settings),
-            title: const Text('Settings'),
+            title: Text(t.ui.homePage.settingsLink),
             body: SettingsPage(),
           ),
         ],

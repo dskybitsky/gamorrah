@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 
 class NotificationDialog extends StatelessWidget {
 
@@ -18,7 +19,7 @@ class NotificationDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text('Ok'),
+          child: Text(t.ui.general.okButton),
         ),
       ],
     );

@@ -1,5 +1,6 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
@@ -39,7 +40,7 @@ class _GameModalState extends State<GameModal> {
       content: _buildDialogContent(context),
       actions: [
         Button(
-          child: const Text('Cancel'),
+          child: Text(t.ui.general.cancelButton),
           onPressed: () => Navigator.pop(context),
         ),
         FilledButton(
@@ -56,7 +57,7 @@ class _GameModalState extends State<GameModal> {
             );
             Navigator.pop(context);
           },
-          child: Text('Save'),
+          child: Text(t.ui.general.saveButton),
         ),
       ],
     );
@@ -66,52 +67,52 @@ class _GameModalState extends State<GameModal> {
     return ListView(
       children: [
         InfoLabel(
-          label: 'Title:',
+          label: t.ui.gamePage.titleLabel,
           child: TextBox(
             controller: _titleController,
-            placeholder: 'Title',
+            placeholder: t.ui.gamePage.titlePlaceholder,
             expands: false,
           ),
         ),
         SizedBox(height: 16),
         InfoLabel(
-          label: 'Franchise:',
+          label: t.ui.gamePage.franchiseLabel,
           child: TextBox(
             controller: _franchiseController,
-            placeholder: 'Franchise Name',
+            placeholder: t.ui.gamePage.franchisePlaceholder,
             expands: false,
           ),
         ),
         SizedBox(height: 16),
         InfoLabel(
-          label: 'Edition:',
+          label: t.ui.gamePage.editionLabel,
           child: TextBox(
             controller: _editionController,
-            placeholder: 'Edition',
+            placeholder: t.ui.gamePage.editionPlaceholder,
             expands: false,
           ),
         ),
         SizedBox(height: 16),
         InfoLabel(
-          label: 'Year:',
+          label: t.ui.gamePage.yearLabel,
           child: NumberBox(
-            placeholder: 'Year',
+            placeholder: t.ui.gamePage.yearPlaceholder,
             value: _year,
             onChanged: (value) => { _year = value },
           ),
         ),
         SizedBox(height: 16),
         InfoLabel(
-          label: 'Thumbnail URL:',
+          label: t.ui.gamePage.thumbUrlLabel,
           child: TextBox(
             controller: _thumbUrlController,
-            placeholder: 'URL',
+            placeholder: t.ui.gamePage.thumbUrlPlaceholder,
             expands: false,
           ),
         ),
         SizedBox(height: 16),
         InfoLabel(
-          label: 'Platforms:',
+          label: t.ui.gamePage.platformsLabel,
           child: Expander(
             header: Wrap(
               children: _platforms

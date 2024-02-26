@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
@@ -17,7 +18,7 @@ class SettingsPage extends StatelessWidget {
       builder: (context, state) {
         return NavigationView(
           appBar: NavigationAppBar(
-              title: Text('Settings'),
+              title: Text(t.ui.settingsPage.settingsTitle),
               automaticallyImplyLeading: false,
           ),
           content: ScaffoldPage(
@@ -49,7 +50,7 @@ class SettingsPage extends StatelessWidget {
               onPressed: () {
                 _handleImport(context);
               },
-              child: Text('Import from JSON'),
+              child: Text(t.ui.settingsPage.importFromJsonButton),
             )),
           ],
         ),        
@@ -62,7 +63,7 @@ class SettingsPage extends StatelessWidget {
               onPressed: () {
                 _handleExport(context);
               },
-              child: Text('Export to JSON'),
+              child: Text(t.ui.settingsPage.exportToJsonButton),
             )),
           ],
         ),
@@ -78,7 +79,7 @@ class SettingsPage extends StatelessWidget {
               onPressed: () async {
                 _handleDeleteAll(context);
               },
-              child: Text('Delete All Games'),
+              child: Text(t.ui.settingsPage.deleteAllGamesButton),
             )),
           ],
         ),
@@ -114,7 +115,9 @@ class SettingsPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) {
-        return NotificationDialog(message: 'Import finished succesfully');
+        return NotificationDialog(
+          message: t.ui.settingsPage.importFromJsonSuccessMessage
+        );
       }
     );
   }
@@ -147,7 +150,9 @@ class SettingsPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (_) {
-        return NotificationDialog(message: 'Export finished succesfully');
+        return NotificationDialog(
+          message: t.ui.settingsPage.exportToJsonSuccessMessage
+        );
       }
     );
   }
@@ -159,7 +164,7 @@ class SettingsPage extends StatelessWidget {
       context: context, 
       builder: (context) {
         return ConfirmationDialog(
-          message: 'All games will be deleted. Proceed?',
+          message: t.ui.settingsPage.deleteAllGamesConfirmationMessage,
           callback: () async {
             block.add(DeleteAllGames());
           }

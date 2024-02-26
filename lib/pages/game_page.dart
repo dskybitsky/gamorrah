@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/pages/game_modal.dart';
@@ -149,7 +150,7 @@ class _GamePageState extends State<GamePage> {
     if (game.parentId == null) {
       widgets.add(
         LabeledInput(
-          label: Text('Bundle'), 
+          label: Text(t.ui.gamePage.kindBundleLabel), 
           expanded: false,
           child: ToggleSwitch(
             checked: _kind == GameKind.bundle,
@@ -164,14 +165,14 @@ class _GamePageState extends State<GamePage> {
     } else {
       widgets.add(
         LabeledInput(
-          label: Text('Kind'),
+          label: Text(t.ui.gamePage.kindLabel),
           child: ComboBox<GameKind?>(
             value: _kind,
-            placeholder: Text('Game'),
+            placeholder: Text(t.types.gameKind.none),
             items: [
-              ComboBoxItem(value: null, child: Text('Game')),
-              ComboBoxItem(value: GameKind.dlc, child: Text('DLC/Expansion/Addon')),
-              ComboBoxItem(value: GameKind.content, child: Text('Content Pack')),
+              ComboBoxItem(value: null, child: Text(t.types.gameKind.none)),
+              ComboBoxItem(value: GameKind.dlc, child: Text(t.types.gameKind.dlc)),
+              ComboBoxItem(value: GameKind.content, child: Text(t.types.gameKind.content)),
             ],
             onChanged: (value) {
               setState(() {
@@ -216,7 +217,7 @@ class _GamePageState extends State<GamePage> {
 
     widgets.add(
        LabeledInput(
-        label: Text('Status:'),
+        label: Text(t.ui.gamePage.statusLabel),
         child: GameStatusInput(
           value: _status,
           onChanged: (value) {
@@ -243,7 +244,7 @@ class _GamePageState extends State<GamePage> {
           );
           Navigator.pop(context);
         },
-        child: Text('Save'),
+        child: Text(t.ui.general.saveButton),
       )
     );
 
@@ -262,10 +263,10 @@ class _GamePageState extends State<GamePage> {
               primaryItems: [
                 CommandBarButton(
                   icon: const Icon(FluentIcons.add),
-                  label: const Text('Add Included Item'),
+                  label: Text(t.ui.gamePage.addIncludedItemButton),
                   onPressed: () {
                     final game = Game.create(
-                      title: 'New included game',
+                      title: t.ui.gamePage.defaultIncludedGameTitle,
                       status: GameStatus.backlog,
                       parentId: widget.id
                     );
@@ -277,7 +278,7 @@ class _GamePageState extends State<GamePage> {
                 ),
                 CommandBarButton(
                   icon: const Icon(FluentIcons.delete),
-                  label: const Text('Delete'),
+                  label: Text(t.ui.general.deleteButton),
                   onPressed: () {
                     context.read<GamesBloc>().add(DeleteGame(id: widget.id));
 
