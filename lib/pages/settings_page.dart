@@ -7,7 +7,9 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/notification_dialog.dart';
+import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage();
@@ -45,7 +47,7 @@ class SettingsPage extends StatelessWidget {
         Row(
           children: [
             Icon(FluentIcons.import, size: 24.0),
-            SizedBox(width: 16),
+            HSpacer(),
             Expanded(child: Button(
               onPressed: () {
                 _handleImport(context);
@@ -54,11 +56,11 @@ class SettingsPage extends StatelessWidget {
             )),
           ],
         ),        
-        SizedBox(height: 16),
+        VSpacer(),
         Row(
           children: [
             Icon(FluentIcons.export, size: 24.0),
-            SizedBox(width: 16),
+            HSpacer(),
             Expanded(child: Button(
               onPressed: () {
                 _handleExport(context);
@@ -67,11 +69,11 @@ class SettingsPage extends StatelessWidget {
             )),
           ],
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         Row(
           children: [
             Icon(FluentIcons.delete, size: 24.0),
-            SizedBox(width: 16),
+            HSpacer(),
             Expanded(child: FilledButton(
               style: ButtonStyle(
                 backgroundColor: ButtonState.all(Colors.warningPrimaryColor),

@@ -2,7 +2,9 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
+import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GameHowLongToBeatInput extends StatelessWidget {
   const GameHowLongToBeatInput({
@@ -28,7 +30,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
               onChanged: _onStoryChanged,
             )
           ),
-          SizedBox(height: 16),
+          VSpacer(),
           LabeledInput(
             label: Text(t.types.gameHowLongToBeat.storySides),
             child: NumberBox(
@@ -37,7 +39,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
               onChanged: _onStorySidesChanged,
             )
           ),
-          SizedBox(height: 16),
+          VSpacer(),
           LabeledInput(
             label: Text(t.types.gameHowLongToBeat.completionist),
             child: NumberBox(
@@ -54,7 +56,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
   Widget _buildHeader() {
     final widgets = <Widget>[
       Text(t.ui.gameHowLongToBeatControl.headerLabel),
-      SizedBox(width: 16),
+      HSpacer(),
     ];
 
     final story = value.story;
@@ -63,7 +65,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
       widgets.add(Text(t.ui.gameHowLongToBeatControl.storyLabel(
         count: story
       )));
-      widgets.add(SizedBox(width: 8));
+      widgets.add(HSpacer(size: HSpacerSize.s));
     }
 
     final storySides = value.storySides;
@@ -72,7 +74,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
       widgets.add(Text(t.ui.gameHowLongToBeatControl.storySidesLabel(
         count: storySides
       )));
-      widgets.add(SizedBox(width: 8));
+      widgets.add(HSpacer(size: HSpacerSize.s));
     }
 
     final completionist = value.completionist;
@@ -81,7 +83,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
       widgets.add(Text(t.ui.gameHowLongToBeatControl.completionistLabel(
         count: completionist
       )));
-      widgets.add(SizedBox(width: 8));
+      widgets.add(HSpacer(size: HSpacerSize.s));
     }
 
     return Row(children: widgets);

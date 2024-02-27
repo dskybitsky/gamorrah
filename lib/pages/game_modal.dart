@@ -4,6 +4,7 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
+import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GameModal extends StatefulWidget {
   const GameModal({ required this.game });
@@ -74,7 +75,7 @@ class _GameModalState extends State<GameModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
           label: t.ui.gamePage.franchiseLabel,
           child: TextBox(
@@ -83,7 +84,7 @@ class _GameModalState extends State<GameModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
           label: t.ui.gamePage.editionLabel,
           child: TextBox(
@@ -92,7 +93,7 @@ class _GameModalState extends State<GameModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
           label: t.ui.gamePage.yearLabel,
           child: NumberBox(
@@ -101,7 +102,7 @@ class _GameModalState extends State<GameModal> {
             onChanged: (value) => { _year = value },
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
           label: t.ui.gamePage.thumbUrlLabel,
           child: TextBox(
@@ -110,7 +111,7 @@ class _GameModalState extends State<GameModal> {
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
           label: t.ui.gamePage.platformsLabel,
           child: Expander(

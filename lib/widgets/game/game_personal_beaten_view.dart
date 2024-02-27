@@ -1,6 +1,7 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 
 class GamePersonalBeatenView extends StatelessWidget {
   const GamePersonalBeatenView({
@@ -19,7 +20,7 @@ class GamePersonalBeatenView extends StatelessWidget {
 
     if (icon != null && withIcon) {
       return Row(
-        children:[icon, SizedBox(width: 8), text]
+        children:[icon, HSpacer(size: HSpacerSize.s), text]
       );
     }
 

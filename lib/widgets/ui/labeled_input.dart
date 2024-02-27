@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 
 class LabeledInput extends StatelessWidget {
   LabeledInput({
@@ -16,7 +17,7 @@ class LabeledInput extends StatelessWidget {
     return Row(
       children: [
         Expanded(flex: 1, child: label),
-        SizedBox(width: 16),
+        HSpacer(),
         expanded ? Expanded(
           flex: 3,
           child: child,

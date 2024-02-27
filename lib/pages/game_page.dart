@@ -13,6 +13,7 @@ import 'package:gamorrah/widgets/game/game_thumb.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
+import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({ 
@@ -100,7 +101,7 @@ class _GamePageState extends State<GamePage> {
     );
 
     if (game.edition != null) {
-      widgets.add(SizedBox(height: 8));
+      widgets.add(VSpacer(size: VSpacerSize.s));
 
       widgets.add(Center(
         child: Text(
@@ -111,7 +112,7 @@ class _GamePageState extends State<GamePage> {
     }
 
     if (game.year != null) {
-      widgets.add(SizedBox(height: 8));
+      widgets.add(VSpacer(size: VSpacerSize.s));
 
       widgets.add(Center(
         child: Text(
@@ -121,7 +122,7 @@ class _GamePageState extends State<GamePage> {
       ));
     }
 
-    widgets.add(SizedBox(height: 16));
+    widgets.add(VSpacer());
 
     widgets.add(
       Center(
@@ -145,7 +146,7 @@ class _GamePageState extends State<GamePage> {
       )
     );
 
-    widgets.add(SizedBox(height: 16));
+    widgets.add(VSpacer());
 
     if (game.parentId == null) {
       widgets.add(
@@ -186,7 +187,7 @@ class _GamePageState extends State<GamePage> {
     }
 
     if (_kind != GameKind.bundle && _kind != GameKind.content) {
-      widgets.add(SizedBox(height: 24));
+      widgets.add(VSpacer(size: VSpacerSize.l));
 
       widgets.add(
         GamePersonalInput(
@@ -199,7 +200,7 @@ class _GamePageState extends State<GamePage> {
         )
       );
 
-      widgets.add(SizedBox(height: 16));
+      widgets.add(VSpacer());
 
       widgets.add(
         GameHowLongToBeatInput(
@@ -213,7 +214,7 @@ class _GamePageState extends State<GamePage> {
       );
     }    
 
-    widgets.add(SizedBox(height: 16));
+    widgets.add(VSpacer());
 
     widgets.add(
        LabeledInput(
@@ -229,7 +230,7 @@ class _GamePageState extends State<GamePage> {
       )
     );
 
-    widgets.add(SizedBox(height: 24));
+    widgets.add(VSpacer(size: VSpacerSize.l));
 
     widgets.add(
       FilledButton(

@@ -5,7 +5,9 @@ import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_view.dart';
 import 'package:gamorrah/widgets/game/game_personal_rating_input.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
+import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GamePersonalInput extends StatelessWidget {
   const GamePersonalInput({
@@ -30,7 +32,7 @@ class GamePersonalInput extends StatelessWidget {
               onChanged: _onBeatenChanged,
             )
           ),
-          SizedBox(height: 16),
+          VSpacer(),
           LabeledInput(
             label: Text(t.ui.gamePersonalControl.ratingLabel), 
             child: GamePersonalRatingInput(
@@ -38,7 +40,7 @@ class GamePersonalInput extends StatelessWidget {
               onChanged: _onRatingChanged,
             )
           ),
-          SizedBox(height: 16),
+          VSpacer(),
           LabeledInput(
             label: Text(t.ui.gamePersonalControl.timeSpentLabel), 
             child: NumberBox(
@@ -54,14 +56,14 @@ class GamePersonalInput extends StatelessWidget {
   Widget _buildHeader(BuildContext context) {
     var widgets = <Widget>[
         Text(t.ui.gamePersonalControl.headerLabel),
-        SizedBox(width: 16),
+        HSpacer(),
         GamePersonalBeatenView(value: value.beaten)
     ];
 
     final timeSpent = value.timeSpent;
 
     if (timeSpent != null) {
-      widgets.add(SizedBox(width: 8));
+      widgets.add(HSpacer(size: HSpacerSize.s));
       widgets.add(Text(t.ui.general.hoursCountText(count: timeSpent)));
     }
 
