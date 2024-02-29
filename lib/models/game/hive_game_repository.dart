@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_game.dart';
 
 class HiveGameRepository extends GameRepository {
-  static const boxName = 'games:v:07';
+  static const boxName = 'games:v:07:dev';
 
   Box<HiveGame>? _box;
 

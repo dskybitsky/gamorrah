@@ -19,7 +19,14 @@ class GamesPage extends StatefulWidget {
 }
 
 class _GamesScreenState extends State<GamesPage> {
-  String _filter = '';
+  late TextEditingController _filterController;
+
+  @override
+  void initState() {
+    super.initState();
+
+     _filterController = TextEditingController(text: '');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -92,11 +99,10 @@ class _GamesScreenState extends State<GamesPage> {
             SizedBox(
               width: 196,
               child: TextBox(
+                controller: _filterController,
                 placeholder: t.ui.gamesPage.searchPlaceholder,
                 onChanged: (value) {
-                  setState(() {
-                    _filter = value;
-                  });
+                  setState(() {});
                 },
               ),
             ),
@@ -137,13 +143,15 @@ class _GamesScreenState extends State<GamesPage> {
   }
 
   List<Game> _getGamesList(GamesState state) {
+    final filter = _filterController.text;
+
     final games = state.games
       .where((game) {
         return game.status == widget.status
           && game.parentId == null
           && (
-            _filter == '' 
-            || game.title.contains(RegExp(_filter, caseSensitive: false))
+            filter == '' 
+            || game.title.contains(RegExp(filter, caseSensitive: false))
           );
       })
       .toList();
