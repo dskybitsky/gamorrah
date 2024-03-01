@@ -1,10 +1,13 @@
+import 'package:gamorrah/conf.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_game.dart';
 
 class HiveGameRepository extends GameRepository {
-  static const boxName = 'games:v:07:dev';
+  static const boxName = EnvironmentConfig.isDev 
+    ? 'games:v:07:dev'
+    : 'games:v:07';
 
   Box<HiveGame>? _box;
 
