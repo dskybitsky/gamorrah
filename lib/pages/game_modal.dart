@@ -1,9 +1,10 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/game/game_service.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
+import 'package:gamorrah/state/game/games_bloc.dart';
+import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GameModal extends StatefulWidget {
   const GameModal({ required this.game });
@@ -15,8 +16,6 @@ class GameModal extends StatefulWidget {
 }
 
 class _GameModalState extends State<GameModal> {
-  late final GameService service;
-
   late TextEditingController _titleController;
   late TextEditingController _franchiseController;
   late TextEditingController _editionController;
@@ -27,8 +26,6 @@ class _GameModalState extends State<GameModal> {
   @override
   void initState() {
     super.initState();
-
-    service = Get.find();
 
      _titleController = TextEditingController(text: widget.game.title);
      _franchiseController = TextEditingController(text: widget.game.franchise);
@@ -44,22 +41,24 @@ class _GameModalState extends State<GameModal> {
       content: _buildDialogContent(context),
       actions: [
         Button(
-          child: const Text('Cancel'),
+          child: Text(t.ui.general.cancelButton),
           onPressed: () => Navigator.pop(context),
         ),
         FilledButton(
           onPressed: () {
-            service.save(widget.game.copyWith(
-              title: Optional(_titleController.text),
-              franchise: Optional(_franchiseController.text),
-              edition: Optional(_editionController.text),
-              year: Optional(_year),
-              thumbUrl: Optional(_thumbUrlController.text),
-              platforms: Optional(_platforms),
-            ));
+            context.read<GamesBloc>().add(
+              SaveGame(game: widget.game.copyWith(
+                title: Optional(_titleController.text),
+                franchise: Optional(_franchiseController.text),
+                edition: Optional(_editionController.text),
+                year: Optional(_year),
+                thumbUrl: Optional(_thumbUrlController.text),
+                platforms: Optional(_platforms),
+              ))
+            );
             Navigator.pop(context);
           },
-          child: Text('Save'),
+          child: Text(t.ui.general.saveButton),
         ),
       ],
     );
@@ -69,52 +68,52 @@ class _GameModalState extends State<GameModal> {
     return ListView(
       children: [
         InfoLabel(
-          label: 'Title:',
+          label: t.ui.gamePage.titleLabel,
           child: TextBox(
             controller: _titleController,
-            placeholder: 'Title',
+            placeholder: t.ui.gamePage.titlePlaceholder,
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
-          label: 'Franchise:',
+          label: t.ui.gamePage.franchiseLabel,
           child: TextBox(
             controller: _franchiseController,
-            placeholder: 'Franchise Name',
+            placeholder: t.ui.gamePage.franchisePlaceholder,
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
-          label: 'Edition:',
+          label: t.ui.gamePage.editionLabel,
           child: TextBox(
             controller: _editionController,
-            placeholder: 'Edition',
+            placeholder: t.ui.gamePage.editionPlaceholder,
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
-          label: 'Year:',
+          label: t.ui.gamePage.yearLabel,
           child: NumberBox(
-            placeholder: 'Year',
+            placeholder: t.ui.gamePage.yearPlaceholder,
             value: _year,
             onChanged: (value) => { _year = value },
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
-          label: 'Thumbnail URL:',
+          label: t.ui.gamePage.thumbUrlLabel,
           child: TextBox(
             controller: _thumbUrlController,
-            placeholder: 'URL',
+            placeholder: t.ui.gamePage.thumbUrlPlaceholder,
             expands: false,
           ),
         ),
-        SizedBox(height: 16),
+        VSpacer(),
         InfoLabel(
-          label: 'Platforms:',
+          label: t.ui.gamePage.platformsLabel,
           child: Expander(
             header: Wrap(
               children: _platforms

@@ -1,0 +1,105 @@
+{
+  "ui": {
+    "general": {
+      "okButton": "OK",
+      "cancelButton": "Cancel",
+      "saveButton": "Save",
+      "deleteButton": "Delete",
+      "errorText": "Error",
+      "emptyText": "Empty",
+      "hoursText": "Hours",
+      "hoursCountText": "${count} hours",
+      "hoursCountShortText": "${count} h."
+    },
+    "homePage": {
+      "settingsLink": "Settings"
+    },
+    "gamesPage": {
+      "addGameButton": "Add Game",
+      "searchPlaceholder": "Search...",
+      "gamesTotalText": "Games total: ${count}",
+      "defaultGameTitle": "New game"
+    },
+    "gamePage": {
+      "addIncludedItemButton": "Add Included Item",
+      "titleLabel": "@:types.game.title:",
+      "titlePlaceholder": "@:types.game.title",
+      "franchiseLabel": "@:types.game.franchise:",
+      "franchisePlaceholder": "@:types.game.franchise",
+      "editionLabel": "@:types.game.edition:",
+      "editionPlaceholder": "@:types.game.edition",
+      "yearLabel": "@:types.game.year:",
+      "yearPlaceholder": "@:types.game.year",
+      "thumbUrlLabel": "@:types.game.thumbUrl:",
+      "thumbUrlPlaceholder": "URL",
+      "kindLabel": "@:types.game.kind:",
+      "kindBundleLabel": "@:types.gameKind.bundle",
+      "platformsLabel": "@:types.game.platforms:", 
+      "statusLabel": "@:types.game.status:",
+      "defaultIncludedGameTitle": "New included game",
+      "deleteGameConfirmationMessage": "This game will be deleted. Proceed?"
+    },
+    "settingsPage": {
+      "settingsTitle": "Settings",
+      "importFromJsonButton": "Import from JSON",
+      "importFromJsonSuccessMessage": "Import finished succesfully",
+      "exportToJsonButton": "Export to JSON",
+      "exportToJsonSuccessMessage": "Export finished succesfully",
+      "deleteAllGamesButton": "Delete All Games",
+      "deleteAllGamesConfirmationMessage": "All games will be deleted. Proceed?"
+    },
+    "gamePersonalControl": {
+      "headerLabel": "@:types.gamePersonal.beaten:",
+      "beatenLabel": "@:types.gamePersonal.beaten:",
+      "ratingLabel": "@:types.gamePersonal.rating:",
+      "timeSpentLabel": "@:types.gamePersonal.timeSpent:"
+    },
+    "gameHowLongToBeatControl": {
+      "headerLabel": "@:types.game.howLongToBeat:",
+      "storyLabel": "S: @:ui.general.hoursCountShortText",
+      "storySidesLabel": "S+S: @:ui.general.hoursCountShortText",
+      "completionistLabel": "C: @:ui.general.hoursCountShortText"
+    }
+  },
+  "types": {
+    "game": {
+      "title": "Title",
+      "franchise": "Franchise",
+      "edition": "Edition",
+      "year": "Year",
+      "thumbUrl": "Thumbnail URL",
+      "kind": "Kind",
+      "platforms": "Platforms",
+      "howLongToBeat": "HowLongToBeat",
+      "status": "Status"
+    },
+    "gameKind": {
+      "none": "Game",
+      "bundle": "Bundle",
+      "dlc": "DLC/Expansion/Addon",
+      "content": "Content Pack"
+    },
+    "gameStatus": {
+      "backlog": "Backlog",
+      "playing": "Playing",
+      "finished": "Finished",
+      "wishlist": "Wishlist"
+    },
+    "gamePersonal": {
+      "beaten": "Beaten",
+      "rating": "Rating",
+      "timeSpent": "Time Spent"
+    },
+    "gamePersonalBeaten": {
+      "none": "No",
+      "story": "Story",
+      "storySides": "Story + Sides",
+      "completionist": "Completionist"
+    },
+    "gameHowLongToBeat": {
+      "story": "Story",
+      "storySides": "Story + Sides",
+      "completionist": "Completionist"
+    }
+  }
+}

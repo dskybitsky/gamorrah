@@ -1,11 +1,11 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/presentation/game/navigator.dart';
-import 'package:gamorrah/presentation/game/thumb.dart';
+import 'package:gamorrah/widgets/game/game_thumb.dart';
+import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:reorderables/reorderables.dart';
 
-class GameList extends StatelessWidget {
-  const GameList({ 
+class GamesList extends StatelessWidget {
+  const GamesList({ 
     required this.games,
     this.thumbSize = GameThumbSize.medium,
     this.onReorder,
@@ -42,7 +42,7 @@ class GameList extends StatelessWidget {
               game: game,
               size: thumbSize,
               onPressed: () {
-                GameNavigator.goGameScreen(context, id: game.id);
+                GamesNavigator.goGame(context, id: game.id);
               },
             ),
           ]

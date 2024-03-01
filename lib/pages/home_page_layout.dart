@@ -1,29 +1,23 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/presentation/game/navigator.dart';
-import 'package:gamorrah/presentation/settings/settings_screen.dart';
+import 'package:gamorrah/pages/settings_page.dart';
+import 'package:gamorrah/widgets/game/games_navigator.dart';
 
-class MainScreen extends StatefulWidget {
+class HomePageLayout extends StatefulWidget {
   final int initialPage;
 
-  const MainScreen({
+  const HomePageLayout({
     super.key,
     this.initialPage = 0,
   });
 
   @override
-  State<MainScreen> createState() => MainScreenState();
+  State<HomePageLayout> createState() => _HomePageLayoutState();
 }
 
-class MainScreenState extends State<MainScreen> {
+class _HomePageLayoutState extends State<HomePageLayout> {
   int _page = 0;
-  
-  @override
-  void initState() {
-    super.initState();
-
-    _page = widget.initialPage;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,33 +29,29 @@ class MainScreenState extends State<MainScreen> {
         items: [
           PaneItem(
             icon: const Icon(FluentIcons.history),
-            title: const Text('Backlog'),
-            body: GameNavigator(
-              navigatorKey: GlobalKey(),
+            title: Text(t.types.gameStatus.backlog),
+            body: GamesNavigator(
               status: GameStatus.backlog,
             ),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.play),
-            title: const Text('Playing'),
-            body: GameNavigator(
-              navigatorKey: GlobalKey(),
+            title: Text(t.types.gameStatus.playing),
+            body: GamesNavigator(
               status: GameStatus.playing,
             ),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.completed),
-            title: const Text('Finished'),
-            body: GameNavigator(
-              navigatorKey: GlobalKey(),
+            title: Text(t.types.gameStatus.finished),
+            body: GamesNavigator(
               status: GameStatus.finished,
             ),
           ),
           PaneItem(
             icon: const Icon(FluentIcons.waitlist_confirm),
-            title: const Text('Wishlist'),
-            body: GameNavigator(
-              navigatorKey: GlobalKey(),
+            title: Text(t.types.gameStatus.wishlist),
+            body: GamesNavigator(
               status: GameStatus.wishlist,
             ),
           ),   
@@ -69,8 +59,8 @@ class MainScreenState extends State<MainScreen> {
         footerItems: [
           PaneItem(
             icon: const Icon(FluentIcons.settings),
-            title: const Text('Settings'),
-            body: SettingsScreen(),
+            title: Text(t.ui.homePage.settingsLink),
+            body: SettingsPage(),
           ),
         ],
       ),

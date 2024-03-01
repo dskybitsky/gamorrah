@@ -28,6 +28,16 @@ class GamePersonal {
     );
   }
 
+  GamePersonal copyWith({
+    Optional<GamePersonalBeaten?>? beaten,
+    Optional<double?>? rating,
+    Optional<double?>? timeSpent
+  }) => GamePersonal(
+    beaten: beaten != null ? beaten.value : this.beaten,
+    rating: rating != null ? rating.value : this.rating,
+    timeSpent: timeSpent != null ? timeSpent.value : this.timeSpent,
+  );
+
   Map<String, dynamic> toJson() => {
     'beaten': beaten?.name,
     'rating': rating,
@@ -57,6 +67,16 @@ class GameHowLongToBeat {
       completionist: completionist?.toDouble(),
     );
   }
+
+  GameHowLongToBeat copyWith({
+    Optional<double?>? story,
+    Optional<double?>? storySides,
+    Optional<double?>? completionist
+  }) => GameHowLongToBeat(
+    story: story != null ? story.value : this.story,
+    storySides: storySides != null ? storySides.value : this.storySides,
+    completionist: completionist != null ? completionist.value : this.completionist,
+  );
 
   Map<String, dynamic> toJson() => {
     'story': story,
@@ -253,28 +273,6 @@ class Game {
     status: status != null ? status.value : this.status,
     parentId: parentId != null ? parentId.value : this.parentId,
   );
-
-  GamePersonal? copyPersonalWith({
-    Optional<GamePersonalBeaten?>? beaten,
-    Optional<double?>? rating,
-    Optional<double?>? timeSpent
-  }) => beaten != null || rating != null || timeSpent != null
-    ? GamePersonal(
-      beaten: beaten != null ? beaten.value : personal?.beaten,
-      rating: rating != null ? rating.value : personal?.rating,
-      timeSpent: timeSpent != null ? timeSpent.value : personal?.timeSpent,
-    ): personal;
-  
-  GameHowLongToBeat? copyHowLongToBeatWith({
-    Optional<double?>? story,
-    Optional<double?>? storySides,
-    Optional<double?>? completionist
-  }) => story != null || storySides != null || completionist != null
-    ? GameHowLongToBeat(
-      story: story != null ? story.value : howLongToBeat?.story,
-      storySides: storySides != null ? storySides.value : howLongToBeat?.storySides,
-      completionist: completionist != null ? completionist.value : howLongToBeat?.completionist,
-    ): howLongToBeat;
 
   static String? _normalize(String? s) => s == '' ? null : s;
 }

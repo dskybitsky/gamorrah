@@ -1,24 +1,34 @@
 import 'package:fluent_ui/fluent_ui.dart';
-import 'package:gamorrah/models/game/game_service.dart';
-import 'package:gamorrah/models/game/hive_game_service.dart';
-import 'package:gamorrah/presentation/main_screen.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
+import 'package:gamorrah/models/game/hive_game.dart';
 import 'package:gamorrah/theme.dart';
-import 'package:get/instance_manager.dart';
+import 'package:gamorrah/pages/home_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
-  GameService gameService = HiveGameService();
-
-  await gameService.init();
-
-  Get.put(gameService);
-
   SystemTheme.accentColor.load();
 
   WidgetsFlutterBinding.ensureInitialized();
 
+  LocaleSettings.useDeviceLocale();
+
+  await _initHive();
+  await _initWindow();
+
+  runApp(MyApp());
+}
+
+Future<void> _initHive() async {
+  Hive.registerAdapter(HiveGameAdapter());
+
+  await Hive.initFlutter();
+}
+
+Future<void> _initWindow() async {
+  
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = WindowOptions(
@@ -31,8 +41,6 @@ void main() async {
     await windowManager.show();
     await windowManager.focus();
   });
-
-  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -64,7 +72,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           locale: appTheme.locale,
-          home: const MainScreen(),
+          home: const HomePage(),
         );
       }
     );
