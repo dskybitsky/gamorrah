@@ -36,7 +36,8 @@
       "kindBundleLabel": "@:types.gameKind.bundle",
       "platformsLabel": "@:types.game.platforms:", 
       "statusLabel": "@:types.game.status:",
-      "defaultIncludedGameTitle": "New included game"
+      "defaultIncludedGameTitle": "New included game",
+      "deleteGameConfirmationMessage": "This game will be deleted. Proceed?"
     },
     "settingsPage": {
       "settingsTitle": "Settings",

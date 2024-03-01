@@ -12,6 +12,7 @@ import 'package:gamorrah/widgets/game/game_status_input.dart';
 import 'package:gamorrah/widgets/game/game_thumb.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
+import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
@@ -281,9 +282,7 @@ class _GamePageState extends State<GamePage> {
                   icon: const Icon(FluentIcons.delete),
                   label: Text(t.ui.general.deleteButton),
                   onPressed: () {
-                    context.read<GamesBloc>().add(DeleteGame(id: widget.id));
-
-                    Navigator.pop(context);
+                    _handleDelete(context);
                   },
                 ),
               ],
@@ -297,5 +296,26 @@ class _GamePageState extends State<GamePage> {
     final games = context.read<GamesBloc>().state.games;
 
     return games.firstWhereOrNull((element) => element.id == widget.id);
+  }
+
+  void _handleDelete(BuildContext context) async {
+    final block = context.read<GamesBloc>();
+
+    goBack() {
+      Navigator.pop(context);
+    }
+
+    showDialog(
+      context: context, 
+      builder: (context) {
+        return ConfirmationDialog(
+          message: t.ui.gamePage.deleteGameConfirmationMessage,
+          callback: () async {
+            block.add(DeleteGame(id: widget.id));
+            goBack();
+          }
+        );
+      }
+    );
   }
 }
