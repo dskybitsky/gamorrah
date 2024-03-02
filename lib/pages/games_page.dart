@@ -6,6 +6,7 @@ import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
+import 'package:gamorrah/widgets/ui/space_size.dart';
 
 class GamesPage extends StatefulWidget {
   const GamesPage({ 
@@ -108,7 +109,7 @@ class _GamesScreenState extends State<GamesPage> {
             ),
           ],
         ),
-        HSpacer(size: HSpacerSize.s),
+        HSpacer(size: SpaceSize.s),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -137,7 +138,7 @@ class _GamesScreenState extends State<GamesPage> {
             ),
           ],
         ),
-        HSpacer(size: HSpacerSize.l),
+        HSpacer(size: SpaceSize.l),
       ]
     );
   }

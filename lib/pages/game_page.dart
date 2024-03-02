@@ -14,6 +14,7 @@ import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
+import 'package:gamorrah/widgets/ui/space_size.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GamePage extends StatefulWidget {
@@ -90,7 +91,7 @@ class _GamePageState extends State<GamePage> {
     widgets.add(
       GameThumb(
         game: game,
-        size: GameThumbSize.large,
+        type: GameThumbType.large,
         onPressed: () {
           showDialog(
             context: context,
@@ -102,7 +103,7 @@ class _GamePageState extends State<GamePage> {
     );
 
     if (game.edition != null) {
-      widgets.add(VSpacer(size: VSpacerSize.s));
+      widgets.add(VSpacer(size: SpaceSize.s));
 
       widgets.add(Center(
         child: Text(
@@ -113,7 +114,7 @@ class _GamePageState extends State<GamePage> {
     }
 
     if (game.year != null) {
-      widgets.add(VSpacer(size: VSpacerSize.s));
+      widgets.add(VSpacer(size: SpaceSize.s));
 
       widgets.add(Center(
         child: Text(
@@ -129,7 +130,7 @@ class _GamePageState extends State<GamePage> {
       Center(
         child: GamesList(
           games: includedGames, 
-          thumbSize: GameThumbSize.small,
+          thumbType: GameThumbType.small,
           onReorder: (oldIndex, newIndex) {
             var games = includedGames.toList();
 
@@ -187,8 +188,8 @@ class _GamePageState extends State<GamePage> {
       );
     }
 
-    if (_kind == null) {
-      widgets.add(VSpacer(size: VSpacerSize.l));
+    if (_kind == null || _kind == GameKind.dlc) {
+      widgets.add(VSpacer(size: SpaceSize.l));
 
       widgets.add(
         GamePersonalInput(
@@ -201,9 +202,6 @@ class _GamePageState extends State<GamePage> {
         )
       );
 
-    }
-
-    if (_kind == null || _kind == GameKind.dlc) {
       widgets.add(VSpacer());
 
       widgets.add(
@@ -236,7 +234,7 @@ class _GamePageState extends State<GamePage> {
       );
     }
 
-    widgets.add(VSpacer(size: VSpacerSize.l));
+    widgets.add(VSpacer(size: SpaceSize.l));
 
     widgets.add(
       FilledButton(

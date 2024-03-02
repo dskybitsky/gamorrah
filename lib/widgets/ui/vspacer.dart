@@ -1,25 +1,15 @@
 import 'package:fluent_ui/fluent_ui.dart';
-
-enum VSpacerSize { s, m, l, xl }
+import 'package:gamorrah/widgets/ui/space_size.dart';
 
 class VSpacer extends StatelessWidget {
   VSpacer({
-    this.size = VSpacerSize.m,
+    this.size = SpaceSize.m,
   });
 
-  final VSpacerSize size;
+  final SpaceSize size;
   
   @override
   Widget build(BuildContext context) {
-    return SizedBox(height: _getHeight());
-  }
-
-  double _getHeight() {
-    switch (size) {
-      case VSpacerSize.s: return 8;
-      case VSpacerSize.m: return 16;
-      case VSpacerSize.l: return 24;
-      case VSpacerSize.xl: return 32;
-    }
+    return SizedBox(height: size.value);
   }
 }
