@@ -187,7 +187,7 @@ class _GamePageState extends State<GamePage> {
       );
     }
 
-    if (_kind != GameKind.bundle && _kind != GameKind.content) {
+    if (_kind == null) {
       widgets.add(VSpacer(size: VSpacerSize.l));
 
       widgets.add(
@@ -201,6 +201,9 @@ class _GamePageState extends State<GamePage> {
         )
       );
 
+    }
+
+    if (_kind == null || _kind == GameKind.dlc) {
       widgets.add(VSpacer());
 
       widgets.add(
@@ -213,23 +216,25 @@ class _GamePageState extends State<GamePage> {
           },
         )
       );
-    }    
+    } 
 
-    widgets.add(VSpacer());
+    if (game.parentId == null) {
+      widgets.add(VSpacer());
 
-    widgets.add(
-       LabeledInput(
-        label: Text(t.ui.gamePage.statusLabel),
-        child: GameStatusInput(
-          value: _status,
-          onChanged: (value) {
-            setState(() {
-              _status = value ?? GameStatus.backlog;
-            });
-          },
+      widgets.add(
+        LabeledInput(
+          label: Text(t.ui.gamePage.statusLabel),
+          child: GameStatusInput(
+            value: _status,
+            onChanged: (value) {
+              setState(() {
+                _status = value ?? GameStatus.backlog;
+              });
+            },
+          )
         )
-      )
-    );
+      );
+    }
 
     widgets.add(VSpacer(size: VSpacerSize.l));
 
