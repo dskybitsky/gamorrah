@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
 
 enum GameThumbType { small, medium, large }
 
