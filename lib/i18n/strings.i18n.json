@@ -92,9 +92,10 @@
     },
     "gamePersonalBeaten": {
       "none": "No",
-      "story": "Story",
-      "storySides": "Story + Sides",
-      "completionist": "Completionist"
+      "bronze": "Bronze",
+      "silver": "Silver",
+      "gold": "Gold",
+      "platinum": "Platinum"
     },
     "gameHowLongToBeat": {
       "story": "Story",

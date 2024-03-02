@@ -29,14 +29,17 @@ class GamePersonalBeatenView extends StatelessWidget {
 
   Text _getText() {
     switch (value) {
-      case GamePersonalBeaten.story:
-        return Text(t.types.gamePersonalBeaten.story);
+      case GamePersonalBeaten.bronze:
+        return Text(t.types.gamePersonalBeaten.bronze);
       
-      case GamePersonalBeaten.storySides:
-        return Text(t.types.gamePersonalBeaten.storySides);
+      case GamePersonalBeaten.silver:
+        return Text(t.types.gamePersonalBeaten.silver);
 
-      case GamePersonalBeaten.completionist:
-        return Text(t.types.gamePersonalBeaten.completionist);
+      case GamePersonalBeaten.gold:
+        return Text(t.types.gamePersonalBeaten.gold);
+      
+      case GamePersonalBeaten.platinum:
+        return Text(t.types.gamePersonalBeaten.platinum);
       
       default:
         return Text(t.types.gamePersonalBeaten.none);
@@ -45,14 +48,30 @@ class GamePersonalBeatenView extends StatelessWidget {
 
   Icon? _getIcon() {
     switch (value) {
-      case GamePersonalBeaten.story:
-        return Icon(FluentIcons.check_mark);
+      case GamePersonalBeaten.bronze:
+        return Icon(
+          FluentIcons.medal,
+          // color: Color(0xFFCD7F32)
+        );
       
-      case GamePersonalBeaten.storySides:
-        return Icon(FluentIcons.check_list);
+      case GamePersonalBeaten.silver:
+        return Icon(
+          FluentIcons.trophy,
+            // color: Color(0xFFC0C0C0)
+          );
 
-      case GamePersonalBeaten.completionist:
-        return Icon(FluentIcons.medal);
+      case GamePersonalBeaten.gold:
+        return Icon(
+          FluentIcons.trophy2,
+            // color: Color(0xFFFFD700)
+          );
+
+      case GamePersonalBeaten.platinum:
+        return Icon(
+          FluentIcons.trophy2_solid,
+          // color: Color(0xFFE5E4E2),
+          // shadows: [Shadow(color: Colors.black)],
+        );
       
       default:
         return null;
