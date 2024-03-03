@@ -1,12 +1,12 @@
-import 'package:gamorrah/conf.dart';
+import 'package:flutter/foundation.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_game.dart';
 
 class HiveGameRepository extends GameRepository {
-  static const boxName = EnvironmentConfig.isDev 
-    ? 'games:v:08:dev'
+  static const boxName = kDebugMode
+    ? 'games:v:08:debug'
     : 'games:v:08';
 
   Box<HiveGame>? _box;
@@ -30,6 +30,7 @@ class HiveGameRepository extends GameRepository {
 
     return hiveGame.toGame();
   }
+
 
   @override
   Future<Iterable<Game>> getByStatus(GameStatus status) async {
