@@ -8,10 +8,6 @@
             "name": "gamorrah (dev mode)",
             "request": "launch",
             "type": "dart",
-            "toolArgs": [
-                "--dart-define",
-                "ENV=dev",
-            ]
         },
         {
             "name": "gamorrah (profile mode)",
