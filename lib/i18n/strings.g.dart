@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 73
+/// Strings: 74
 ///
-/// Built on 2024-02-29 at 14:54 UTC
+/// Built on 2024-03-02 at 05:33 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -355,9 +355,10 @@ class _StringsTypesGamePersonalBeatenEn {
 
 	// Translations
 	String get none => 'No';
-	String get story => 'Story';
-	String get storySides => 'Story + Sides';
-	String get completionist => 'Completionist';
+	String get bronze => 'Bronze';
+	String get silver => 'Silver';
+	String get gold => 'Gold';
+	String get platinum => 'Platinum';
 }
 
 // Path: types.gameHowLongToBeat
@@ -445,9 +446,10 @@ extension on Translations {
 			case 'types.gamePersonal.rating': return 'Rating';
 			case 'types.gamePersonal.timeSpent': return 'Time Spent';
 			case 'types.gamePersonalBeaten.none': return 'No';
-			case 'types.gamePersonalBeaten.story': return 'Story';
-			case 'types.gamePersonalBeaten.storySides': return 'Story + Sides';
-			case 'types.gamePersonalBeaten.completionist': return 'Completionist';
+			case 'types.gamePersonalBeaten.bronze': return 'Bronze';
+			case 'types.gamePersonalBeaten.silver': return 'Silver';
+			case 'types.gamePersonalBeaten.gold': return 'Gold';
+			case 'types.gamePersonalBeaten.platinum': return 'Platinum';
 			case 'types.gameHowLongToBeat.story': return 'Story';
 			case 'types.gameHowLongToBeat.storySides': return 'Story + Sides';
 			case 'types.gameHowLongToBeat.completionist': return 'Completionist';

@@ -23,16 +23,20 @@ class GamePersonalBeatenInput extends StatelessWidget {
           child: GamePersonalBeatenView(),
         ),
         ComboBoxItem(
-          value: GamePersonalBeaten.story, 
-          child: GamePersonalBeatenView(value: GamePersonalBeaten.story),
+          value: GamePersonalBeaten.bronze, 
+          child: GamePersonalBeatenView(value: GamePersonalBeaten.bronze),
         ),
         ComboBoxItem(
-          value: GamePersonalBeaten.storySides, 
-          child: GamePersonalBeatenView(value: GamePersonalBeaten.storySides),
+          value: GamePersonalBeaten.silver, 
+          child: GamePersonalBeatenView(value: GamePersonalBeaten.silver),
         ),
         ComboBoxItem(
-          value: GamePersonalBeaten.completionist,
-          child: GamePersonalBeatenView(value: GamePersonalBeaten.completionist),
+          value: GamePersonalBeaten.gold,
+          child: GamePersonalBeatenView(value: GamePersonalBeaten.gold),
+        ),
+        ComboBoxItem(
+          value: GamePersonalBeaten.platinum,
+          child: GamePersonalBeatenView(value: GamePersonalBeaten.platinum),
         ),
       ],
       onChanged: onChanged,

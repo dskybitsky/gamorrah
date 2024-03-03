@@ -1,7 +1,7 @@
 import 'package:gamorrah/models/optional.dart';
 import 'package:uuid/uuid.dart';
 
-enum GamePersonalBeaten { story, storySides, completionist }
+enum GamePersonalBeaten { bronze, silver, gold, platinum }
 
 class GamePersonal {
   GamePersonal({

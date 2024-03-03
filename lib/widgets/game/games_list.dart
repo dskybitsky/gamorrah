@@ -7,12 +7,12 @@ import 'package:reorderables/reorderables.dart';
 class GamesList extends StatelessWidget {
   const GamesList({ 
     required this.games,
-    this.thumbSize = GameThumbSize.medium,
+    this.thumbType = GameThumbType.medium,
     this.onReorder,
   });
 
   final Iterable<Game> games;
-  final GameThumbSize thumbSize;
+  final GameThumbType thumbType;
   final Function(int, int)? onReorder;
 
   @override
@@ -40,7 +40,7 @@ class GamesList extends StatelessWidget {
           children: [
             GameThumb(
               game: game,
-              size: thumbSize,
+              type: thumbType,
               onPressed: () {
                 GamesNavigator.goGame(context, id: game.id);
               },

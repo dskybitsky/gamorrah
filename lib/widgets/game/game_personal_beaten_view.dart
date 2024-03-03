@@ -1,61 +1,61 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
+import 'package:gamorrah/widgets/ui/space_size.dart';
 
 class GamePersonalBeatenView extends StatelessWidget {
   const GamePersonalBeatenView({
     super.key,
     this.value,
-    this.withIcon = true
+    this.withIcon = true,
+    this.withText = true,
+    this.iconColor = Colors.black,
   });
 
   final GamePersonalBeaten? value;
   final bool withIcon;
+  final bool withText;
+  final Color iconColor;
   
   @override
   Widget build(BuildContext context) {
-    final icon = _getIcon();
-    final text = _getText();
+    final widgets = <Widget>[];
 
-    if (icon != null && withIcon) {
-      return Row(
-        children:[icon, HSpacer(size: HSpacerSize.s), text]
+    if (withIcon && value != null) {
+      widgets.add(
+        GamePersonalBeatenIcon(value: value!, color: iconColor)
       );
     }
 
-    return text;
+    if (withText) {
+      if (widgets.isNotEmpty) {
+        widgets.add(HSpacer(size: SpaceSize.s));
+      }
+
+      widgets.add(_getText());
+    }
+
+    return Row(children: widgets);
   }
 
   Text _getText() {
     switch (value) {
-      case GamePersonalBeaten.story:
-        return Text(t.types.gamePersonalBeaten.story);
+      case GamePersonalBeaten.bronze:
+        return Text(t.types.gamePersonalBeaten.bronze);
       
-      case GamePersonalBeaten.storySides:
-        return Text(t.types.gamePersonalBeaten.storySides);
+      case GamePersonalBeaten.silver:
+        return Text(t.types.gamePersonalBeaten.silver);
 
-      case GamePersonalBeaten.completionist:
-        return Text(t.types.gamePersonalBeaten.completionist);
+      case GamePersonalBeaten.gold:
+        return Text(t.types.gamePersonalBeaten.gold);
+      
+      case GamePersonalBeaten.platinum:
+        return Text(t.types.gamePersonalBeaten.platinum);
       
       default:
         return Text(t.types.gamePersonalBeaten.none);
-    }
-  }
-
-  Icon? _getIcon() {
-    switch (value) {
-      case GamePersonalBeaten.story:
-        return Icon(FluentIcons.check_mark);
-      
-      case GamePersonalBeaten.storySides:
-        return Icon(FluentIcons.check_list);
-
-      case GamePersonalBeaten.completionist:
-        return Icon(FluentIcons.medal);
-      
-      default:
-        return null;
     }
   }
 }

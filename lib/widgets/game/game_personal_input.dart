@@ -7,6 +7,7 @@ import 'package:gamorrah/widgets/game/game_personal_beaten_view.dart';
 import 'package:gamorrah/widgets/game/game_personal_rating_input.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
+import 'package:gamorrah/widgets/ui/space_size.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GamePersonalInput extends StatelessWidget {
@@ -63,7 +64,7 @@ class GamePersonalInput extends StatelessWidget {
     final timeSpent = value.timeSpent;
 
     if (timeSpent != null) {
-      widgets.add(HSpacer(size: HSpacerSize.s));
+      widgets.add(HSpacer(size: SpaceSize.s));
       widgets.add(Text(t.ui.general.hoursCountText(count: timeSpent)));
     }
 

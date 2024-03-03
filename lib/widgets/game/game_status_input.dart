@@ -2,6 +2,7 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
+import 'package:gamorrah/widgets/ui/space_size.dart';
 
 class GameStatusInput extends StatelessWidget {
   const GameStatusInput({
@@ -23,7 +24,7 @@ class GameStatusInput extends StatelessWidget {
           child: Row(
             children: [
               const Icon(FluentIcons.history),
-              HSpacer(size: HSpacerSize.s),
+              HSpacer(size: SpaceSize.s),
               Text(t.types.gameStatus.backlog),
             ]
           ),
@@ -33,7 +34,7 @@ class GameStatusInput extends StatelessWidget {
           child: Row(
             children: [
               const Icon(FluentIcons.play),
-              HSpacer(size: HSpacerSize.s),
+              HSpacer(size: SpaceSize.s),
               Text(t.types.gameStatus.playing),
             ]
           )
@@ -43,7 +44,7 @@ class GameStatusInput extends StatelessWidget {
           child: Row(
             children: [
               const Icon(FluentIcons.completed),
-              HSpacer(size: HSpacerSize.s),
+              HSpacer(size: SpaceSize.s),
               Text(t.types.gameStatus.finished),
             ]
           )
@@ -53,7 +54,7 @@ class GameStatusInput extends StatelessWidget {
           child: Row(
             children: [
               const Icon(FluentIcons.waitlist_confirm),
-              HSpacer(size: HSpacerSize.s),
+              HSpacer(size: SpaceSize.s),
               Text(t.types.gameStatus.wishlist),
             ]
           )

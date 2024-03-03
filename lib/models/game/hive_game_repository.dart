@@ -6,8 +6,8 @@ import 'hive_game.dart';
 
 class HiveGameRepository extends GameRepository {
   static const boxName = EnvironmentConfig.isDev 
-    ? 'games:v:07:dev'
-    : 'games:v:07';
+    ? 'games:v:08:dev'
+    : 'games:v:08';
 
   Box<HiveGame>? _box;
 

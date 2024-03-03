@@ -4,6 +4,7 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
+import 'package:gamorrah/widgets/ui/space_size.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GameHowLongToBeatInput extends StatelessWidget {
@@ -65,7 +66,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
       widgets.add(Text(t.ui.gameHowLongToBeatControl.storyLabel(
         count: story
       )));
-      widgets.add(HSpacer(size: HSpacerSize.s));
+      widgets.add(HSpacer(size: SpaceSize.s));
     }
 
     final storySides = value.storySides;
@@ -74,7 +75,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
       widgets.add(Text(t.ui.gameHowLongToBeatControl.storySidesLabel(
         count: storySides
       )));
-      widgets.add(HSpacer(size: HSpacerSize.s));
+      widgets.add(HSpacer(size: SpaceSize.s));
     }
 
     final completionist = value.completionist;
@@ -83,7 +84,7 @@ class GameHowLongToBeatInput extends StatelessWidget {
       widgets.add(Text(t.ui.gameHowLongToBeatControl.completionistLabel(
         count: completionist
       )));
-      widgets.add(HSpacer(size: HSpacerSize.s));
+      widgets.add(HSpacer(size: SpaceSize.s));
     }
 
     return Row(children: widgets);
