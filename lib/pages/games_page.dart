@@ -72,6 +72,7 @@ class _GamesScreenState extends State<GamesPage> {
           }
 
           return ScaffoldPage(
+            padding: EdgeInsets.zero,
             content: SingleChildScrollView(
               padding: EdgeInsets.all(16.0),
               child: GamesList(games: games),

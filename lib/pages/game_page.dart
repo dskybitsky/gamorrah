@@ -4,7 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/pages/game_modal.dart';
+import 'package:gamorrah/pages/game_page_modal.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/game_how_long_to_beat_input.dart';
 import 'package:gamorrah/widgets/game/game_personal_input.dart';
@@ -68,6 +68,7 @@ class _GamePageState extends State<GamePage> {
               actions: _buildActions(game),
           ),
           content: ScaffoldPage(
+            padding: EdgeInsets.zero,
             content: ListView(
               padding: EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 16),
               children: _buildFormWidgets(game, state),
@@ -95,7 +96,7 @@ class _GamePageState extends State<GamePage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => GameModal(game: game),
+            builder: (context) => GamePageModal(game: game),
             useRootNavigator: false,
           );
         }

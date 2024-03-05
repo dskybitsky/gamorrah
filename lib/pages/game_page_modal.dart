@@ -6,16 +6,16 @@ import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
-class GameModal extends StatefulWidget {
-  const GameModal({ required this.game });
+class GamePageModal extends StatefulWidget {
+  const GamePageModal({ required this.game });
 
   final Game game;
 
   @override
-  State<GameModal> createState() => _GameModalState();
+  State<GamePageModal> createState() => _GameModalState();
 }
 
-class _GameModalState extends State<GameModal> {
+class _GameModalState extends State<GamePageModal> {
   late TextEditingController _titleController;
   late TextEditingController _franchiseController;
   late TextEditingController _editionController;
