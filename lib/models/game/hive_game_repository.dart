@@ -31,14 +31,6 @@ class HiveGameRepository extends GameRepository {
     return hiveGame.toGame();
   }
 
-
-  @override
-  Future<Iterable<Game>> getByStatus(GameStatus status) async {
-    final games = await get();
-
-    return games.where((element) => element.status == status);
-  }
-
   @override
   Future<void> save(Game game) async {
     await saveMany([game]);
