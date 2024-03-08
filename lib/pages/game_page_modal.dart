@@ -4,6 +4,7 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
+import 'package:gamorrah/widgets/game/game_platforms_input.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GamePageModal extends StatefulWidget {
@@ -114,43 +115,13 @@ class _GameModalState extends State<GamePageModal> {
         VSpacer(),
         InfoLabel(
           label: t.ui.gamePage.platformsLabel,
-          child: Expander(
-            header: Wrap(
-              children: _platforms
-                .map((e) => Padding(
-                  padding: EdgeInsets.only(right: 2),
-                  child: Text(
-                    '${e.title}; ',
-                    style: FluentTheme.of(context).typography.caption
-                  ),
-                )).toList(),
-            ),
-            content:
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start, 
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: GamePlatform.values
-                        .map(
-                          (e) => Padding(
-                            padding: const EdgeInsetsDirectional.only(bottom: 8.0),
-                            child: Checkbox(
-                              checked: _platforms.contains(e),
-                              onChanged: (selected) {
-                                if (selected == true) { 
-                                  setState(() => _platforms.add(e));
-                                } else {
-                                  setState(() => _platforms.remove(e));
-                                }
-                              },
-                              content: Text(e.title),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  ),
-            ]),
+          child: GamePlatformsInput(
+            value: _platforms,
+            onChanged: (value) {
+              setState((){ 
+                _platforms = value;
+              });
+            },
           ),
         ),
       ],

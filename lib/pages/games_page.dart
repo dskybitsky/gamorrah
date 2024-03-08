@@ -2,6 +2,8 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/models/preferences/preferences.dart';
+import 'package:gamorrah/widgets/game/games_filter_dialog.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
@@ -20,13 +22,15 @@ class GamesPage extends StatefulWidget {
 }
 
 class _GamesScreenState extends State<GamesPage> {
-  late TextEditingController _filterController;
+  late TextEditingController _searchController;
+  late GamesFilter _filter;
 
   @override
   void initState() {
     super.initState();
 
-     _filterController = TextEditingController(text: '');
+    _searchController = TextEditingController(text: '');
+    _filter = GamesFilter();
   }
 
   @override
@@ -101,7 +105,7 @@ class _GamesScreenState extends State<GamesPage> {
             SizedBox(
               width: 196,
               child: TextBox(
-                controller: _filterController,
+                controller: _searchController,
                 placeholder: t.ui.gamesPage.searchPlaceholder,
                 onChanged: (value) {
                   setState(() {});
@@ -111,6 +115,39 @@ class _GamesScreenState extends State<GamesPage> {
           ],
         ),
         HSpacer(size: SpaceSize.s),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              child: CommandBar(
+                mainAxisAlignment: MainAxisAlignment.end,
+                overflowBehavior: CommandBarOverflowBehavior.noWrap,
+                primaryItems: [
+                  CommandBarButton(
+                    icon: _filter.isEmpty
+                      ? Icon(FluentIcons.filter)
+                      : Icon(FluentIcons.filter_solid, color: Colors.blue),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => GamesFilterDialog(
+                          filter: _filter,
+                          onChanged: (value) {
+                            setState(() {
+                              _filter = value;
+                            });
+                          },
+                        ),
+                        useRootNavigator: false,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        HSpacer(size: SpaceSize.xl),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -145,16 +182,22 @@ class _GamesScreenState extends State<GamesPage> {
   }
 
   List<Game> _getGamesList(GamesState state) {
-    final filter = _filterController.text;
+    final searchText = _searchController.text;
 
     final games = state.games
       .where((game) {
-        return game.status == widget.status
-          && game.parentId == null
-          && (
-            filter == '' 
-            || game.title.contains(RegExp(filter, caseSensitive: false))
-          );
+        if (game.status != widget.status) {
+          return false;
+        }
+
+        if (game.parentId != null) {
+          return false;
+        }
+
+        return (
+          (searchText == '' || game.title.contains(RegExp(searchText, caseSensitive: false)))
+          && _filter.matches(game)
+        );
       })
       .toList();
 

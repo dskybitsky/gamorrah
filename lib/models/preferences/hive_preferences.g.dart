@@ -17,7 +17,7 @@ class HivePreferencesAdapter extends TypeAdapter<HivePreferences> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HivePreferences(
-      gamesPagePresets: (fields[0] as List).cast<HiveGamesPagePreset>(),
+      gamesPresets: (fields[0] as List).cast<HiveGamesPreset>(),
     );
   }
 
@@ -26,7 +26,7 @@ class HivePreferencesAdapter extends TypeAdapter<HivePreferences> {
     writer
       ..writeByte(1)
       ..writeByte(0)
-      ..write(obj.gamesPagePresets);
+      ..write(obj.gamesPresets);
   }
 
   @override
@@ -40,25 +40,25 @@ class HivePreferencesAdapter extends TypeAdapter<HivePreferences> {
           typeId == other.typeId;
 }
 
-class HiveGamesPagePresetAdapter extends TypeAdapter<HiveGamesPagePreset> {
+class HiveGamesPresetAdapter extends TypeAdapter<HiveGamesPreset> {
   @override
   final int typeId = 11;
 
   @override
-  HiveGamesPagePreset read(BinaryReader reader) {
+  HiveGamesPreset read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveGamesPagePreset(
+    return HiveGamesPreset(
       name: fields[0] as String,
       status: fields[1] as String,
-      filter: fields[2] as HiveGamesPageFilter?,
+      filter: fields[2] as HiveGamesFilter?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, HiveGamesPagePreset obj) {
+  void write(BinaryWriter writer, HiveGamesPreset obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -75,29 +75,29 @@ class HiveGamesPagePresetAdapter extends TypeAdapter<HiveGamesPagePreset> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveGamesPagePresetAdapter &&
+      other is HiveGamesPresetAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
 
-class HiveGamesPageFilterAdapter extends TypeAdapter<HiveGamesPageFilter> {
+class HiveGamesFilterAdapter extends TypeAdapter<HiveGamesFilter> {
   @override
   final int typeId = 12;
 
   @override
-  HiveGamesPageFilter read(BinaryReader reader) {
+  HiveGamesFilter read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveGamesPageFilter(
+    return HiveGamesFilter(
       platforms: (fields[0] as List?)?.cast<String>(),
       beaten: fields[1] as String?,
     );
   }
 
   @override
-  void write(BinaryWriter writer, HiveGamesPageFilter obj) {
+  void write(BinaryWriter writer, HiveGamesFilter obj) {
     writer
       ..writeByte(2)
       ..writeByte(0)
@@ -112,7 +112,7 @@ class HiveGamesPageFilterAdapter extends TypeAdapter<HiveGamesPageFilter> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveGamesPageFilterAdapter &&
+      other is HiveGamesFilterAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -7,27 +7,27 @@ part 'hive_preferences.g.dart';
 @HiveType(typeId: 1)
 class HivePreferences extends HiveObject {
   HivePreferences({
-    required this.gamesPagePresets,
+    required this.gamesPresets,
   });
 
   @HiveField(0)
-  final List<HiveGamesPagePreset> gamesPagePresets;
+  final List<HiveGamesPreset> gamesPresets;
 
   factory HivePreferences.fromPreferences(Preferences preferences) => HivePreferences(
-    gamesPagePresets: preferences.gamesPagePresets
-      .map((e) => HiveGamesPagePreset.fromGamePagePreset(e))
+    gamesPresets: preferences.gamesPresets
+      .map((e) => HiveGamesPreset.fromGamePreset(e))
       .toList(),
   );
 
   Preferences toPreferences() => Preferences(
-    gamesPagePresets: gamesPagePresets
-      .map((e) => e.toGamePagePreset()).toList(),
+    gamesPresets: gamesPresets
+      .map((e) => e.toGamePreset()).toList(),
   );
 }
 
 @HiveType(typeId:11)
-class HiveGamesPagePreset extends HiveObject {
-  HiveGamesPagePreset({
+class HiveGamesPreset extends HiveObject {
+  HiveGamesPreset({
     required this.name,
     required this.status,
     this.filter
@@ -40,17 +40,17 @@ class HiveGamesPagePreset extends HiveObject {
   final String status;
 
   @HiveField(2)
-  final HiveGamesPageFilter? filter;
+  final HiveGamesFilter? filter;
 
-  factory HiveGamesPagePreset.fromGamePagePreset(GamesPagePreset gamesPagePreset) => HiveGamesPagePreset(
-    name: gamesPagePreset.name,
-    status: gamesPagePreset.status.name,
-    filter: gamesPagePreset.filter != null
-      ? HiveGamesPageFilter.fromGamesPageFilter(gamesPagePreset.filter!)
+  factory HiveGamesPreset.fromGamePreset(GamesPreset gamesPreset) => HiveGamesPreset(
+    name: gamesPreset.name,
+    status: gamesPreset.status.name,
+    filter: gamesPreset.filter != null
+      ? HiveGamesFilter.fromGamesFilter(gamesPreset.filter!)
       : null,
   );
 
-  GamesPagePreset toGamePagePreset() => GamesPagePreset(
+  GamesPreset toGamePreset() => GamesPreset(
     name: name,
     status: GameStatus.values.byName(status),
     filter: filter?.toGamesPageFilter(),
@@ -58,8 +58,8 @@ class HiveGamesPagePreset extends HiveObject {
 }
 
 @HiveType(typeId:12)
-class HiveGamesPageFilter extends HiveObject {
-  HiveGamesPageFilter({
+class HiveGamesFilter extends HiveObject {
+  HiveGamesFilter({
     this.platforms,
     this.beaten
   });
@@ -70,12 +70,12 @@ class HiveGamesPageFilter extends HiveObject {
   @HiveField(1)
   final String? beaten;
 
-  factory HiveGamesPageFilter.fromGamesPageFilter(GamesPageFilter gamesPageFilter) => HiveGamesPageFilter(
-    platforms: gamesPageFilter.platforms?.map((platform) => platform.name).toList(),
-    beaten: gamesPageFilter.beaten?.name,
+  factory HiveGamesFilter.fromGamesFilter(GamesFilter gamesFilter) => HiveGamesFilter(
+    platforms: gamesFilter.platforms?.map((platform) => platform.name).toList(),
+    beaten: gamesFilter.beaten?.name,
   );
 
-  GamesPageFilter toGamesPageFilter() => GamesPageFilter(
+  GamesFilter toGamesPageFilter() => GamesFilter(
     platforms: platforms != null 
       ? Set.from(platforms!.map((platformName) => GamePlatform.values.byName(platformName)))
       : null,
