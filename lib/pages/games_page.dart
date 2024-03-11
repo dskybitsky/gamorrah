@@ -96,87 +96,100 @@ class _GamesScreenState extends State<GamesPage> {
   }
 
   Widget _buildActions(BuildContext context, GamesState state) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+    final createGameWidget = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 196,
-              child: TextBox(
-                controller: _searchController,
-                placeholder: t.ui.gamesPage.searchPlaceholder,
-                onChanged: (value) {
-                  setState(() {});
+        SizedBox(
+          child: CommandBar(
+            mainAxisAlignment: MainAxisAlignment.end,
+            overflowBehavior: CommandBarOverflowBehavior.noWrap,
+            primaryItems: [
+              CommandBarSeparator(),
+              CommandBarButton(
+                icon: const Icon(FluentIcons.add),
+                label: Text(t.ui.gamesPage.addGameButton),
+                onPressed: () {
+                  final game = Game.create(
+                    title: t.ui.gamesPage.defaultGameTitle, 
+                    thumbUrl: null,
+                    status: widget.status,
+                  );
+
+                  context.read<GamesBloc>().add(SaveGame(game: game));
+
+                  GamesNavigator.goGame(context, id: game.id);
                 },
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ],
+    );
+    
+    final searchWidget = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 196,
+          child: TextBox(
+            controller: _searchController,
+            placeholder: t.ui.gamesPage.searchPlaceholder,
+            onChanged: (value) {
+              setState(() {});
+            },
+          ),
+        ),
+      ],
+    );
+    
+    final filterWidget = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          child: CommandBar(
+            mainAxisAlignment: MainAxisAlignment.end,
+            overflowBehavior: CommandBarOverflowBehavior.noWrap,
+            primaryItems: [
+              CommandBarButton(
+                icon: _filter.isEmpty
+                  ? Icon(FluentIcons.filter)
+                  : Icon(FluentIcons.filter_solid, color: Colors.blue),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => GamesFilterDialog(
+                      filter: _filter,
+                      onChanged: (value) {
+                        setState(() {
+                          _filter = value;
+                        });
+                      },
+                    ),
+                    useRootNavigator: false,
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        HSpacer(size: SpaceSize.xxl),
+        createGameWidget,
         HSpacer(size: SpaceSize.s),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        Expanded(child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            SizedBox(
-              child: CommandBar(
-                mainAxisAlignment: MainAxisAlignment.end,
-                overflowBehavior: CommandBarOverflowBehavior.noWrap,
-                primaryItems: [
-                  CommandBarButton(
-                    icon: _filter.isEmpty
-                      ? Icon(FluentIcons.filter)
-                      : Icon(FluentIcons.filter_solid, color: Colors.blue),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) => GamesFilterDialog(
-                          filter: _filter,
-                          onChanged: (value) {
-                            setState(() {
-                              _filter = value;
-                            });
-                          },
-                        ),
-                        useRootNavigator: false,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
+            searchWidget,
+            HSpacer(size: SpaceSize.s),
+            filterWidget,
+            HSpacer(size: SpaceSize.l),
           ],
-        ),
-        HSpacer(size: SpaceSize.xl),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              child: CommandBar(
-                mainAxisAlignment: MainAxisAlignment.end,
-                overflowBehavior: CommandBarOverflowBehavior.noWrap,
-                primaryItems: [
-                  CommandBarButton(
-                    icon: const Icon(FluentIcons.add),
-                    label: Text(t.ui.gamesPage.addGameButton),
-                    onPressed: () {
-                      final game = Game.create(
-                        title: t.ui.gamesPage.defaultGameTitle, 
-                        thumbUrl: null,
-                        status: widget.status,
-                      );
-
-                      context.read<GamesBloc>().add(SaveGame(game: game));
-
-                      GamesNavigator.goGame(context, id: game.id);
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        HSpacer(size: SpaceSize.l),
+        )),
       ]
     );
   }

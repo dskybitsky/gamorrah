@@ -3,7 +3,9 @@ enum SpaceSize {
   s,
   m,
   l,
-  xl;
+  xl,
+  xxl,
+  xxxl;
 
   double get value => switch (this) {
     (SpaceSize.xs) => 4,
@@ -11,5 +13,7 @@ enum SpaceSize {
     (SpaceSize.m) => 16,
     (SpaceSize.l) => 24,
     (SpaceSize.xl) => 32,
+    (SpaceSize.xxl) => 64,
+    (SpaceSize.xxxl) => 96,
   };
 }

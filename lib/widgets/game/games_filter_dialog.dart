@@ -70,7 +70,8 @@ class _GamesFilterDialogState extends State<GamesFilterDialog> {
         InfoLabel(
           label: t.ui.gamePersonalControl.beatenLabel, 
           child: GamePersonalBeatenInput(
-            value: _beaten, 
+            value: _beaten,
+            emptyState: Text(t.ui.general.anyText),
             onChanged: (value) {
               setState(() { 
                 _beaten = value;
@@ -83,6 +84,7 @@ class _GamesFilterDialogState extends State<GamesFilterDialog> {
           label: t.ui.gamePage.platformsLabel,
           child: GamePlatformsInput(
             value: _platforms,
+            emptyState: Text(t.ui.general.anyText),
             onChanged: (value) {
               setState(() { 
                 _platforms = value;
@@ -90,8 +92,6 @@ class _GamesFilterDialogState extends State<GamesFilterDialog> {
             },
           ),
         ),
-        
-        
       ],
     );
   }

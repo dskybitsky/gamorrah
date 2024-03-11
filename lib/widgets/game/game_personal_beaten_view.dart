@@ -12,12 +12,14 @@ class GamePersonalBeatenView extends StatelessWidget {
     this.withIcon = true,
     this.withText = true,
     this.iconColor = Colors.black,
+    this.emptyState
   });
 
   final GamePersonalBeaten? value;
   final bool withIcon;
   final bool withText;
   final Color iconColor;
+  final Widget? emptyState;
   
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class GamePersonalBeatenView extends StatelessWidget {
     return Row(children: widgets);
   }
 
-  Text _getText() {
+  Widget _getText() {
     switch (value) {
       case GamePersonalBeaten.bronze:
         return Text(t.types.gamePersonalBeaten.bronze);
@@ -55,7 +57,7 @@ class GamePersonalBeatenView extends StatelessWidget {
         return Text(t.types.gamePersonalBeaten.platinum);
       
       default:
-        return Text(t.types.gamePersonalBeaten.none);
+        return emptyState ?? Text(t.types.gamePersonalBeaten.none);
     }
   }
 }

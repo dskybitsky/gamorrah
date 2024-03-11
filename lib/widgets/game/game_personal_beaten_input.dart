@@ -7,20 +7,24 @@ class GamePersonalBeatenInput extends StatelessWidget {
     super.key,
     required this.value,
     this.onChanged,
+    this.emptyState
   });
 
   final GamePersonalBeaten? value;
   final void Function(GamePersonalBeaten?)? onChanged;
+  final Widget? emptyState;
 
   @override
   Widget build(BuildContext context) {
+    final emptyView = GamePersonalBeatenView(emptyState: emptyState);
+
     return ComboBox<GamePersonalBeaten?>(
       value: value,
-      placeholder: GamePersonalBeatenView(),
+      placeholder: emptyView,
       items: [
         ComboBoxItem(
           value: null, 
-          child: GamePersonalBeatenView(),
+          child: emptyView,
         ),
         ComboBoxItem(
           value: GamePersonalBeaten.bronze, 

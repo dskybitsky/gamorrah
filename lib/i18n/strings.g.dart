@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 74
+/// Strings: 76
 ///
-/// Built on 2024-03-02 at 05:33 UTC
+/// Built on 2024-03-11 at 10:04 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -192,12 +192,14 @@ class _StringsUiGeneralEn {
 	String get okButton => 'OK';
 	String get cancelButton => 'Cancel';
 	String get saveButton => 'Save';
+	String get applyButton => 'Apply';
 	String get deleteButton => 'Delete';
 	String get errorText => 'Error';
 	String get emptyText => 'Empty';
 	String get hoursText => 'Hours';
 	String hoursCountText({required Object count}) => '${count} hours';
 	String hoursCountShortText({required Object count}) => '${count} h.';
+	String get anyText => 'Any';
 }
 
 // Path: ui.homePage
@@ -382,12 +384,14 @@ extension on Translations {
 			case 'ui.general.okButton': return 'OK';
 			case 'ui.general.cancelButton': return 'Cancel';
 			case 'ui.general.saveButton': return 'Save';
+			case 'ui.general.applyButton': return 'Apply';
 			case 'ui.general.deleteButton': return 'Delete';
 			case 'ui.general.errorText': return 'Error';
 			case 'ui.general.emptyText': return 'Empty';
 			case 'ui.general.hoursText': return 'Hours';
 			case 'ui.general.hoursCountText': return ({required Object count}) => '${count} hours';
 			case 'ui.general.hoursCountShortText': return ({required Object count}) => '${count} h.';
+			case 'ui.general.anyText': return 'Any';
 			case 'ui.homePage.settingsLink': return 'Settings';
 			case 'ui.gamesPage.addGameButton': return 'Add Game';
 			case 'ui.gamesPage.searchPlaceholder': return 'Search...';

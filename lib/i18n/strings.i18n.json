@@ -4,12 +4,14 @@
       "okButton": "OK",
       "cancelButton": "Cancel",
       "saveButton": "Save",
+      "applyButton": "Apply",
       "deleteButton": "Delete",
       "errorText": "Error",
       "emptyText": "Empty",
       "hoursText": "Hours",
       "hoursCountText": "${count} hours",
-      "hoursCountShortText": "${count} h."
+      "hoursCountShortText": "${count} h.",
+      "anyText": "Any"
     },
     "homePage": {
       "settingsLink": "Settings"

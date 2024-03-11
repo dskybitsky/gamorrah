@@ -6,24 +6,17 @@ class GamePlatformsInput extends StatelessWidget {
     super.key,
     required this.value,
     this.onChanged,
+    this.emptyState
   });
 
   final Set<GamePlatform> value;
   final void Function(Set<GamePlatform>)? onChanged;
+  final Widget? emptyState;
 
   @override
   Widget build(BuildContext context) {
     return Expander(
-      header: Wrap(
-        children: value
-          .map((e) => Padding(
-            padding: EdgeInsets.only(right: 2),
-            child: Text(
-              '${e.title}; ',
-              style: FluentTheme.of(context).typography.caption
-            ),
-          )).toList(),
-      ),
+      header: _getHeader(context),
       content:
         Row(
           crossAxisAlignment: CrossAxisAlignment.start, 
@@ -56,6 +49,23 @@ class GamePlatformsInput extends StatelessWidget {
                 .toList(),
             ),
       ]),
+    );
+  }
+
+  Widget _getHeader(BuildContext context) {
+    if (value.isEmpty && emptyState != null) {
+      return emptyState!;
+    }
+
+    return Wrap(
+      children: value
+        .map((e) => Padding(
+          padding: EdgeInsets.only(right: 2),
+          child: Text(
+            '${e.title}; ',
+            style: FluentTheme.of(context).typography.caption
+          ),
+        )).toList(),
     );
   }
 }
