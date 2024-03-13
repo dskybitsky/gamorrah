@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/models/preferences/preferences.dart';
 import 'package:gamorrah/models/preferences/preferences_repository.dart';
 
@@ -11,7 +13,7 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     required this.preferencesRepository,
   }) : super(const PreferencesState()) {
     on<LoadPrefernces>(_mapLoadPreferencesEventToState);
-    on<SavePreferences>(_mapSavePreferencesEventToState);
+    on<SaveGamesPreset>(_mapSaveGamesPresetEventToState);
   }
 
   final PreferencesRepository preferencesRepository;
@@ -30,24 +32,34 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
         preferences: preferences,
       ));
     } catch (error, stacktrace) {
+      print(error);
       print(stacktrace);
       emit(state.copyWith(phase: PreferencesStatePhase.error));
     }
   }
 
-  void _mapSavePreferencesEventToState(
-    SavePreferences event,
+  void _mapSaveGamesPresetEventToState(
+    SaveGamesPreset event,
     Emitter<PreferencesState> emit
   ) async {
     try {
       emit(state.copyWith(phase: PreferencesStatePhase.loading));
 
-      await preferencesRepository.save(event.preferences);
+      final gamesPresets = state.preferences.gamesPresets
+        .whereNot((gamesPreset) => gamesPreset.name == event.gamesPreset.name)
+        .toList();
+
+      gamesPresets.add(event.gamesPreset);
+
+      final preferences = state.preferences.copyWith(gamesPresets: Optional(gamesPresets));
+
+      await preferencesRepository.save(preferences);
 
       emit(state.copyWith(
         phase: PreferencesStatePhase.success,
       ));
     } catch (error, stacktrace) {
+      print(error);
       print(stacktrace);
       emit(state.copyWith(phase: PreferencesStatePhase.error));
     }

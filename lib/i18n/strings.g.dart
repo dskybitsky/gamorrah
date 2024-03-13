@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 76
+/// Strings: 79
 ///
-/// Built on 2024-03-11 at 10:04 UTC
+/// Built on 2024-03-11 at 13:49 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -219,10 +219,13 @@ class _StringsUiGamesPageEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get addGameButton => 'Add Game';
+	String get addGameButton => 'Add new game';
+	String get filterButton => 'Filter games';
+	String get savePresetButton => 'Save current preset as...';
 	String get searchPlaceholder => 'Search...';
 	String gamesTotalText({required Object count}) => 'Games total: ${count}';
 	String get defaultGameTitle => 'New game';
+	String get presetNameLabel => 'Preset Name';
 }
 
 // Path: ui.gamePage
@@ -393,10 +396,13 @@ extension on Translations {
 			case 'ui.general.hoursCountShortText': return ({required Object count}) => '${count} h.';
 			case 'ui.general.anyText': return 'Any';
 			case 'ui.homePage.settingsLink': return 'Settings';
-			case 'ui.gamesPage.addGameButton': return 'Add Game';
+			case 'ui.gamesPage.addGameButton': return 'Add new game';
+			case 'ui.gamesPage.filterButton': return 'Filter games';
+			case 'ui.gamesPage.savePresetButton': return 'Save current preset as...';
 			case 'ui.gamesPage.searchPlaceholder': return 'Search...';
 			case 'ui.gamesPage.gamesTotalText': return ({required Object count}) => 'Games total: ${count}';
 			case 'ui.gamesPage.defaultGameTitle': return 'New game';
+			case 'ui.gamesPage.presetNameLabel': return 'Preset Name';
 			case 'ui.gamePage.addIncludedItemButton': return 'Add Included Item';
 			case 'ui.gamePage.titleLabel': return '${_root.types.game.title}:';
 			case 'ui.gamePage.titlePlaceholder': return '${_root.types.game.title}';

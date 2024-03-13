@@ -17,10 +17,14 @@
       "settingsLink": "Settings"
     },
     "gamesPage": {
-      "addGameButton": "Add Game",
+      "addGameButton": "Add new game",
+      "filterButton": "Filter games",
+      "savePresetButton": "Save current preset as...",
       "searchPlaceholder": "Search...",
       "gamesTotalText": "Games total: ${count}",
-      "defaultGameTitle": "New game"
+      "defaultGameTitle": "New game",
+      "presetNameLabel": "Preset",
+      "presetNamePlaceholder": "Preset Name"
     },
     "gamePage": {
       "addIncludedItemButton": "Add Included Item",

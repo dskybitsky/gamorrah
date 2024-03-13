@@ -7,6 +7,12 @@ class Preferences {
   });
 
   final List<GamesPreset> gamesPresets;
+
+  Preferences copyWith({
+    Optional<List<GamesPreset>>? gamesPresets
+  }) => Preferences(
+    gamesPresets: gamesPresets != null ? gamesPresets.value : this.gamesPresets,
+  );
 }
 
 class GamesPreset {

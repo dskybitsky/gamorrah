@@ -3,19 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/preferences/preferences.dart';
+import 'package:gamorrah/state/preferences/preferences_bloc.dart';
 import 'package:gamorrah/widgets/game/games_filter_dialog.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
+import 'package:gamorrah/widgets/game/games_preset_dialog.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/space_size.dart';
 
 class GamesPage extends StatefulWidget {
   const GamesPage({ 
     required this.status,
+    this.preset,
   });
 
   final GameStatus status;
+  final GamesPreset? preset;
 
   @override
   State<GamesPage> createState() => _GamesScreenState();
@@ -30,7 +34,7 @@ class _GamesScreenState extends State<GamesPage> {
     super.initState();
 
     _searchController = TextEditingController(text: '');
-    _filter = GamesFilter();
+    _filter = widget.preset?.filter ?? GamesFilter();
   }
 
   @override
@@ -96,41 +100,11 @@ class _GamesScreenState extends State<GamesPage> {
   }
 
   Widget _buildActions(BuildContext context, GamesState state) {
-    final createGameWidget = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          child: CommandBar(
-            mainAxisAlignment: MainAxisAlignment.end,
-            overflowBehavior: CommandBarOverflowBehavior.noWrap,
-            primaryItems: [
-              CommandBarSeparator(),
-              CommandBarButton(
-                icon: const Icon(FluentIcons.add),
-                label: Text(t.ui.gamesPage.addGameButton),
-                onPressed: () {
-                  final game = Game.create(
-                    title: t.ui.gamesPage.defaultGameTitle, 
-                    thumbUrl: null,
-                    status: widget.status,
-                  );
-
-                  context.read<GamesBloc>().add(SaveGame(game: game));
-
-                  GamesNavigator.goGame(context, id: game.id);
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-    
     final searchWidget = Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SizedBox(
-          width: 196,
+          width: 256,
           child: TextBox(
             controller: _searchController,
             placeholder: t.ui.gamesPage.searchPlaceholder,
@@ -142,54 +116,84 @@ class _GamesScreenState extends State<GamesPage> {
       ],
     );
     
-    final filterWidget = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          child: CommandBar(
-            mainAxisAlignment: MainAxisAlignment.end,
-            overflowBehavior: CommandBarOverflowBehavior.noWrap,
-            primaryItems: [
-              CommandBarButton(
-                icon: _filter.isEmpty
-                  ? Icon(FluentIcons.filter)
-                  : Icon(FluentIcons.filter_solid, color: Colors.blue),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => GamesFilterDialog(
-                      filter: _filter,
-                      onChanged: (value) {
-                        setState(() {
-                          _filter = value;
-                        });
-                      },
-                    ),
-                    useRootNavigator: false,
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
+    final filterWidget = Tooltip(
+      message: t.ui.gamesPage.filterButton,
+      child: IconButton(
+        icon: _filter.isEmpty
+          ? Icon(FluentIcons.filter)
+          : Icon(FluentIcons.filter_solid, color: Colors.blue),
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => GamesFilterDialog(
+              filter: _filter,
+              onChanged: (value) {
+                setState(() {
+                  _filter = value;
+                });
+              },
+            ),
+            useRootNavigator: false,
+          );
+        },
+      )
     );
 
+    final savePresetWidget = Tooltip(
+      message: t.ui.gamesPage.savePresetButton,
+      child: IconButton(
+        icon: Icon(FluentIcons.save_template),
+        onPressed: _filter.isEmpty ? null : () {
+          showDialog(
+            context: context,
+            builder: (context) => GamesPresetDialog(
+              onChanged: (value) {
+                context.read<PreferencesBloc>()
+                  .add(SaveGamesPreset(
+                    gamesPreset: GamesPreset(
+                      name: value, 
+                      status: widget.status,
+                      filter: _filter
+                    )
+                  ));
+              },
+            ),
+            useRootNavigator: false,
+          );
+        },
+      )
+    );
+
+    final createGameWidget = Tooltip(
+      message: t.ui.gamesPage.addGameButton,
+      child: IconButton(
+        icon: const Icon(FluentIcons.add),
+        onPressed: () {
+          final game = Game.create(
+            title: t.ui.gamesPage.defaultGameTitle, 
+            thumbUrl: null,
+            status: widget.status,
+          );
+
+          context.read<GamesBloc>().add(SaveGame(game: game));
+
+          GamesNavigator.goGame(context, id: game.id);
+        },
+      )
+    );
+      
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        HSpacer(size: SpaceSize.xxl),
-        createGameWidget,
+        HSpacer(size: SpaceSize.xxxl),
+        searchWidget,
         HSpacer(size: SpaceSize.s),
-        Expanded(child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            searchWidget,
-            HSpacer(size: SpaceSize.s),
-            filterWidget,
-            HSpacer(size: SpaceSize.l),
-          ],
-        )),
+        filterWidget,
+        HSpacer(size: SpaceSize.s),
+        savePresetWidget,
+        HSpacer(size: SpaceSize.l),
+        createGameWidget,
+        HSpacer(size: SpaceSize.xl),
       ]
     );
   }
