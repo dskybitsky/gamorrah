@@ -57,6 +57,7 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
 
       emit(state.copyWith(
         phase: PreferencesStatePhase.success,
+        preferences: preferences
       ));
     } catch (error, stacktrace) {
       print(error);

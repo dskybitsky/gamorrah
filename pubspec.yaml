@@ -12,7 +12,7 @@ dependencies:
   get:
   equatable: ^2.0.3
   file_picker: ^6.1.1
-  fluent_ui: ^4.4.0
+  fluent_ui: ^4.8.0
   flutter:
     sdk: flutter
   flutter_acrylic: ^1.0.0+2

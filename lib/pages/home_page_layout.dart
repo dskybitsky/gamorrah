@@ -51,7 +51,7 @@ class _HomePageLayoutState extends State<HomePageLayout> {
       pane: NavigationPane(
         selected: _page,
         onChanged: _onPageChanged,
-        displayMode: PaneDisplayMode.compact,
+        displayMode: PaneDisplayMode.auto,
         items: [
           _buildGamesPaneItem(context, state, GameStatus.backlog),
           _buildGamesPaneItem(context, state, GameStatus.playing),
@@ -102,7 +102,8 @@ class _HomePageLayoutState extends State<HomePageLayout> {
       .toList();
 
     return PaneItemExpander(icon: icon, title: title, items: items, 
-      body: GamesNavigator(status: status)
+      body: GamesNavigator(status: status),
+      initiallyExpanded: true,
     );
   }
 
