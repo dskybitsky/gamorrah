@@ -22,87 +22,49 @@ class _HomePageDestination {
     required this.title,
     required this.icon,
     required this.child,
-    this.destinations = const [],
   });
 
   final String title;
   final Widget icon;
   final Widget child;
-  final List<_HomePageDestination> destinations;
 }
 
-class _HomePageLayoutState extends State<HomePageLayout> with TickerProviderStateMixin {
+class _HomePageLayoutState extends State<HomePageLayout> {
   int _selectedDestinationIndex = 0;
   late List<_HomePageDestination> _destinations;
-  late TabController _subDestinationsTabController;
-
+  
   @override
   void initState() {
     super.initState();
     
     _destinations = _getDestinations(widget.preferencesState);
-
-    _subDestinationsTabController = TabController(
-      length: _destinations[_selectedDestinationIndex].destinations.length,
-      initialIndex: 0,
-      vsync: this,
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     final selectedDestination = _destinations[_selectedDestinationIndex];
 
-    if (selectedDestination.destinations.length != _subDestinationsTabController.length) {
-      _subDestinationsTabController.dispose();
-
-      _subDestinationsTabController = TabController(
-        length: _destinations[_selectedDestinationIndex].destinations.length,
-        initialIndex: 0,
-        vsync: this,
-      );
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(selectedDestination.title),
-        bottom: selectedDestination.destinations.isNotEmpty 
-          ? TabBar(
-              controller: _subDestinationsTabController,
-              tabs: selectedDestination.destinations.map((subDestination) => Tab(
-                text: subDestination.title,
-              )).toList()
-          ) : null,
-      ),
-        
-      body: Row(
-        children: [
-          NavigationRail(
-            destinations: _destinations.map((destination) => NavigationRailDestination(
-              icon: destination.icon, 
-              label: Text(destination.title),
-            )).toList(), 
-            selectedIndex: _selectedDestinationIndex,
-            labelType: NavigationRailLabelType.all,
-            onDestinationSelected: (index) {
-              setState(() => _selectedDestinationIndex = index);
-            },
-          ),
-          const VerticalDivider(thickness: 1, width: 1),
-          Expanded(
-            child: _subDestinationsTabController.length > 0 
-              ? TabBarView(
-                controller: _subDestinationsTabController,
-                children: _destinations[_selectedDestinationIndex].destinations
-                  .map((subDestination) => subDestination.child)
-                  .toList(),
-              )
-              : _destinations[_selectedDestinationIndex].child
-          )
-        ],
-      ),
+    return Row(
+      children: [
+        NavigationRail(
+          destinations: _destinations.map((destination) => NavigationRailDestination(
+            icon: destination.icon, 
+            label: Text(destination.title),
+          )).toList(), 
+          selectedIndex: _selectedDestinationIndex,
+          labelType: NavigationRailLabelType.all,
+          onDestinationSelected: (index) {
+            setState(() => _selectedDestinationIndex = index);
+          },
+        ),
+        const VerticalDivider(thickness: 1, width: 1),
+        Expanded(
+          child: selectedDestination.child,
+        ),
+      ],
     );
+
+    
     // return NavigationRail(
     //   selectedIndex: _page,
     //   onDestinationSelected: _onPageChanged,
@@ -165,12 +127,7 @@ class _HomePageLayoutState extends State<HomePageLayout> with TickerProviderStat
     return _HomePageDestination(
       icon: icon, 
       title: title,
-      child: GamesNavigator(key: Key('games:$status'), status: status),
-      destinations: presets.map((preset) => _HomePageDestination(
-        icon: icon,
-        title: preset.name,
-        child: GamesNavigator(key: Key('games:$status:${preset.name}'), status: status, preset: preset,)
-      )).toList()
+      child: GamesNavigator(key: Key('games:$status'), status: status, presets: presets.toList()),
     );
   }
 }

@@ -4,16 +4,7 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/pages/home_page_layout.dart';
 import 'package:gamorrah/state/preferences/preferences_bloc.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({
-    super.key,
-  });
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PreferencesBloc, PreferencesState>(
