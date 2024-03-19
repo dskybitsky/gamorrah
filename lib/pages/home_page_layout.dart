@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/pages/settings_page.dart';
@@ -7,12 +6,12 @@ import 'package:gamorrah/state/preferences/preferences_bloc.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 
 class HomePageLayout extends StatefulWidget {
-  final int initialPage;
-
   const HomePageLayout({
     super.key,
-    this.initialPage = 0,
+    required this.preferencesState
   });
+
+  final PreferencesState preferencesState;
 
   @override
   State<HomePageLayout> createState() => _HomePageLayoutState();
@@ -20,83 +19,89 @@ class HomePageLayout extends StatefulWidget {
 
 class _HomePageDestination {
   _HomePageDestination({
-    required this.label,
+    required this.title,
     required this.icon,
-    required this.child
+    required this.child,
+    this.destinations = const [],
   });
 
-  final String label;
+  final String title;
   final Widget icon;
   final Widget child;
+  final List<_HomePageDestination> destinations;
 }
 
-class _HomePageLayoutState extends State<HomePageLayout> {
+class _HomePageLayoutState extends State<HomePageLayout> with TickerProviderStateMixin {
   int _selectedDestinationIndex = 0;
-
-  late final List<_HomePageDestination> _destinations;
+  late List<_HomePageDestination> _destinations;
+  late TabController _subDestinationsTabController;
 
   @override
   void initState() {
     super.initState();
-    _destinations = _getDestinations();
+    
+    _destinations = _getDestinations(widget.preferencesState);
+
+    _subDestinationsTabController = TabController(
+      length: _destinations[_selectedDestinationIndex].destinations.length,
+      initialIndex: 0,
+      vsync: this,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PreferencesBloc, PreferencesState>(
-      builder: (context, state) {
-        if (state.phase.isInitial) {
-          return Container();
-        }
+    final selectedDestination = _destinations[_selectedDestinationIndex];
 
-        if (state.phase.isLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    if (selectedDestination.destinations.length != _subDestinationsTabController.length) {
+      _subDestinationsTabController.dispose();
 
-        if (state.phase.isError) {
-          return Center(
-            child: Text(t.ui.general.errorText),
-          );
-        }
-        
-        return _buildContent(context, state);
-      },
-    );
-  }
+      _subDestinationsTabController = TabController(
+        length: _destinations[_selectedDestinationIndex].destinations.length,
+        initialIndex: 0,
+        vsync: this,
+      );
+    }
 
-  Widget _buildContent(BuildContext context, PreferencesState state) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Navigation Drawer',
-        ),
-        backgroundColor: const Color(0xff764abc),
+        title: Text(selectedDestination.title),
+        bottom: selectedDestination.destinations.isNotEmpty 
+          ? TabBar(
+              controller: _subDestinationsTabController,
+              tabs: selectedDestination.destinations.map((subDestination) => Tab(
+                text: subDestination.title,
+              )).toList()
+          ) : null,
       ),
-      drawer: NavigationDrawer(
-        selectedIndex: _selectedDestinationIndex,
         
-        children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Text('Drawer Header'),
+      body: Row(
+        children: [
+          NavigationRail(
+            destinations: _destinations.map((destination) => NavigationRailDestination(
+              icon: destination.icon, 
+              label: Text(destination.title),
+            )).toList(), 
+            selectedIndex: _selectedDestinationIndex,
+            labelType: NavigationRailLabelType.all,
+            onDestinationSelected: (index) {
+              setState(() => _selectedDestinationIndex = index);
+            },
           ),
-          ..._destinations.map(
-            (destination) => NavigationDrawerDestination(
-              label: Text(destination.label),
-              icon: destination.icon,
-            ),
-          ),
+          const VerticalDivider(thickness: 1, width: 1),
+          Expanded(
+            child: _subDestinationsTabController.length > 0 
+              ? TabBarView(
+                controller: _subDestinationsTabController,
+                children: _destinations[_selectedDestinationIndex].destinations
+                  .map((subDestination) => subDestination.child)
+                  .toList(),
+              )
+              : _destinations[_selectedDestinationIndex].child
+          )
         ],
-        onDestinationSelected: (index) {
-         setState(() => _selectedDestinationIndex = index);
-        },
       ),
-      body: _destinations[_selectedDestinationIndex].child,
     );
     // return NavigationRail(
     //   selectedIndex: _page,
@@ -128,16 +133,18 @@ class _HomePageLayoutState extends State<HomePageLayout> {
     // );
   }
 
-  List<_HomePageDestination> _getDestinations() {
+  
+
+  List<_HomePageDestination> _getDestinations(PreferencesState state) {
     return [
-      _buildGamesDestination(GameStatus.backlog),
-      _buildGamesDestination(GameStatus.playing),
-      _buildGamesDestination(GameStatus.finished),
-      _buildGamesDestination(GameStatus.wishlist),
+      _getGamesDestination(GameStatus.backlog, state),
+      _getGamesDestination(GameStatus.playing, state),
+      _getGamesDestination(GameStatus.finished, state),
+      _getGamesDestination(GameStatus.wishlist, state),
     ];
   }
 
-  _HomePageDestination _buildGamesDestination(GameStatus status) {
+  _HomePageDestination _getGamesDestination(GameStatus status, PreferencesState state) {
     final icon = switch (status) {
       GameStatus.backlog => const Icon(Icons.history),
       GameStatus.playing => const Icon(Icons.play_arrow),
@@ -152,36 +159,18 @@ class _HomePageLayoutState extends State<HomePageLayout> {
       GameStatus.wishlist => t.types.gameStatus.wishlist,
     };
 
-    // final presets = state.preferences.gamesPresets
-    //   .where((gamesPreset) => gamesPreset.status == status);
+    final presets = state.preferences.gamesPresets
+      .where((gamesPreset) => gamesPreset.status == status);
 
     return _HomePageDestination(
       icon: icon, 
-      label: title,
-      child: GamesNavigator(key: Key('games:$status'), status: status)
+      title: title,
+      child: GamesNavigator(key: Key('games:$status'), status: status),
+      destinations: presets.map((preset) => _HomePageDestination(
+        icon: icon,
+        title: preset.name,
+        child: GamesNavigator(key: Key('games:$status:${preset.name}'), status: status, preset: preset,)
+      )).toList()
     );
-
-    // if (presets.isEmpty) {
-    //   return NavigationRailDestination(icon: icon, label: title, body: GamesNavigator(
-    //     status: status,
-    //   ));
-    // }
-
-    // final items = presets
-    //   .map((gamesPreset) => PaneItem(
-    //     icon: icon, 
-    //     title: Text(gamesPreset.name),
-    //     body: GamesNavigator(status: status, preset: gamesPreset)
-    //   ))
-    //   .toList();
-
-    // return PaneItemExpander(icon: icon, title: title, items: items, 
-    //   body: GamesNavigator(status: status),
-    //   initiallyExpanded: true,
-    // );
   }
-
-  // void _onPageChanged(int page) {
-  //   setState(() => _page = page);
-  // }
 }

@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
+import 'package:gamorrah/models/game/game_repository.dart';
 import 'package:gamorrah/models/game/hive_game.dart';
+import 'package:gamorrah/models/game/hive_game_repository.dart';
 import 'package:gamorrah/models/preferences/hive_preferences.dart';
+import 'package:gamorrah/models/preferences/hive_preferences_repository.dart';
+import 'package:gamorrah/models/preferences/preferences_repository.dart';
+import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/theme.dart';
 import 'package:gamorrah/pages/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
+
+import 'state/preferences/preferences_bloc.dart';
 
 void main() async {
   SystemTheme.accentColor.load();
@@ -74,7 +82,31 @@ class MyApp extends StatelessWidget {
           //   ),
           // ),
           locale: appTheme.locale,
-          home: const HomePage(),
+          home: MultiRepositoryProvider(
+            providers: [
+              RepositoryProvider<GameRepository>(
+                create: (context) => HiveGameRepository(),
+              ),
+              RepositoryProvider<PreferencesRepository>(
+                create: (context) => HivePreferencesRepository(),
+              ),
+            ],
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider<GamesBloc>(
+                  create: (context) => GamesBloc(
+                    gameRepository: context.read<GameRepository>(),
+                  )..add(LoadGames()),
+                ),
+                BlocProvider<PreferencesBloc>(
+                  create: (context) => PreferencesBloc(
+                    preferencesRepository: context.read<PreferencesRepository>(),
+                  )..add(LoadPrefernces()),
+                ),
+              ],
+              child: HomePage(),
+            ),
+          ),
         );
       }
     );

@@ -81,7 +81,7 @@ class GameThumb extends StatelessWidget {
           height: size.height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Colors.grey.withOpacity(0.8),
+            color: Colors.grey[900]!.withOpacity(0.6),
           ),
           child: Center(
             child: GamePersonalBeatenIcon(
