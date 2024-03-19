@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/preferences/preferences.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
+import 'package:gamorrah/widgets/ui/space_size.dart';
 
 class GamesPageLayout extends StatefulWidget {
   const GamesPageLayout({ 
@@ -57,8 +60,30 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
 
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
         title: Text(_getTitle()),
+        actions: [
+          SizedBox(
+            width: 200,
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                icon: Icon(Icons.search),
+                hintText: t.ui.gamesPage.searchPlaceholder,
+                border: InputBorder.none,
+              ),
+              onChanged: (value) {
+                setState(() {
+                  
+                });
+              },
+            ),
+          ),
+          IconButton(
+            onPressed: () {}, 
+            icon: Icon(Icons.filter_alt)
+          ),
+          HSpacer(size: SpaceSize.l)
+        ],
         bottom: widget.presets.isNotEmpty
           ? TabBar(
               controller: _tabController,
@@ -72,6 +97,10 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
         child: Center(
           child: GamesList(games: games),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
       ),
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.end,
