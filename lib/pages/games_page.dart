@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
@@ -47,7 +48,7 @@ class _GamesScreenState extends State<GamesPage> {
 
         if (state.phase.isLoading) {
           return Center(
-            child: ProgressRing(),
+            child: CircularProgressIndicator(),
           );
         }
 
@@ -65,37 +66,30 @@ class _GamesScreenState extends State<GamesPage> {
   Widget _buildContent(BuildContext context, GamesState state) {
     final games = _getGamesList(state);
 
-    return NavigationView(
-      appBar: NavigationAppBar(
-        automaticallyImplyLeading: false,
-        title: Text(_getTitle()),
-        actions: _buildActions(context, state),
-      ),
-      content: Builder(
-        builder: (context) {
-          if (state.games.isEmpty) {
-            return Center(
-              child: Text(t.ui.general.emptyText),
-            );
-          }
-
-          return ScaffoldPage(
-            padding: EdgeInsets.zero,
-            content: SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: GamesList(games: games),
-            ),
-            bottomBar: Container(
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.only(top: 8, bottom: 8, right: 24),
-              child: Text(
-                t.ui.gamesPage.gamesTotalText(count: games.length),
-                style: FluentTheme.of(context).typography.caption,
-              ),
-            ),
+    return Builder(
+      builder: (context) {
+        if (state.games.isEmpty) {
+          return Center(
+            child: Text(t.ui.general.emptyText),
           );
-        },
-      ),
+        }
+
+        return Scaffold(
+          // padding: EdgeInsets.zero,
+          body: SingleChildScrollView(
+            padding: EdgeInsets.all(16.0),
+            child: Center(child: GamesList(games: games)),
+          ),
+          // bottomBar: Container(
+          //   alignment: Alignment.centerRight,
+          //   padding: EdgeInsets.only(top: 8, bottom: 8, right: 24),
+          //   child: Text(
+          //     t.ui.gamesPage.gamesTotalText(count: games.length),
+          //     // style: FluentTheme.of(context).typography.caption,
+          //   ),
+          // ),
+        );
+      },
     );
   }
 
@@ -105,9 +99,9 @@ class _GamesScreenState extends State<GamesPage> {
       children: [
         SizedBox(
           width: 256,
-          child: TextBox(
+          child: TextField(
             controller: _searchController,
-            placeholder: t.ui.gamesPage.searchPlaceholder,
+            // placeholder: t.ui.gamesPage.searchPlaceholder,
             onChanged: (value) {
               setState(() {});
             },
@@ -120,8 +114,8 @@ class _GamesScreenState extends State<GamesPage> {
       message: t.ui.gamesPage.filterButton,
       child: IconButton(
         icon: _filter.isEmpty
-          ? Icon(FluentIcons.filter)
-          : Icon(FluentIcons.filter_solid, color: Colors.blue),
+          ? Icon(Icons.filter)
+          : Icon(Icons.filter, color: Colors.blue),
         onPressed: () {
           showDialog(
             context: context,
@@ -142,7 +136,7 @@ class _GamesScreenState extends State<GamesPage> {
     final savePresetWidget = Tooltip(
       message: t.ui.gamesPage.savePresetButton,
       child: IconButton(
-        icon: Icon(FluentIcons.save_template),
+        icon: Icon(Icons.save),
         onPressed: _filter.isEmpty ? null : () {
           showDialog(
             context: context,
@@ -167,7 +161,7 @@ class _GamesScreenState extends State<GamesPage> {
     final createGameWidget = Tooltip(
       message: t.ui.gamesPage.addGameButton,
       child: IconButton(
-        icon: const Icon(FluentIcons.add),
+        icon: const Icon(Icons.add),
         onPressed: () {
           final game = Game.create(
             title: t.ui.gamesPage.defaultGameTitle, 

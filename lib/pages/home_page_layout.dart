@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
@@ -18,8 +18,28 @@ class HomePageLayout extends StatefulWidget {
   State<HomePageLayout> createState() => _HomePageLayoutState();
 }
 
+class _HomePageDestination {
+  _HomePageDestination({
+    required this.label,
+    required this.icon,
+    required this.child
+  });
+
+  final String label;
+  final Widget icon;
+  final Widget child;
+}
+
 class _HomePageLayoutState extends State<HomePageLayout> {
-  int _page = 0;
+  int _selectedDestinationIndex = 0;
+
+  late final List<_HomePageDestination> _destinations;
+
+  @override
+  void initState() {
+    super.initState();
+    _destinations = _getDestinations();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +51,7 @@ class _HomePageLayoutState extends State<HomePageLayout> {
 
         if (state.phase.isLoading) {
           return Center(
-            child: ProgressRing(),
+            child: CircularProgressIndicator(),
           );
         }
 
@@ -47,67 +67,121 @@ class _HomePageLayoutState extends State<HomePageLayout> {
   }
 
   Widget _buildContent(BuildContext context, PreferencesState state) {
-    return NavigationView(
-      pane: NavigationPane(
-        selected: _page,
-        onChanged: _onPageChanged,
-        displayMode: PaneDisplayMode.auto,
-        items: [
-          _buildGamesPaneItem(context, state, GameStatus.backlog),
-          _buildGamesPaneItem(context, state, GameStatus.playing),
-          _buildGamesPaneItem(context, state, GameStatus.finished),
-          _buildGamesPaneItem(context, state, GameStatus.wishlist),   
-        ],
-        footerItems: [
-          PaneItem(
-            icon: const Icon(FluentIcons.settings),
-            title: Text(t.ui.homePage.settingsLink),
-            body: SettingsPage(),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Navigation Drawer',
+        ),
+        backgroundColor: const Color(0xff764abc),
+      ),
+      drawer: NavigationDrawer(
+        selectedIndex: _selectedDestinationIndex,
+        
+        children: <Widget>[
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text('Drawer Header'),
+          ),
+          ..._destinations.map(
+            (destination) => NavigationDrawerDestination(
+              label: Text(destination.label),
+              icon: destination.icon,
+            ),
           ),
         ],
+        onDestinationSelected: (index) {
+         setState(() => _selectedDestinationIndex = index);
+        },
       ),
+      body: _destinations[_selectedDestinationIndex].child,
     );
+    // return NavigationRail(
+    //   selectedIndex: _page,
+    //   onDestinationSelected: _onPageChanged,
+    //   destinations: [
+    //     _buildGamesDestination(context, state, GameStatus.backlog),
+    //     _buildGamesDestination(context, state, GameStatus.playing),
+    //     _buildGamesDestination(context, state, GameStatus.finished),
+    //     _buildGamesDestination(context, state, GameStatus.wishlist),
+    //   ],
+    //   // pane: NavigationPane(
+    //   //   selected: _page,
+    //   //   onChanged: _onPageChanged,
+    //   //   displayMode: PaneDisplayMode.auto,
+    //   //   items: [
+    //   //     _buildGamesPaneItem(context, state, GameStatus.backlog),
+    //   //     _buildGamesPaneItem(context, state, GameStatus.playing),
+    //   //     _buildGamesPaneItem(context, state, GameStatus.finished),
+    //   //     _buildGamesPaneItem(context, state, GameStatus.wishlist),   
+    //   //   ],
+    //   //   footerItems: [
+    //   //     PaneItem(
+    //   //       icon: const Icon(FluentIcons.settings),
+    //   //       title: Text(t.ui.homePage.settingsLink),
+    //   //       body: SettingsPage(),
+    //   //     ),
+    //   //   ],
+    //   // ),
+    // );
   }
 
-  PaneItem _buildGamesPaneItem(BuildContext context, PreferencesState state, GameStatus status) {
+  List<_HomePageDestination> _getDestinations() {
+    return [
+      _buildGamesDestination(GameStatus.backlog),
+      _buildGamesDestination(GameStatus.playing),
+      _buildGamesDestination(GameStatus.finished),
+      _buildGamesDestination(GameStatus.wishlist),
+    ];
+  }
+
+  _HomePageDestination _buildGamesDestination(GameStatus status) {
     final icon = switch (status) {
-      GameStatus.backlog => const Icon(FluentIcons.history),
-      GameStatus.playing => const Icon(FluentIcons.play),
-      GameStatus.finished => const Icon(FluentIcons.completed),
-      GameStatus.wishlist => const Icon(FluentIcons.waitlist_confirm),
+      GameStatus.backlog => const Icon(Icons.history),
+      GameStatus.playing => const Icon(Icons.play_arrow),
+      GameStatus.finished => const Icon(Icons.done),
+      GameStatus.wishlist => const Icon(Icons.redeem),
     };
 
     final title = switch (status) {
-      GameStatus.backlog => Text(t.types.gameStatus.backlog),
-      GameStatus.playing => Text(t.types.gameStatus.playing),
-      GameStatus.finished => Text(t.types.gameStatus.finished),
-      GameStatus.wishlist => Text(t.types.gameStatus.wishlist),
+      GameStatus.backlog => t.types.gameStatus.backlog,
+      GameStatus.playing => t.types.gameStatus.playing,
+      GameStatus.finished => t.types.gameStatus.finished,
+      GameStatus.wishlist => t.types.gameStatus.wishlist,
     };
 
-    final presets = state.preferences.gamesPresets
-      .where((gamesPreset) => gamesPreset.status == status);
+    // final presets = state.preferences.gamesPresets
+    //   .where((gamesPreset) => gamesPreset.status == status);
 
-    if (presets.isEmpty) {
-      return PaneItem(icon: icon, title: title, body: GamesNavigator(
-        status: status,
-      ));
-    }
-
-    final items = presets
-      .map((gamesPreset) => PaneItem(
-        icon: icon, 
-        title: Text(gamesPreset.name),
-        body: GamesNavigator(status: status, preset: gamesPreset)
-      ))
-      .toList();
-
-    return PaneItemExpander(icon: icon, title: title, items: items, 
-      body: GamesNavigator(status: status),
-      initiallyExpanded: true,
+    return _HomePageDestination(
+      icon: icon, 
+      label: title,
+      child: GamesNavigator(key: Key('games:$status'), status: status)
     );
+
+    // if (presets.isEmpty) {
+    //   return NavigationRailDestination(icon: icon, label: title, body: GamesNavigator(
+    //     status: status,
+    //   ));
+    // }
+
+    // final items = presets
+    //   .map((gamesPreset) => PaneItem(
+    //     icon: icon, 
+    //     title: Text(gamesPreset.name),
+    //     body: GamesNavigator(status: status, preset: gamesPreset)
+    //   ))
+    //   .toList();
+
+    // return PaneItemExpander(icon: icon, title: title, items: items, 
+    //   body: GamesNavigator(status: status),
+    //   initiallyExpanded: true,
+    // );
   }
 
-  void _onPageChanged(int page) {
-    setState(() => _page = page);
-  }
+  // void _onPageChanged(int page) {
+  //   setState(() => _page = page);
+  // }
 }

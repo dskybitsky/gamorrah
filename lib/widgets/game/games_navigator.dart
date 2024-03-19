@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/preferences/preferences.dart';
 import 'package:gamorrah/pages/games_page.dart';
@@ -31,8 +31,9 @@ class GamesNavigator extends StatelessWidget {
     Navigator.push(context, gameRoute(id: id));
   }
 
-  static FluentPageRoute gamesRoute({ required GameStatus status, GamesPreset? preset }) {
-    return FluentPageRoute(
+  static PageRoute gamesRoute({ required GameStatus status, GamesPreset? preset }) {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: '/games/$status'),
       builder: (context) {      
         return GamesPage(
           status: status,
@@ -42,9 +43,10 @@ class GamesNavigator extends StatelessWidget {
     );
   }
 
-  static FluentPageRoute gameRoute({ required String id }) {
-    return FluentPageRoute(
-      builder: (context) {      
+  static PageRoute gameRoute({ required String id }) {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: '/game/$id'),
+      builder: (context) {
         return GamePage(id: id);
       }
     );

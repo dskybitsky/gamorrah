@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
 
@@ -53,7 +53,7 @@ class GameThumb extends StatelessWidget {
         ),
         child: _getOverlay(context),
       ),
-      placeholder: (context, url) => ProgressRing(),
+      placeholder: (context, url) => CircularProgressIndicator(),
     );
   }
 
@@ -114,14 +114,14 @@ class GameThumb extends StatelessWidget {
   }
 
   Color _getShadowColor(BuildContext context) {
-    final isDark = FluentTheme.of(context).brightness.isDark;
+    final isDark = false;//FluentTheme.of(context).brightness.isDark;
 
     return switch (game.kind) {
       GameKind.bundle => Colors.blue,
       GameKind.dlc => Colors.green,
       GameKind.content => Colors.orange,
       _ => isDark ? Colors.grey[220] : Colors.grey[100],
-    };
+    }!;
   }
 
   Size _getSize() => switch (type) {

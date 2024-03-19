@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/hive_game.dart';
 import 'package:gamorrah/models/preferences/hive_preferences.dart';
@@ -56,23 +56,23 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         final appTheme = context.watch<AppTheme>();
 
-        return FluentApp(
+        return MaterialApp(
           title: 'Gamorrah',
-          darkTheme: FluentThemeData(
-            brightness: Brightness.dark,
-            accentColor: appTheme.color,
-            visualDensity: VisualDensity.standard,
-            focusTheme: FocusThemeData(
-              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-            ),
-          ),
-          theme: FluentThemeData(
-            accentColor: appTheme.color,
-            visualDensity: VisualDensity.standard,
-            focusTheme: FocusThemeData(
-              glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-            ),
-          ),
+          // darkTheme: FluentThemeData(
+          //   brightness: Brightness.dark,
+          //   accentColor: appTheme.color,
+          //   visualDensity: VisualDensity.standard,
+          //   focusTheme: FocusThemeData(
+          //     glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+          //   ),
+          // ),
+          // theme: FluentThemeData(
+          //   accentColor: appTheme.color,
+          //   visualDensity: VisualDensity.standard,
+          //   focusTheme: FocusThemeData(
+          //     glowFactor: is10footScreen(context) ? 2.0 : 0.0,
+          //   ),
+          // ),
           locale: appTheme.locale,
           home: const HomePage(),
         );
