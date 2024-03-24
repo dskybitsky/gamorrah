@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
@@ -59,12 +58,31 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     }
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+
+    _tabController.dispose();
+    _searchController.dispose();
+  }
+
   void _onWidgetGamesViewsChanged() {
     _gamesViews = widget.gamesViewsState.gamesViews
       .where((gamesView) => gamesView.status == widget.status)
       .toList();
 
-    _gamesViewIndex = max(min(_gamesViewIndex, _gamesViews.length - 1), 0);
+    _gamesViews
+      .sort((GamesView gamesViewA, GamesView gamesViewB) {
+        return gamesViewA.index.compareTo(gamesViewB.index);
+      });
+
+    if (_gamesViewIndex >= _gamesViews.length) {
+      _gamesViewIndex = _gamesViews.length - 1;
+    }
+
+    if (_gamesViewIndex < 0) {
+      _gamesViewIndex = 0;
+    }
 
     _tabController.dispose();
 
@@ -193,13 +211,13 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
             builder: (context) => GamesPageFilterDialog(
               filter: _filter,
               onChanged: (value) {
-                setState(() {
-                  _filter = value;
-                });
+                // setState(() {
+                //   _filter = value;
+                // });
 
                 if (_gamesViews.isNotEmpty) {
                   final newGamesView = _gamesViews[_gamesViewIndex].copyWith(
-                      filter: Optional(_filter)
+                      filter: Optional(value)
                   );
 
                   context
@@ -230,6 +248,9 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
                     gamesView: GamesView.create(
                       name: value, 
                       status: widget.status,
+                      index: _gamesViews.isNotEmpty 
+                        ? _gamesViews.last.index + 1
+                        : 0,
                       filter: _filter
                     )
                   ));

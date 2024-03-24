@@ -20,14 +20,15 @@ class HiveGamesViewAdapter extends TypeAdapter<HiveGamesView> {
       id: fields[0] as String,
       name: fields[1] as String,
       status: fields[2] as String,
-      filter: fields[3] as HiveGamesFilter?,
+      index: fields[3] as int,
+      filter: fields[4] as HiveGamesFilter?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveGamesView obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,6 +36,8 @@ class HiveGamesViewAdapter extends TypeAdapter<HiveGamesView> {
       ..writeByte(2)
       ..write(obj.status)
       ..writeByte(3)
+      ..write(obj.index)
+      ..writeByte(4)
       ..write(obj.filter);
   }
 

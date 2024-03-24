@@ -10,6 +10,7 @@ class HiveGamesView extends HiveObject {
     required this.id,
     required this.name,
     required this.status,
+    this.index = 0,
     this.filter
   });
 
@@ -23,12 +24,16 @@ class HiveGamesView extends HiveObject {
   final String status;
 
   @HiveField(3)
+  final int index;
+
+  @HiveField(4)
   final HiveGamesFilter? filter;
 
   factory HiveGamesView.fromGamesView(GamesView gamesView) => HiveGamesView(
     id: gamesView.id,
     name: gamesView.name,
     status: gamesView.status.name,
+    index: gamesView.index,
     filter: gamesView.filter != null
       ? HiveGamesFilter.fromGamesFilter(gamesView.filter!)
       : null,
@@ -38,6 +43,7 @@ class HiveGamesView extends HiveObject {
     id: id,
     name: name,
     status: GameStatus.values.byName(status),
+    index: index,
     filter: filter?.toGamesPageFilter(),
   );
 }
