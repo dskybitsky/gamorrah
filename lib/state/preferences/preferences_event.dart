@@ -12,13 +12,13 @@ class LoadPrefernces extends PreferencesEvent {
   List<Object?> get props => [];
 }
 
-class SaveGamesPreset extends PreferencesEvent {
-  SaveGamesPreset({ 
-    required this.gamesPreset,
+class SavePreferences extends PreferencesEvent {
+  SavePreferences({ 
+    required this.preferences,
   });
 
-  final GamesPreset gamesPreset;
+  final Preferences preferences;
 
   @override
-  List<Object?> get props => [gamesPreset];
+  List<Object?> get props => [preferences];
 }

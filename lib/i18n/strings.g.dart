@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 79
+/// Strings: 80
 ///
-/// Built on 2024-03-11 at 13:49 UTC
+/// Built on 2024-03-24 at 12:30 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -225,7 +225,8 @@ class _StringsUiGamesPageEn {
 	String get searchPlaceholder => 'Search...';
 	String gamesTotalText({required Object count}) => 'Games total: ${count}';
 	String get defaultGameTitle => 'New game';
-	String get presetNameLabel => 'Preset Name';
+	String get presetNameLabel => 'Preset';
+	String get presetNamePlaceholder => 'Preset Name';
 }
 
 // Path: ui.gamePage
@@ -402,7 +403,8 @@ extension on Translations {
 			case 'ui.gamesPage.searchPlaceholder': return 'Search...';
 			case 'ui.gamesPage.gamesTotalText': return ({required Object count}) => 'Games total: ${count}';
 			case 'ui.gamesPage.defaultGameTitle': return 'New game';
-			case 'ui.gamesPage.presetNameLabel': return 'Preset Name';
+			case 'ui.gamesPage.presetNameLabel': return 'Preset';
+			case 'ui.gamesPage.presetNamePlaceholder': return 'Preset Name';
 			case 'ui.gamePage.addIncludedItemButton': return 'Add Included Item';
 			case 'ui.gamePage.titleLabel': return '${_root.types.game.title}:';
 			case 'ui.gamePage.titlePlaceholder': return '${_root.types.game.title}';

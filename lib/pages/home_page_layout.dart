@@ -121,13 +121,10 @@ class _HomePageLayoutState extends State<HomePageLayout> {
       GameStatus.wishlist => t.types.gameStatus.wishlist,
     };
 
-    final presets = state.preferences.gamesPresets
-      .where((gamesPreset) => gamesPreset.status == status);
-
     return _HomePageDestination(
       icon: icon, 
       title: title,
-      child: GamesNavigator(key: Key('games:$status'), status: status, presets: presets.toList()),
+      child: GamesNavigator(key: Key('games:$status'), status: status),
     );
   }
 }

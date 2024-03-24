@@ -4,10 +4,14 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game_repository.dart';
 import 'package:gamorrah/models/game/hive_game.dart';
 import 'package:gamorrah/models/game/hive_game_repository.dart';
+import 'package:gamorrah/models/games_view/games_view_repository.dart';
+import 'package:gamorrah/models/games_view/hive_games_view.dart';
+import 'package:gamorrah/models/games_view/hive_games_view_repository.dart';
 import 'package:gamorrah/models/preferences/hive_preferences.dart';
 import 'package:gamorrah/models/preferences/hive_preferences_repository.dart';
 import 'package:gamorrah/models/preferences/preferences_repository.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
+import 'package:gamorrah/state/games_view/games_views_bloc.dart';
 import 'package:gamorrah/theme.dart';
 import 'package:gamorrah/pages/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,7 +37,7 @@ void main() async {
 Future<void> _initHive() async {
   Hive.registerAdapter(HiveGameAdapter());
   Hive.registerAdapter(HivePreferencesAdapter());
-  Hive.registerAdapter(HiveGamesPresetAdapter());
+  Hive.registerAdapter(HiveGamesViewAdapter());
   Hive.registerAdapter(HiveGamesFilterAdapter());
 
   await Hive.initFlutter();
@@ -87,6 +91,9 @@ class MyApp extends StatelessWidget {
               RepositoryProvider<GameRepository>(
                 create: (context) => HiveGameRepository(),
               ),
+              RepositoryProvider<GamesViewRepository>(
+                create: (context) => HiveGamesViewRepository(),
+              ),
               RepositoryProvider<PreferencesRepository>(
                 create: (context) => HivePreferencesRepository(),
               ),
@@ -97,6 +104,11 @@ class MyApp extends StatelessWidget {
                   create: (context) => GamesBloc(
                     gameRepository: context.read<GameRepository>(),
                   )..add(LoadGames()),
+                ),
+                BlocProvider<GamesViewsBloc>(
+                  create: (context) => GamesViewsBloc(
+                    gamesViewRepository: context.read<GamesViewRepository>(),
+                  )..add(LoadGamesViews()),
                 ),
                 BlocProvider<PreferencesBloc>(
                   create: (context) => PreferencesBloc(

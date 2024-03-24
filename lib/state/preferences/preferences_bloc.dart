@@ -1,9 +1,8 @@
-import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/models/preferences/preferences.dart';
 import 'package:gamorrah/models/preferences/preferences_repository.dart';
+import 'package:gamorrah/state/state_phase.dart';
 
 part 'preferences_event.dart';
 part 'preferences_state.dart';
@@ -13,7 +12,7 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     required this.preferencesRepository,
   }) : super(const PreferencesState()) {
     on<LoadPrefernces>(_mapLoadPreferencesEventToState);
-    on<SaveGamesPreset>(_mapSaveGamesPresetEventToState);
+    on<SavePreferences>(_mapSavePreferencesEventToState);
   }
 
   final PreferencesRepository preferencesRepository;
@@ -23,46 +22,38 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     Emitter<PreferencesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: PreferencesStatePhase.loading));
+      emit(state.copyWith(phase: StatePhase.loading));
 
       final preferences = await preferencesRepository.get();
 
       emit(state.copyWith(
-        phase: PreferencesStatePhase.success,
+        phase: StatePhase.success,
         preferences: preferences,
       ));
     } catch (error, stacktrace) {
       print(error);
       print(stacktrace);
-      emit(state.copyWith(phase: PreferencesStatePhase.error));
+      emit(state.copyWith(phase: StatePhase.error));
     }
   }
 
-  void _mapSaveGamesPresetEventToState(
-    SaveGamesPreset event,
+  void _mapSavePreferencesEventToState(
+    SavePreferences event,
     Emitter<PreferencesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: PreferencesStatePhase.loading));
+      emit(state.copyWith(phase: StatePhase.loading));
 
-      final gamesPresets = state.preferences.gamesPresets
-        .whereNot((gamesPreset) => gamesPreset.name == event.gamesPreset.name)
-        .toList();
-
-      gamesPresets.add(event.gamesPreset);
-
-      final preferences = state.preferences.copyWith(gamesPresets: Optional(gamesPresets));
-
-      await preferencesRepository.save(preferences);
+      await preferencesRepository.save(event.preferences);
 
       emit(state.copyWith(
-        phase: PreferencesStatePhase.success,
-        preferences: preferences
+        phase: StatePhase.success,
+        preferences: event.preferences
       ));
     } catch (error, stacktrace) {
       print(error);
       print(stacktrace);
-      emit(state.copyWith(phase: PreferencesStatePhase.error));
+      emit(state.copyWith(phase: StatePhase.error));
     }
   }
 }

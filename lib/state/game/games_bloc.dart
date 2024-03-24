@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/game/game_repository.dart';
+import 'package:gamorrah/state/state_phase.dart';
 
 part 'games_event.dart';
 part 'games_state.dart';
@@ -24,17 +25,17 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: GamesStatePhase.loading));
+      emit(state.copyWith(phase: StatePhase.loading));
 
       final games = await gameRepository.get();
 
       emit(state.copyWith(
-        phase: GamesStatePhase.success,
+        phase: StatePhase.success,
         games: games,
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
-      emit(state.copyWith(phase: GamesStatePhase.error));
+      emit(state.copyWith(phase: StatePhase.error));
     }
   }
 
@@ -43,16 +44,16 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: GamesStatePhase.loading));
+      emit(state.copyWith(phase: StatePhase.loading));
 
       await gameRepository.save(event.game);
 
       emit(state.copyWith(
-        phase: GamesStatePhase.success,
+        phase: StatePhase.success,
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
-      emit(state.copyWith(phase: GamesStatePhase.error));
+      emit(state.copyWith(phase: StatePhase.error));
     }
   }
 
@@ -61,16 +62,16 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: GamesStatePhase.loading));
+      emit(state.copyWith(phase: StatePhase.loading));
 
       await gameRepository.saveMany(event.games);
 
       emit(state.copyWith(
-        phase: GamesStatePhase.success,
+        phase: StatePhase.success,
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
-      emit(state.copyWith(phase: GamesStatePhase.error));
+      emit(state.copyWith(phase: StatePhase.error));
     }
   }
 
@@ -79,7 +80,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: GamesStatePhase.loading));
+      emit(state.copyWith(phase: StatePhase.loading));
 
       final includedGames = state.games
         .where((game) => game.parentId == event.id);
@@ -89,11 +90,11 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       await gameRepository.delete(event.id);
 
       emit(state.copyWith(
-        phase: GamesStatePhase.success,
+        phase: StatePhase.success,
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
-      emit(state.copyWith(phase: GamesStatePhase.error));
+      emit(state.copyWith(phase: StatePhase.error));
     }
   }
 
@@ -102,16 +103,16 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: GamesStatePhase.loading));
+      emit(state.copyWith(phase: StatePhase.loading));
 
       await gameRepository.deleteAll();
 
       emit(state.copyWith(
-        phase: GamesStatePhase.success,
+        phase: StatePhase.success,
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
-      emit(state.copyWith(phase: GamesStatePhase.error));
+      emit(state.copyWith(phase: StatePhase.error));
     }
   }
 }

@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/preferences/preferences.dart';
+import 'package:gamorrah/models/games_view/games_view.dart';
 import 'package:gamorrah/pages/games_page_filter_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
+import 'package:gamorrah/state/games_view/games_views_bloc.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/space_size.dart';
@@ -13,13 +14,13 @@ class GamesPageLayout extends StatefulWidget {
   const GamesPageLayout({ 
     super.key,
     required this.gamesState,
+    required this.gamesViewsState,
     required this.status,
-    this.presets = const [],
   });
 
   final GamesState gamesState;
+  final GamesViewsState gamesViewsState;
   final GameStatus status;
-  final List<GamesPreset> presets;
 
   @override
   State<GamesPageLayout> createState() => _GamesPageLayoutState();
@@ -29,30 +30,32 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
   late TabController _tabController;
   late TextEditingController _searchController;
   late GamesFilter? _filter;
-  late int _presetIndex;
+  late int _gamesViewIndex;
   
   @override
   void initState() {
     super.initState();
 
+    final gamesViews = widget.gamesViewsState.gamesViews;
+
     _tabController = TabController(
-      length: widget.presets.length,
+      length: gamesViews.length,
       vsync: this,
     );
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {
-          _presetIndex = _tabController.index;
-          _filter = widget.presets[_presetIndex].filter;
+          _gamesViewIndex = _tabController.index;
+          _filter = gamesViews[_gamesViewIndex].filter;
         });
       }
     });
 
-    _presetIndex = widget.presets.isNotEmpty ? 0 : -1;
+    _gamesViewIndex = gamesViews.isNotEmpty ? 0 : -1;
 
-    _filter = _presetIndex >= 0 
-        ? widget.presets[_presetIndex].filter
+    _filter = _gamesViewIndex >= 0 
+        ? gamesViews[_gamesViewIndex].filter
         : null;
 
     _searchController = TextEditingController(text: '');
@@ -60,6 +63,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final gamesViews = widget.gamesViewsState.gamesViews;
     final games = _getGamesList(_filter);
 
     return Scaffold(
@@ -111,11 +115,11 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
           ),
           HSpacer(size: SpaceSize.l)
         ],
-        bottom: widget.presets.isNotEmpty
+        bottom: gamesViews.isNotEmpty
           ? TabBar(
               controller: _tabController,
-              tabs: widget.presets.map((preset) => Tab(
-                text: preset.name,
+              tabs: gamesViews.map((gamesView) => Tab(
+                text: gamesView.name,
               )).toList()
           ) : null,
       ),

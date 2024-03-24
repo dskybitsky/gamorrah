@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/models/games_view/games_view.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/models/preferences/preferences.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
