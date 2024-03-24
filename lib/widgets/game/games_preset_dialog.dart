@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 
 class GamesPresetDialog extends StatefulWidget {
@@ -24,41 +24,38 @@ class _GamesPresetDialogState extends State<GamesPresetDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return ContentDialog(
-      content: _buildDialogContent(context),
-      actions: [
-        Button(
-          child: Text(t.ui.general.cancelButton),
-          onPressed: () => Navigator.pop(context),
-        ),
-        FilledButton(
-          onPressed: () {
-            final onChanged = widget.onChanged;
-
-            if (onChanged != null) {
-              onChanged(_nameController.text);
-            }
-            
-            Navigator.pop(context);
-          },
-          child: Text(t.ui.general.saveButton),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDialogContent(BuildContext context) {
-    return ListView(
-      children: [
-       InfoLabel(
-          label: t.ui.gamesPage.presetNameLabel,
-          child: TextBox(
+    return Dialog(
+      child: Column(
+        children: [
+          TextField(
             controller: _nameController,
-            placeholder: t.ui.gamePage.titlePlaceholder,
-            expands: false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.gamePage.titlePlaceholder,
+            ),
           ),
-        ),
-      ],
+          Row(
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(t.ui.general.cancelButton),
+              ),
+              TextButton(
+                onPressed: () {
+                  final onChanged = widget.onChanged;
+
+                  if (onChanged != null) {
+                    onChanged(_nameController.text);
+                  }
+                  
+                  Navigator.pop(context);
+                },
+                child: Text(t.ui.general.saveButton)
+              )
+            ],
+          ),
+        ]
+      ),
     );
   }
 }

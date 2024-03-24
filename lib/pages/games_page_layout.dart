@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/preferences/preferences.dart';
+import 'package:gamorrah/pages/games_page_filter_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
@@ -14,13 +15,11 @@ class GamesPageLayout extends StatefulWidget {
     required this.gamesState,
     required this.status,
     this.presets = const [],
-    this.currentPresetIndex = 0,
   });
 
   final GamesState gamesState;
   final GameStatus status;
   final List<GamesPreset> presets;
-  final int currentPresetIndex;
 
   @override
   State<GamesPageLayout> createState() => _GamesPageLayoutState();
@@ -29,7 +28,8 @@ class GamesPageLayout extends StatefulWidget {
 class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderStateMixin {
   late TabController _tabController;
   late TextEditingController _searchController;
-  int _tabIndex = -1;
+  late GamesFilter? _filter;
+  late int _presetIndex;
   
   @override
   void initState() {
@@ -37,33 +37,37 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
 
     _tabController = TabController(
       length: widget.presets.length,
-      initialIndex: widget.currentPresetIndex,
       vsync: this,
     );
 
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {
-          _tabIndex = _tabController.index;
+          _presetIndex = _tabController.index;
+          _filter = widget.presets[_presetIndex].filter;
         });
       }
     });
+
+    _presetIndex = widget.presets.isNotEmpty ? 0 : -1;
+
+    _filter = _presetIndex >= 0 
+        ? widget.presets[_presetIndex].filter
+        : null;
 
     _searchController = TextEditingController(text: '');
   }
 
   @override
   Widget build(BuildContext context) {
-    final games = _tabIndex >= 0 
-      ? _getGamesList(widget.presets[_tabIndex].filter)
-      : _getGamesList(null);
+    final games = _getGamesList(_filter);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(_getTitle()),
         actions: [
           SizedBox(
-            width: 200,
+            width: 150,
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
@@ -79,8 +83,31 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
             ),
           ),
           IconButton(
-            onPressed: () {}, 
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => GamesPageFilterDialog(
+                  filter: _filter,
+                  onChanged: (value) {
+                    setState(() {
+                      _filter = value;
+                    });
+                  },
+                ),
+                useRootNavigator: false,
+              );  
+            }, 
             icon: Icon(Icons.filter_alt)
+          ),
+          HSpacer(size: SpaceSize.xs),
+          IconButton(
+            onPressed: null, 
+            icon: Icon(Icons.save_as)
+          ),
+          HSpacer(size: SpaceSize.xs),
+          IconButton(
+            onPressed: null, 
+            icon: Icon(Icons.delete)
           ),
           HSpacer(size: SpaceSize.l)
         ],
@@ -152,21 +179,6 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
   }
 
   // Widget _buildActions(BuildContext context, GamesState state) {
-  //   final searchWidget = Column(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       SizedBox(
-  //         width: 256,
-  //         child: TextField(
-  //           controller: _searchController,
-  //           // placeholder: t.ui.gamesPage.searchPlaceholder,
-  //           onChanged: (value) {
-  //             setState(() {});
-  //           },
-  //         ),
-  //       ),
-  //     ],
-  //   );
     
   //   final filterWidget = Tooltip(
   //     message: t.ui.gamesPage.filterButton,
