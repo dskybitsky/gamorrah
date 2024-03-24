@@ -1,9 +1,12 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/games_view/games_view.dart';
+import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/pages/games_page_filter_dialog.dart';
+import 'package:gamorrah/pages/games_page_save_view_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/state/games_view/games_views_bloc.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
@@ -30,16 +33,44 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
   late TabController _tabController;
   late TextEditingController _searchController;
   late GamesFilter? _filter;
-  late int _gamesViewIndex;
+  late List<GamesView> _gamesViews;
+  int _gamesViewIndex = 0;
   
   @override
   void initState() {
     super.initState();
 
-    final gamesViews = widget.gamesViewsState.gamesViews;
+    _tabController = TabController(
+      length: 0,
+      vsync: this,
+    );
+
+    _searchController = TextEditingController(text: '');
+
+    _onWidgetGamesViewsChanged();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.gamesViewsState.gamesViews != widget.gamesViewsState.gamesViews) {
+      _onWidgetGamesViewsChanged();
+    }
+  }
+
+  void _onWidgetGamesViewsChanged() {
+    _gamesViews = widget.gamesViewsState.gamesViews
+      .where((gamesView) => gamesView.status == widget.status)
+      .toList();
+
+    _gamesViewIndex = max(min(_gamesViewIndex, _gamesViews.length - 1), 0);
+
+    _tabController.dispose();
 
     _tabController = TabController(
-      length: gamesViews.length,
+      length: _gamesViews.length,
+      initialIndex: _gamesViewIndex,
       vsync: this,
     );
 
@@ -47,78 +78,28 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
       if (_tabController.indexIsChanging) {
         setState(() {
           _gamesViewIndex = _tabController.index;
-          _filter = gamesViews[_gamesViewIndex].filter;
+          _filter = _gamesViews[_gamesViewIndex].filter;
         });
       }
     });
 
-    _gamesViewIndex = gamesViews.isNotEmpty ? 0 : -1;
-
-    _filter = _gamesViewIndex >= 0 
-        ? gamesViews[_gamesViewIndex].filter
+    _filter = _gamesViews.isNotEmpty
+        ? _gamesViews[_gamesViewIndex].filter
         : null;
-
-    _searchController = TextEditingController(text: '');
   }
 
   @override
   Widget build(BuildContext context) {
-    final gamesViews = widget.gamesViewsState.gamesViews;
-    final games = _getGamesList(_filter);
+    final games = _getGames(_filter);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(_getTitle()),
-        actions: [
-          SizedBox(
-            width: 150,
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                icon: Icon(Icons.search),
-                hintText: t.ui.gamesPage.searchPlaceholder,
-                border: InputBorder.none,
-              ),
-              onChanged: (value) {
-                setState(() {
-                  
-                });
-              },
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) => GamesPageFilterDialog(
-                  filter: _filter,
-                  onChanged: (value) {
-                    setState(() {
-                      _filter = value;
-                    });
-                  },
-                ),
-                useRootNavigator: false,
-              );  
-            }, 
-            icon: Icon(Icons.filter_alt)
-          ),
-          HSpacer(size: SpaceSize.xs),
-          IconButton(
-            onPressed: null, 
-            icon: Icon(Icons.save_as)
-          ),
-          HSpacer(size: SpaceSize.xs),
-          IconButton(
-            onPressed: null, 
-            icon: Icon(Icons.delete)
-          ),
-          HSpacer(size: SpaceSize.l)
-        ],
-        bottom: gamesViews.isNotEmpty
+        actions: _buildActions(context),
+        bottom: _gamesViews.isNotEmpty
           ? TabBar(
               controller: _tabController,
-              tabs: gamesViews.map((gamesView) => Tab(
+              tabs: _gamesViews.map((gamesView) => Tab(
                 text: gamesView.name,
               )).toList()
           ) : null,
@@ -145,7 +126,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     );
   }
 
-  List<Game> _getGamesList(GamesFilter? filter) {
+  List<Game> _getGames(GamesFilter? filter) {
     final searchText = _searchController.text;
 
     final games = widget.gamesState.games
@@ -182,89 +163,129 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     return games;
   }
 
-  // Widget _buildActions(BuildContext context, GamesState state) {
-    
-  //   final filterWidget = Tooltip(
-  //     message: t.ui.gamesPage.filterButton,
-  //     child: IconButton(
-  //       icon: _filter.isEmpty
-  //         ? Icon(Icons.filter)
-  //         : Icon(Icons.filter, color: Colors.blue),
-  //       onPressed: () {
-  //         showDialog(
-  //           context: context,
-  //           builder: (context) => GamesFilterDialog(
-  //             filter: _filter,
-  //             onChanged: (value) {
-  //               setState(() {
-  //                 _filter = value;
-  //               });
-  //             },
-  //           ),
-  //           useRootNavigator: false,
-  //         );
-  //       },
-  //     )
-  //   );
+  List<Widget> _buildActions(BuildContext context) {
+    final List<Widget> widgets = [];
 
-  //   final savePresetWidget = Tooltip(
-  //     message: t.ui.gamesPage.savePresetButton,
-  //     child: IconButton(
-  //       icon: Icon(Icons.save),
-  //       onPressed: _filter.isEmpty ? null : () {
-  //         showDialog(
-  //           context: context,
-  //           builder: (context) => GamesPresetDialog(
-  //             onChanged: (value) {
-  //               context.read<PreferencesBloc>()
-  //                 .add(SaveGamesPreset(
-  //                   gamesPreset: GamesPreset(
-  //                     name: value, 
-  //                     status: widget.status,
-  //                     filter: _filter
-  //                   )
-  //                 ));
-  //             },
-  //           ),
-  //           useRootNavigator: false,
-  //         );
-  //       },
-  //     )
-  //   );
+    widgets.add(
+      SizedBox(
+        width: 150,
+        child: TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            icon: Icon(Icons.search),
+            hintText: t.ui.gamesPage.searchPlaceholder,
+            border: InputBorder.none,
+          ),
+          onChanged: (value) {
+            setState(() {
+              
+            });
+          },
+        ),
+      )
+    );
 
-  //   final createGameWidget = Tooltip(
-  //     message: t.ui.gamesPage.addGameButton,
-  //     child: IconButton(
-  //       icon: const Icon(Icons.add),
-  //       onPressed: () {
-  //         final game = Game.create(
-  //           title: t.ui.gamesPage.defaultGameTitle, 
-  //           thumbUrl: null,
-  //           status: widget.status,
-  //         );
+    widgets.add(
+      IconButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => GamesPageFilterDialog(
+              filter: _filter,
+              onChanged: (value) {
+                setState(() {
+                  _filter = value;
+                });
 
-  //         context.read<GamesBloc>().add(SaveGame(game: game));
+                if (_gamesViews.isNotEmpty) {
+                  final newGamesView = _gamesViews[_gamesViewIndex].copyWith(
+                      filter: Optional(_filter)
+                  );
 
-  //         GamesNavigator.goGame(context, id: game.id);
-  //       },
-  //     )
-  //   );
-      
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.end,
-  //     children: [
-  //       HSpacer(size: SpaceSize.xxxl),
-  //       searchWidget,
-  //       HSpacer(size: SpaceSize.s),
-  //       filterWidget,
-  //       HSpacer(size: SpaceSize.s),
-  //       savePresetWidget,
-  //       HSpacer(size: SpaceSize.l),
-  //       createGameWidget,
-  //       HSpacer(size: SpaceSize.xl),
-  //     ]
-  //   );
-  // }
+                  context
+                    .read<GamesViewsBloc>()
+                    .add(SaveGamesView(gamesView: newGamesView));
+                }
+              },
+            ),
+            useRootNavigator: false,
+          );  
+        }, 
+        icon: Icon(Icons.filter_alt)
+      )
+    );
+  
+    widgets.add(HSpacer(size: SpaceSize.xs));
+    widgets.add(
+      IconButton(
+        icon: Icon(Icons.add),
+        onPressed:() {
+          showDialog(
+            context: context,
+            builder: (context) => GamesPageSaveViewDialog(
+              onChanged: (value) {
+                context
+                  .read<GamesViewsBloc>()
+                  .add(SaveGamesView(
+                    gamesView: GamesView.create(
+                      name: value, 
+                      status: widget.status,
+                      filter: _filter
+                    )
+                  ));
+              },
+            ),
+            useRootNavigator: false,
+          );
+        },
+      )
+    );
+
+    if (_gamesViews.isNotEmpty) {
+      final currentGamesView = _gamesViews[_gamesViewIndex];
+
+      widgets.add(HSpacer(size: SpaceSize.xs));
+      widgets.add(
+        IconButton(
+          icon: Icon(Icons.edit),
+          onPressed:() {
+            showDialog(
+              context: context,
+              builder: (context) => GamesPageSaveViewDialog(
+                value: currentGamesView.name,
+                onChanged: (value) {
+                  final newGamesView = currentGamesView.copyWith(
+                      name: Optional(value),
+                  );
+
+                  context
+                    .read<GamesViewsBloc>()
+                    .add(SaveGamesView(gamesView: newGamesView));
+                },
+              ),
+              useRootNavigator: false,
+            );
+          },
+        )
+      );
+
+      widgets.add(HSpacer(size: SpaceSize.xs));
+      widgets.add(
+        IconButton(
+          icon: Icon(Icons.delete),
+          onPressed: () {
+              context
+                .read<GamesViewsBloc>()
+                .add(DeleteGamesView(id: currentGamesView.id));
+          },
+        ),
+      );
+    }
+
+    widgets.add(HSpacer(size: SpaceSize.l));
+
+    return widgets;
+  }
 
   String _getTitle() {
     switch (widget.status) {

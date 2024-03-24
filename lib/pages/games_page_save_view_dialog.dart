@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 
-class GamesPresetDialog extends StatefulWidget {
-  const GamesPresetDialog({
+class GamesPageSaveViewDialog extends StatefulWidget {
+  const GamesPageSaveViewDialog({
+    this.value = '',
     this.onChanged,
   });
 
+  final String value;
   final void Function(String)? onChanged;
 
   @override
-  State<GamesPresetDialog> createState() => _GamesPresetDialogState();
+  State<GamesPageSaveViewDialog> createState() => _GamesGamesPageSaveViewDialogState();
 }
 
-class _GamesPresetDialogState extends State<GamesPresetDialog> {
+class _GamesGamesPageSaveViewDialogState extends State<GamesPageSaveViewDialog> {
   late TextEditingController _nameController;
   
   @override
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController(text: 'New Preset');
+    _nameController = TextEditingController(text: widget.value);
   }
 
   @override

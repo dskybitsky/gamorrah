@@ -6,8 +6,8 @@ import 'hive_games_view.dart';
 
 class HiveGamesViewRepository extends GamesViewRepository {
   static const boxName = kDebugMode
-    ? 'games-view:v:01:debug'
-    : 'games-view:v:01';
+    ? 'games-view:v:02:debug'
+    : 'games-view:v:02';
 
   Box<HiveGamesView>? _box;
 
@@ -15,14 +15,15 @@ class HiveGamesViewRepository extends GamesViewRepository {
   Future<Iterable<GamesView>> get() async {
     final box = await _getBox();
     
-    return box.values.map((e) => e.toGamesView());
+    return box.values
+      .map((hiveGamesView) => hiveGamesView.toGamesView());
   }
 
   @override
   Future<void> save(GamesView gamesView) async {
     final box = await _getBox();
 
-    await box.put(0, HiveGamesView.fromGamesView(gamesView));
+    await box.put(gamesView.id, HiveGamesView.fromGamesView(gamesView));
   }
 
   @override

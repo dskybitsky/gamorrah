@@ -66,12 +66,17 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
                     final onChanged = widget.onChanged;
 
                     if (onChanged != null) {
+                      final platforms = _platforms.isEmpty ? null : _platforms;
+
                       final newFilter = widget.filter != null
                         ? widget.filter!.copyWith(
                             beaten: Optional(_beaten),
-                            platforms: Optional(_platforms.isEmpty ? null : _platforms)
+                            platforms: Optional(platforms)
                           )
-                        : GamesFilter(beaten: _beaten, platforms: _platforms);
+                        : GamesFilter(
+                          beaten: _beaten, 
+                          platforms: platforms
+                        );
 
                       onChanged(newFilter);
                     }

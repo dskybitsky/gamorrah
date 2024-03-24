@@ -29,7 +29,7 @@ class GamesViewsBloc extends Bloc<GamesViewsEvent, GamesViewsState> {
 
       emit(state.copyWith(
         phase: StatePhase.success,
-        gamesViews: gamesViews.toList(),
+        gamesViews: List.from(gamesViews),
       ));
     } catch (error, stacktrace) {
       print(error);
@@ -47,8 +47,11 @@ class GamesViewsBloc extends Bloc<GamesViewsEvent, GamesViewsState> {
 
       await gamesViewRepository.save(event.gamesView);
 
+      final newGamesViews = await gamesViewRepository.get();
+
       emit(state.copyWith(
         phase: StatePhase.success,
+        gamesViews: List.from(newGamesViews),
       ));
     } catch (error, stacktrace) {
       print(error);
@@ -66,8 +69,11 @@ class GamesViewsBloc extends Bloc<GamesViewsEvent, GamesViewsState> {
 
       await gamesViewRepository.delete(event.id);
 
+      final newGamesViews = await gamesViewRepository.get();
+
       emit(state.copyWith(
         phase: StatePhase.success,
+        gamesViews: List.from(newGamesViews),
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
