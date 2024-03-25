@@ -117,6 +117,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
         bottom: _gamesViews.isNotEmpty
           ? TabBar(
               controller: _tabController,
+              // isScrollable: true,
               tabs: _gamesViews.map((gamesView) => Tab(
                 text: gamesView.name,
               )).toList()
@@ -205,16 +206,13 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
 
     widgets.add(
       IconButton(
+        icon: Icon(Icons.filter_alt),
         onPressed: () {
           showDialog(
             context: context,
             builder: (context) => GamesPageFilterDialog(
               filter: _filter,
               onChanged: (value) {
-                // setState(() {
-                //   _filter = value;
-                // });
-
                 if (_gamesViews.isNotEmpty) {
                   final newGamesView = _gamesViews[_gamesViewIndex].copyWith(
                       filter: Optional(value)
@@ -223,20 +221,23 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
                   context
                     .read<GamesViewsBloc>()
                     .add(SaveGamesView(gamesView: newGamesView));
+                } else {
+                  setState(() {
+                    _filter = value;
+                  });
                 }
               },
             ),
             useRootNavigator: false,
           );  
         }, 
-        icon: Icon(Icons.filter_alt)
       )
     );
   
-    widgets.add(HSpacer(size: SpaceSize.xs));
+    widgets.add(HSpacer(size: SpaceSize.m));
     widgets.add(
       IconButton(
-        icon: Icon(Icons.add),
+        icon: Icon(Icons.bookmark_add),
         onPressed:() {
           showDialog(
             context: context,
@@ -268,32 +269,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
       widgets.add(HSpacer(size: SpaceSize.xs));
       widgets.add(
         IconButton(
-          icon: Icon(Icons.edit),
-          onPressed:() {
-            showDialog(
-              context: context,
-              builder: (context) => GamesPageSaveViewDialog(
-                value: currentGamesView.name,
-                onChanged: (value) {
-                  final newGamesView = currentGamesView.copyWith(
-                      name: Optional(value),
-                  );
-
-                  context
-                    .read<GamesViewsBloc>()
-                    .add(SaveGamesView(gamesView: newGamesView));
-                },
-              ),
-              useRootNavigator: false,
-            );
-          },
-        )
-      );
-
-      widgets.add(HSpacer(size: SpaceSize.xs));
-      widgets.add(
-        IconButton(
-          icon: Icon(Icons.delete),
+          icon: Icon(Icons.bookmark_remove),
           onPressed: () {
               context
                 .read<GamesViewsBloc>()

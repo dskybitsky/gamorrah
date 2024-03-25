@@ -4,6 +4,7 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/games_view/games_view.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GamesPageFilterDialog extends StatefulWidget {
@@ -61,6 +62,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
                   onPressed: () => Navigator.pop(context),
                   child: Text(t.ui.general.cancelButton),
                 ),
+                HSpacer(),
                 TextButton(
                   onPressed: () {
                     final onChanged = widget.onChanged;
