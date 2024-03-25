@@ -44,7 +44,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
   late TextEditingController _searchController;
 
   late List<_GamesPageLayoutStateTabInfo> _tabInfos;
-  
+
   int _tabIndex = 0;
 
   GamesFilter? _defaulsGamesFilter;
@@ -172,7 +172,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
       padding: EdgeInsets.all(16.0),
       child: Center(
         child: GamesList(games: _filterGames(games)),
-      )
+      ),
     );
   }
 

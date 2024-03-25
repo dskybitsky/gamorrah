@@ -17,33 +17,50 @@ class GamesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Builder(
-      builder: (context) {
-        final gamesState = context.watch<GamesBloc>().state;
-        final gamesViewsState = context.watch<GamesViewsBloc>().state;
-
-        if (gamesState.phase.isError || gamesViewsState.phase.isError) {
-          return Center(
-            child: Text(t.ui.general.errorText),
-          );
+    return BlocBuilder<GamesBloc, GamesState>(
+      builder: (context, gamesState) {
+        if (gamesState.phase.isInitial) {
+          return Container();
         }
 
-        if (gamesState.phase.isLoading || gamesViewsState.phase.isLoading) {
+        if (gamesState.phase.isLoading) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
 
-        if (gamesState.phase.isSuccess && gamesViewsState.phase.isSuccess) {
-          return GamesPageLayout(
-            gamesState: gamesState,
-            gamesViewsState: gamesViewsState, 
-            status: status,
+        if (gamesState.phase.isError) {
+          return Center(
+            child: Text(t.ui.general.errorText),
           );
         }
+        
+        return BlocBuilder<GamesViewsBloc, GamesViewsState>(
+          builder: (context, gamesViewsState) {
+            if (gamesViewsState.phase.isInitial) {
+              return Container();
+            }
 
-        return Container();
-      }
+            if (gamesViewsState.phase.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (gamesViewsState.phase.isError) {
+              return Center(
+                child: Text(t.ui.general.errorText),
+              );
+            }
+            
+            return GamesPageLayout(
+              gamesState: gamesState,
+              gamesViewsState: gamesViewsState, 
+              status: status,
+            );
+          },
+        );
+      },
     );
   }
 }
