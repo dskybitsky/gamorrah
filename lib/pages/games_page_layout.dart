@@ -171,7 +171,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.0),
       child: Center(
-        child: GamesList(games: games),
+        child: GamesList(games: _filterGames(games)),
       )
     );
   }
@@ -281,8 +281,6 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
   }
 
   List<Game> _getGames(GamesFilter? filter) {
-    final searchText = _searchController.text;
-
     final games = widget.gamesState.games
       .where((game) {
         if (game.status != widget.status) {
@@ -293,10 +291,11 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
           return false;
         }
 
-        return (
-          (searchText == '' || game.title.contains(RegExp(searchText, caseSensitive: false)))
-          && (filter == null || filter.matches(game))
-        );
+        if (filter == null) {
+          return true;
+        }
+
+        return filter.matches(game);
       })
       .toList();
 
@@ -313,6 +312,18 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
               
       return franchisedTitleA.compareTo(franchisedTitleB);
     });
+
+    return games;
+  }
+
+  List<Game> _filterGames(List<Game> games) {
+    final searchText = _searchController.text;
+
+    if (searchText != '') {
+      return games
+        .where((game) => game.title.contains(RegExp(searchText, caseSensitive: false)))
+        .toList();
+    }
 
     return games;
   }
