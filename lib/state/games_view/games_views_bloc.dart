@@ -43,15 +43,10 @@ class GamesViewsBloc extends Bloc<GamesViewsEvent, GamesViewsState> {
     Emitter<GamesViewsState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       await gamesViewRepository.save(event.gamesView);
-
-      final newGamesViews = await gamesViewRepository.get();
 
       emit(state.copyWith(
         phase: StatePhase.success,
-        gamesViews: List.from(newGamesViews),
       ));
     } catch (error, stacktrace) {
       print(error);
@@ -65,15 +60,10 @@ class GamesViewsBloc extends Bloc<GamesViewsEvent, GamesViewsState> {
     Emitter<GamesViewsState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       await gamesViewRepository.delete(event.id);
-
-      final newGamesViews = await gamesViewRepository.get();
 
       emit(state.copyWith(
         phase: StatePhase.success,
-        gamesViews: List.from(newGamesViews),
       ));
     } catch (error, stacktrace) {
       print(stacktrace);

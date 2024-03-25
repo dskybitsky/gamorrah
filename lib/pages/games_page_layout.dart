@@ -29,47 +29,59 @@ class GamesPageLayout extends StatefulWidget {
   State<GamesPageLayout> createState() => _GamesPageLayoutState();
 }
 
-class _GamesPageLayoutStateTabInfo {
-  _GamesPageLayoutStateTabInfo({
-    required this.games,
-    required this.gamesView
-  });
-
-  final List<Game> games;
-  final GamesView gamesView;
-}
-
 class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderStateMixin {
   late TabController _tabController;
   late TextEditingController _searchController;
 
-  late List<_GamesPageLayoutStateTabInfo> _tabInfos;
+  late List<GamesView> _gamesViews;
+  int _gamesViewIndex = 0;
 
-  int _tabIndex = 0;
-
-  GamesFilter? _defaulsGamesFilter;
+  GamesFilter? _defaultFilter;
 
   @override
   void initState() {
     super.initState();
 
+    _gamesViews = widget.gamesViewsState.gamesViews
+      .where((gamesView) => gamesView.status == widget.status)
+      .toList();
+
+    _gamesViews
+      .sort((gamesViewA, gamesViewB) {
+        return gamesViewA.index.compareTo(gamesViewB.index);
+      });
+
+    if (_gamesViewIndex >= _gamesViews.length) {
+      _gamesViewIndex = _gamesViews.length - 1;
+    }
+
+    if (_gamesViewIndex < 0) {
+      _gamesViewIndex = 0;
+    }
+
+    _initTabController(false);
+
+    _searchController = TextEditingController(text: '');
+  }
+
+  void _initTabController(bool needsDispose) {
+    if (needsDispose) {
+      _tabController.dispose();
+    }
+
     _tabController = TabController(
-      length: 0,
+      length: _gamesViews.length,
+      initialIndex: _gamesViewIndex,
       vsync: this,
     );
 
-    _searchController = TextEditingController(text: '');
-
-    _onWidgetGamesViewsChanged();
-  }
-
-  @override
-  void didUpdateWidget(oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.gamesViewsState.gamesViews != widget.gamesViewsState.gamesViews) {
-      _onWidgetGamesViewsChanged();
-    }
+    _tabController.addListener(() {
+        if (_gamesViewIndex != _tabController.index) {
+          setState(() {
+            _gamesViewIndex = _tabController.index;
+          });
+        }
+      });
   }
 
   @override
@@ -80,68 +92,37 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     _searchController.dispose();
   }
 
-  void _onWidgetGamesViewsChanged() {
-    _tabInfos = widget.gamesViewsState.gamesViews
-      .where((gamesView) => gamesView.status == widget.status)
-      .map((gamesView) => _GamesPageLayoutStateTabInfo(
-        games: _getGames(gamesView.filter), 
-        gamesView: gamesView)
-      )
-      .toList();
-
-    _tabInfos
-      .sort((tabInfoA, tabInfoB) {
-        return tabInfoA.gamesView.index.compareTo(tabInfoB.gamesView.index);
-      });
-
-    if (_tabIndex >= _tabInfos.length) {
-      _tabIndex = _tabInfos.length - 1;
-    }
-
-    if (_tabIndex < 0) {
-      _tabIndex = 0;
-    }
-
-    _tabController.dispose();
-
-    _tabController = TabController(
-      length: _tabInfos.length,
-      initialIndex: _tabIndex,
-      vsync: this,
-    );
-
-    _tabController.addListener(() {
-      if (_tabIndex != _tabController.index) {
-        setState(() {
-          _tabIndex = _tabController.index;
-        });
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final defaultGames = _tabInfos.isNotEmpty
-      ? <Game>[]
-      : _getGames(_defaulsGamesFilter);
+    if (_tabController.length != _gamesViews.length) {
+      _initTabController(true);
+    }
+
+    final games = _getGames();
+
+    final gamesViewsGames = _gamesViews
+      .map((gamesView) => _filterGames(games, gamesView.filter))
+      .toList();
+
+    final defaultGames = _filterGames(games, _defaultFilter);
 
     return Scaffold(
       appBar: AppBar(
         title: GameStatusText(value: widget.status),
         actions: _buildActions(context),
-        bottom: _tabInfos.isNotEmpty
+        bottom: _gamesViews.isNotEmpty
           ? TabBar(
               controller: _tabController,
-              tabs: _tabInfos.map((tabInfo) => Tab(
-                text: tabInfo.gamesView.name,
+              tabs: _gamesViews.map((gamesView) => Tab(
+                text: gamesView.name,
               )).toList()
           ) : null,
       ),
-      body: _tabInfos.isNotEmpty
+      body: _gamesViews.isNotEmpty
         ? TabBarView(
           controller: _tabController,
-          children: _tabInfos
-            .map((tabInfo) => _buildGamesList(context, tabInfo.games))
+          children: gamesViewsGames
+            .map((games) => _buildGamesList(context, games))
             .toList()
         )
         : _buildGamesList(context, defaultGames),
@@ -156,8 +137,8 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
             padding: EdgeInsets.only(left: 0, top: 8.0, bottom: 8.0, right: 16.0),
             child: Text(
               t.ui.gamesPage.gamesTotalText(
-                count: _tabInfos.isNotEmpty
-                  ? _tabInfos[_tabIndex].games.length
+                count: _gamesViews.isNotEmpty 
+                  ? gamesViewsGames[_gamesViewIndex].length
                   : defaultGames.length
               )
             ),
@@ -171,7 +152,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     return SingleChildScrollView(
       padding: EdgeInsets.all(16.0),
       child: Center(
-        child: GamesList(games: _filterGames(games)),
+        child: GamesList(games: _searchGames(games, _searchController.text)),
       ),
     );
   }
@@ -205,21 +186,25 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
           showDialog(
             context: context,
             builder: (context) => GamesPageFilterDialog(
-              filter: _tabInfos.isNotEmpty
-                ? _tabInfos[_tabIndex].gamesView.filter
-                : _defaulsGamesFilter,
+              filter: _gamesViews.isNotEmpty
+                ? _gamesViews[_gamesViewIndex].filter
+                : _defaultFilter,
               onChanged: (value) {
-                if (_tabInfos.isNotEmpty) {
-                  final newGamesView = _tabInfos[_tabIndex].gamesView.copyWith(
+                if (_gamesViews.isNotEmpty) {
+                  final newGamesView = _gamesViews[_gamesViewIndex].copyWith(
                       filter: Optional(value)
                   );
+
+                  setState(() {
+                    _gamesViews[_gamesViewIndex] = newGamesView;
+                  });
 
                   context
                     .read<GamesViewsBloc>()
                     .add(SaveGamesView(gamesView: newGamesView));
                 } else {
                   setState(() {
-                    _defaulsGamesFilter = value;
+                    _defaultFilter = value;
                   });
                 }
               },
@@ -239,20 +224,25 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
             context: context,
             builder: (context) => GamesPageSaveViewDialog(
               onChanged: (value) {
+                final newGamesView = GamesView.create(
+                  name: value, 
+                  status: widget.status,
+                  index: _gamesViews.isNotEmpty 
+                    ? _gamesViews.last.index + 1
+                    : 0,
+                  filter: _gamesViews.isNotEmpty 
+                    ? _gamesViews.last.filter
+                    : _defaultFilter
+                );
+
                 context
                   .read<GamesViewsBloc>()
-                  .add(SaveGamesView(
-                    gamesView: GamesView.create(
-                      name: value, 
-                      status: widget.status,
-                      index: _tabInfos.isNotEmpty 
-                        ? _tabInfos.last.gamesView.index + 1
-                        : 0,
-                      filter: _tabInfos.isNotEmpty 
-                        ?_tabInfos.last.gamesView.filter
-                        : _defaulsGamesFilter
-                    )
-                  ));
+                  .add(SaveGamesView(gamesView: newGamesView));
+
+                setState(() {
+                  _gamesViews.add(newGamesView);
+                  _gamesViewIndex = _gamesViews.length - 1;
+                });
               },
             ),
             useRootNavigator: false,
@@ -261,15 +251,27 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
       )
     );
 
-    if (_tabInfos.isNotEmpty) {
+    if (_gamesViews.isNotEmpty) {
       widgets.add(HSpacer(size: SpaceSize.xs));
       widgets.add(
         IconButton(
           icon: Icon(Icons.bookmark_remove),
           onPressed: () {
-              context
-                .read<GamesViewsBloc>()
-                .add(DeleteGamesView(id: _tabInfos[_tabIndex].gamesView.id));
+            final id = _gamesViews[_gamesViewIndex].id;
+
+            context
+              .read<GamesViewsBloc>()
+              .add(DeleteGamesView(id: id));
+
+            setState(() {
+              _gamesViews.removeWhere((gamesView) => gamesView.id == id);
+              
+              if (_gamesViewIndex >= _gamesViews.length) {
+                _gamesViewIndex = _gamesViews.length > 0 
+                  ? _gamesViews.length - 1
+                  : 0;
+              }
+            });
           },
         ),
       );
@@ -280,7 +282,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     return widgets;
   }
 
-  List<Game> _getGames(GamesFilter? filter) {
+  List<Game> _getGames() {
     final games = widget.gamesState.games
       .where((game) {
         if (game.status != widget.status) {
@@ -291,11 +293,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
           return false;
         }
 
-        if (filter == null) {
-          return true;
-        }
-
-        return filter.matches(game);
+        return true;
       })
       .toList();
 
@@ -316,15 +314,23 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     return games;
   }
 
-  List<Game> _filterGames(List<Game> games) {
-    final searchText = _searchController.text;
+  List<Game> _filterGames(List<Game> games, GamesFilter? filter) {
+    if (filter != null) {
+      return games
+        .where((game) => filter.matches(game))
+        .toList();
+    }
 
+    return games;
+  }
+
+  List<Game> _searchGames(List<Game> games, String searchText) {
     if (searchText != '') {
       return games
         .where((game) => game.title.contains(RegExp(searchText, caseSensitive: false)))
         .toList();
     }
-
+    
     return games;
   }
 }

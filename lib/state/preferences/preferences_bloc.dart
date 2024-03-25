@@ -22,8 +22,6 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     Emitter<PreferencesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       final preferences = await preferencesRepository.get();
 
       emit(state.copyWith(
@@ -42,8 +40,6 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     Emitter<PreferencesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       await preferencesRepository.save(event.preferences);
 
       emit(state.copyWith(

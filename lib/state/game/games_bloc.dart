@@ -44,8 +44,6 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       await gameRepository.save(event.game);
 
       emit(state.copyWith(
@@ -62,8 +60,6 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       await gameRepository.saveMany(event.games);
 
       emit(state.copyWith(
@@ -80,8 +76,6 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       final includedGames = state.games
         .where((game) => game.parentId == event.id);
 
@@ -103,8 +97,6 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
     Emitter<GamesState> emit
   ) async {
     try {
-      emit(state.copyWith(phase: StatePhase.loading));
-
       await gameRepository.deleteAll();
 
       emit(state.copyWith(
