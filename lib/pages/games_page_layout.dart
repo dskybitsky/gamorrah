@@ -8,6 +8,7 @@ import 'package:gamorrah/pages/games_page_filter_dialog.dart';
 import 'package:gamorrah/pages/games_page_save_view_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/state/games_view/games_views_bloc.dart';
+import 'package:gamorrah/widgets/game/game_status_text.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/space_size.dart';
@@ -28,13 +29,26 @@ class GamesPageLayout extends StatefulWidget {
   State<GamesPageLayout> createState() => _GamesPageLayoutState();
 }
 
+class _GamesPageLayoutStateTabInfo {
+  _GamesPageLayoutStateTabInfo({
+    required this.games,
+    required this.gamesView
+  });
+
+  final List<Game> games;
+  final GamesView gamesView;
+}
+
 class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderStateMixin {
   late TabController _tabController;
   late TextEditingController _searchController;
-  late GamesFilter? _filter;
-  late List<GamesView> _gamesViews;
-  int _gamesViewIndex = 0;
+
+  late List<_GamesPageLayoutStateTabInfo> _tabInfos;
   
+  int _tabIndex = 0;
+
+  GamesFilter? _defaulsGamesFilter;
+
   @override
   void initState() {
     super.initState();
@@ -67,67 +81,70 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
   }
 
   void _onWidgetGamesViewsChanged() {
-    _gamesViews = widget.gamesViewsState.gamesViews
+    _tabInfos = widget.gamesViewsState.gamesViews
       .where((gamesView) => gamesView.status == widget.status)
+      .map((gamesView) => _GamesPageLayoutStateTabInfo(
+        games: _getGames(gamesView.filter), 
+        gamesView: gamesView)
+      )
       .toList();
 
-    _gamesViews
-      .sort((GamesView gamesViewA, GamesView gamesViewB) {
-        return gamesViewA.index.compareTo(gamesViewB.index);
+    _tabInfos
+      .sort((tabInfoA, tabInfoB) {
+        return tabInfoA.gamesView.index.compareTo(tabInfoB.gamesView.index);
       });
 
-    if (_gamesViewIndex >= _gamesViews.length) {
-      _gamesViewIndex = _gamesViews.length - 1;
+    if (_tabIndex >= _tabInfos.length) {
+      _tabIndex = _tabInfos.length - 1;
     }
 
-    if (_gamesViewIndex < 0) {
-      _gamesViewIndex = 0;
+    if (_tabIndex < 0) {
+      _tabIndex = 0;
     }
 
     _tabController.dispose();
 
     _tabController = TabController(
-      length: _gamesViews.length,
-      initialIndex: _gamesViewIndex,
+      length: _tabInfos.length,
+      initialIndex: _tabIndex,
       vsync: this,
     );
 
     _tabController.addListener(() {
-      if (_tabController.indexIsChanging) {
+      if (_tabIndex != _tabController.index) {
         setState(() {
-          _gamesViewIndex = _tabController.index;
-          _filter = _gamesViews[_gamesViewIndex].filter;
+          _tabIndex = _tabController.index;
         });
       }
     });
-
-    _filter = _gamesViews.isNotEmpty
-        ? _gamesViews[_gamesViewIndex].filter
-        : null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final games = _getGames(_filter);
+    final defaultGames = _tabInfos.isNotEmpty
+      ? <Game>[]
+      : _getGames(_defaulsGamesFilter);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_getTitle()),
+        title: GameStatusText(value: widget.status),
         actions: _buildActions(context),
-        bottom: _gamesViews.isNotEmpty
+        bottom: _tabInfos.isNotEmpty
           ? TabBar(
               controller: _tabController,
-              tabs: _gamesViews.map((gamesView) => Tab(
-                text: gamesView.name,
+              tabs: _tabInfos.map((tabInfo) => Tab(
+                text: tabInfo.gamesView.name,
               )).toList()
           ) : null,
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Center(
-          child: GamesList(games: games),
-        ),
-      ),
+      body: _tabInfos.isNotEmpty
+        ? TabBarView(
+          controller: _tabController,
+          children: _tabInfos
+            .map((tabInfo) => _buildGamesList(context, tabInfo.games))
+            .toList()
+        )
+        : _buildGamesList(context, defaultGames),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {},
@@ -137,10 +154,25 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
         children: [
           Padding(
             padding: EdgeInsets.only(left: 0, top: 8.0, bottom: 8.0, right: 16.0),
-            child: Text(t.ui.gamesPage.gamesTotalText(count: games.length)),
+            child: Text(
+              t.ui.gamesPage.gamesTotalText(
+                count: _tabInfos.isNotEmpty
+                  ? _tabInfos[_tabIndex].games.length
+                  : defaultGames.length
+              )
+            ),
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildGamesList(BuildContext context, List<Game> games) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(16.0),
+      child: Center(
+        child: GamesList(games: games),
+      )
     );
   }
 
@@ -173,10 +205,12 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
           showDialog(
             context: context,
             builder: (context) => GamesPageFilterDialog(
-              filter: _filter,
+              filter: _tabInfos.isNotEmpty
+                ? _tabInfos[_tabIndex].gamesView.filter
+                : _defaulsGamesFilter,
               onChanged: (value) {
-                if (_gamesViews.isNotEmpty) {
-                  final newGamesView = _gamesViews[_gamesViewIndex].copyWith(
+                if (_tabInfos.isNotEmpty) {
+                  final newGamesView = _tabInfos[_tabIndex].gamesView.copyWith(
                       filter: Optional(value)
                   );
 
@@ -185,7 +219,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
                     .add(SaveGamesView(gamesView: newGamesView));
                 } else {
                   setState(() {
-                    _filter = value;
+                    _defaulsGamesFilter = value;
                   });
                 }
               },
@@ -211,10 +245,12 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
                     gamesView: GamesView.create(
                       name: value, 
                       status: widget.status,
-                      index: _gamesViews.isNotEmpty 
-                        ? _gamesViews.last.index + 1
+                      index: _tabInfos.isNotEmpty 
+                        ? _tabInfos.last.gamesView.index + 1
                         : 0,
-                      filter: _filter
+                      filter: _tabInfos.isNotEmpty 
+                        ?_tabInfos.last.gamesView.filter
+                        : _defaulsGamesFilter
                     )
                   ));
               },
@@ -225,9 +261,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
       )
     );
 
-    if (_gamesViews.isNotEmpty) {
-      final currentGamesView = _gamesViews[_gamesViewIndex];
-
+    if (_tabInfos.isNotEmpty) {
       widgets.add(HSpacer(size: SpaceSize.xs));
       widgets.add(
         IconButton(
@@ -235,7 +269,7 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
           onPressed: () {
               context
                 .read<GamesViewsBloc>()
-                .add(DeleteGamesView(id: currentGamesView.id));
+                .add(DeleteGamesView(id: _tabInfos[_tabIndex].gamesView.id));
           },
         ),
       );
@@ -281,18 +315,5 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     });
 
     return games;
-  }
-
-  String _getTitle() {
-    switch (widget.status) {
-      case GameStatus.backlog:
-        return t.types.gameStatus.backlog;
-      case GameStatus.playing:
-        return t.types.gameStatus.playing;
-      case GameStatus.finished:
-        return t.types.gameStatus.finished;
-      case GameStatus.wishlist:
-        return t.types.gameStatus.wishlist;
-    }
   }
 }
