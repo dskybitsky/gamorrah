@@ -117,7 +117,6 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
         bottom: _gamesViews.isNotEmpty
           ? TabBar(
               controller: _tabController,
-              // isScrollable: true,
               tabs: _gamesViews.map((gamesView) => Tab(
                 text: gamesView.name,
               )).toList()
@@ -143,43 +142,6 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
         ],
       ),
     );
-  }
-
-  List<Game> _getGames(GamesFilter? filter) {
-    final searchText = _searchController.text;
-
-    final games = widget.gamesState.games
-      .where((game) {
-        if (game.status != widget.status) {
-          return false;
-        }
-
-        if (game.parentId != null) {
-          return false;
-        }
-
-        return (
-          (searchText == '' || game.title.contains(RegExp(searchText, caseSensitive: false)))
-          && (filter == null || filter.matches(game))
-        );
-      })
-      .toList();
-
-    games.sort((Game gameA, Game gameB) {
-      final franchisedTitleA = gameA.franchise ?? gameA.title;
-      final franchisedTitleB = gameB.franchise ?? gameB.title;
-              
-      if (franchisedTitleA == franchisedTitleB) {
-        final franchisedIndexA = gameA.index ?? gameA.year ?? 0;
-        final franchisedIndexB = gameB.index ?? gameB.year ?? 0;
-                  
-        return franchisedIndexA.compareTo(franchisedIndexB);
-      }
-              
-      return franchisedTitleA.compareTo(franchisedTitleB);
-    });
-
-    return games;
   }
 
   List<Widget> _buildActions(BuildContext context) {
@@ -282,6 +244,43 @@ class _GamesPageLayoutState extends State<GamesPageLayout> with TickerProviderSt
     widgets.add(HSpacer(size: SpaceSize.l));
 
     return widgets;
+  }
+
+  List<Game> _getGames(GamesFilter? filter) {
+    final searchText = _searchController.text;
+
+    final games = widget.gamesState.games
+      .where((game) {
+        if (game.status != widget.status) {
+          return false;
+        }
+
+        if (game.parentId != null) {
+          return false;
+        }
+
+        return (
+          (searchText == '' || game.title.contains(RegExp(searchText, caseSensitive: false)))
+          && (filter == null || filter.matches(game))
+        );
+      })
+      .toList();
+
+    games.sort((Game gameA, Game gameB) {
+      final franchisedTitleA = gameA.franchise ?? gameA.title;
+      final franchisedTitleB = gameB.franchise ?? gameB.title;
+              
+      if (franchisedTitleA == franchisedTitleB) {
+        final franchisedIndexA = gameA.index ?? gameA.year ?? 0;
+        final franchisedIndexB = gameB.index ?? gameB.year ?? 0;
+                  
+        return franchisedIndexA.compareTo(franchisedIndexB);
+      }
+              
+      return franchisedTitleA.compareTo(franchisedTitleB);
+    });
+
+    return games;
   }
 
   String _getTitle() {
