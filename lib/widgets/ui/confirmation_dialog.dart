@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   ConfirmationDialog({

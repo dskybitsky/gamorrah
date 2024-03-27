@@ -5,10 +5,8 @@ import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_text.dart';
 import 'package:gamorrah/widgets/game/game_personal_rating_input.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamePersonalInput extends StatelessWidget {
   const GamePersonalInput({

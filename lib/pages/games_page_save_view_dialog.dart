@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPageSaveViewDialog extends StatefulWidget {
   const GamesPageSaveViewDialog({

@@ -13,10 +13,8 @@ import 'package:gamorrah/widgets/game/game_thumb.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({ 

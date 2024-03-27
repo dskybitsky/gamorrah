@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class LabeledInput extends StatelessWidget {
   LabeledInput({
