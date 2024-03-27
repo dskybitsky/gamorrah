@@ -4,6 +4,8 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/state/preferences/preferences_bloc.dart';
 import 'package:gamorrah/state/state_phase.dart';
+import 'package:gamorrah/widgets/game/game_status_icon.dart';
+import 'package:gamorrah/widgets/game/game_status_text.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 
 class HomePage extends StatefulWidget {
@@ -87,19 +89,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   _HomePageDestination _getGamesDestination(GameStatus status, PreferencesState state) {
-    final icon = switch (status) {
-      GameStatus.backlog => const Icon(Icons.history),
-      GameStatus.playing => const Icon(Icons.play_arrow),
-      GameStatus.finished => const Icon(Icons.done),
-      GameStatus.wishlist => const Icon(Icons.redeem),
-    };
-
-    final title = switch (status) {
-      GameStatus.backlog => t.types.gameStatus.backlog,
-      GameStatus.playing => t.types.gameStatus.playing,
-      GameStatus.finished => t.types.gameStatus.finished,
-      GameStatus.wishlist => t.types.gameStatus.wishlist,
-    };
+    final icon = GameStatusIcon(value: status);
+    final title = GameStatusText.getString(status);
 
     return _HomePageDestination(
       icon: icon, 

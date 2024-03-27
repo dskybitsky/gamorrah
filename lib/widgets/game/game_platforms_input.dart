@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/models/game/game.dart';
 
 class GamePlatformsInput extends StatelessWidget {
@@ -15,9 +15,9 @@ class GamePlatformsInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expander(
-      header: _getHeader(context),
-      content:
+    return ExpansionTile(
+      title: _getHeader(context),
+      children:[
         Row(
           crossAxisAlignment: CrossAxisAlignment.start, 
           children: [
@@ -28,7 +28,7 @@ class GamePlatformsInput extends StatelessWidget {
                   (e) => Padding(
                     padding: const EdgeInsetsDirectional.only(bottom: 8.0),
                     child: Checkbox(
-                      checked: value.contains(e),
+                      value: value.contains(e),
                       onChanged: (selected) {
                         if (onChanged != null) {
                           final newValue = value;
@@ -42,13 +42,14 @@ class GamePlatformsInput extends StatelessWidget {
                           onChanged!(newValue);
                         }
                       },
-                      content: Text(e.title),
+                      // content: Text(e.title),
                     ),
                   ),
                 )
                 .toList(),
             ),
-      ]),
+        ]),
+      ]
     );
   }
 
@@ -63,7 +64,7 @@ class GamePlatformsInput extends StatelessWidget {
           padding: EdgeInsets.only(right: 2),
           child: Text(
             '${e.title}; ',
-            style: FluentTheme.of(context).typography.caption
+            // style: FluentTheme.of(context).typography.caption
           ),
         )).toList(),
     );

@@ -1,10 +1,10 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/pages/game_page_modal.dart';
+import 'package:gamorrah/pages/game_page_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/game_how_long_to_beat_input.dart';
 import 'package:gamorrah/widgets/game/game_personal_input.dart';
@@ -13,6 +13,7 @@ import 'package:gamorrah/widgets/game/game_thumb.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/labeled_input.dart';
 import 'package:gamorrah/widgets/ui/space_size.dart';
 import 'package:gamorrah/widgets/ui/vspacer.dart';
@@ -62,19 +63,30 @@ class _GamePageState extends State<GamePage> {
           return Container();
         }
 
-        return NavigationView(
-          appBar: NavigationAppBar(
-              title: Text(game.title),
-              actions: _buildActions(game),
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(game.title),
+            actions: _buildActions(game),
           ),
-          content: ScaffoldPage(
-            padding: EdgeInsets.zero,
-            content: ListView(
-              padding: EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 16),
-              children: _buildFormWidgets(game, state),
-            ),
-          )
-        ); 
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              final game = Game.create(
+                title: t.ui.gamePage.defaultIncludedGameTitle,
+                status: GameStatus.backlog,
+                parentId: widget.id
+              );
+
+              context.read<GamesBloc>().add(SaveGame(game: game));
+
+              GamesNavigator.goGame(context, id: game.id);
+            },
+          ),
+          body: ListView(
+            padding: EdgeInsets.only(top: 8, left: 32, right: 32, bottom: 16),
+            children: _buildFormWidgets(game, state),
+          ),
+        );
       }
     );
   }
@@ -96,7 +108,7 @@ class _GamePageState extends State<GamePage> {
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => GamePageModal(game: game),
+            builder: (context) => GamePageDialog(game: game),
             useRootNavigator: false,
           );
         }
@@ -109,7 +121,7 @@ class _GamePageState extends State<GamePage> {
       widgets.add(Center(
         child: Text(
           game.edition!.toUpperCase(),
-          style: FluentTheme.of(context).typography.caption,
+          // style: FluentTheme.of(context).typography.caption,
         )
       ));
     }
@@ -120,7 +132,7 @@ class _GamePageState extends State<GamePage> {
       widgets.add(Center(
         child: Text(
           game.year!.toString(),
-          style: FluentTheme.of(context).typography.caption,
+          // style: FluentTheme.of(context).typography.caption,
         )
       ));
     }
@@ -156,8 +168,8 @@ class _GamePageState extends State<GamePage> {
         LabeledInput(
           label: Text(t.ui.gamePage.kindBundleLabel), 
           expanded: false,
-          child: ToggleSwitch(
-            checked: _kind == GameKind.bundle,
+          child: Switch(
+            value: _kind == GameKind.bundle,
             onChanged: (value) { 
               setState(() {
                 _kind = value ? GameKind.bundle : null;
@@ -170,20 +182,18 @@ class _GamePageState extends State<GamePage> {
       widgets.add(
         LabeledInput(
           label: Text(t.ui.gamePage.kindLabel),
-          child: ComboBox<GameKind?>(
-            value: _kind,
-            placeholder: Text(t.types.gameKind.none),
-            items: [
-              ComboBoxItem(value: null, child: Text(t.types.gameKind.none)),
-              ComboBoxItem(value: GameKind.dlc, child: Text(t.types.gameKind.dlc)),
-              ComboBoxItem(value: GameKind.content, child: Text(t.types.gameKind.content)),
+          child: DropdownMenu<GameKind?>(
+            initialSelection: _kind,
+            dropdownMenuEntries: [
+              DropdownMenuEntry(value: null, label: t.types.gameKind.none),
+              DropdownMenuEntry(value: GameKind.dlc, label: t.types.gameKind.dlc),
+              DropdownMenuEntry(value: GameKind.content, label: t.types.gameKind.content),
             ],
-            onChanged: (value) {
+            onSelected: (value) {
               setState(() {
                 _kind = value;
               });
             },
-            isExpanded: true,
           )
         )
       );
@@ -257,43 +267,21 @@ class _GamePageState extends State<GamePage> {
     return widgets;
   }
 
-  Widget _buildActions(Game game) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 24),
-          child: 
-            CommandBar(
-              mainAxisAlignment: MainAxisAlignment.end,
-              primaryItems: [
-                CommandBarButton(
-                  icon: const Icon(FluentIcons.add),
-                  label: Text(t.ui.gamePage.addIncludedItemButton),
-                  onPressed: () {
-                    final game = Game.create(
-                      title: t.ui.gamePage.defaultIncludedGameTitle,
-                      status: GameStatus.backlog,
-                      parentId: widget.id
-                    );
+  List<Widget> _buildActions(Game game) {
+    final List<Widget> widgets = [];
 
-                    context.read<GamesBloc>().add(SaveGame(game: game));
-
-                    GamesNavigator.goGame(context, id: game.id);
-                  },
-                ),
-                CommandBarButton(
-                  icon: const Icon(FluentIcons.delete),
-                  label: Text(t.ui.general.deleteButton),
-                  onPressed: () {
-                    _handleDelete(context);
-                  },
-                ),
-              ],
-            ),
-        ),
-      ]
+    widgets.add(
+      IconButton(
+        icon: Icon(Icons.delete),
+        onPressed: () {
+          _handleDelete(context);
+        },
+      ),
     );
+
+    widgets.add(HSpacer(size: SpaceSize.l));
+
+    return widgets;
   }
 
   Game? _getGame() {

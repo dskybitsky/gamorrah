@@ -88,8 +88,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
                   child: Text(t.ui.general.okButton),
                 ),
               ],
-            )
-            
+            ),
           ],
         ),
       )

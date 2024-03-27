@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
@@ -19,38 +20,43 @@ class GameHowLongToBeatInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expander(
-      header: _buildHeader(),
-      content: Column(
-        children: [
-          LabeledInput(
-            label: Text(t.types.gameHowLongToBeat.story),
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.story,
-              onChanged: _onStoryChanged,
-            )
-          ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.types.gameHowLongToBeat.storySides),
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.storySides,
-              onChanged: _onStorySidesChanged,
-            )
-          ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.types.gameHowLongToBeat.completionist),
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.completionist,
-              onChanged: _onCompletionistChanged,
-            )
-          ),
-        ],
-      )
+    return ExpansionTile(
+      title: _buildHeader(),
+      children: [
+        LabeledInput(
+          label: Text(t.types.gameHowLongToBeat.story),
+          child: TextField(
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            onChanged: (value) {
+              _onStoryChanged(double.parse(value));
+            },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.general.hoursText,
+            ),
+          )
+        ),
+        // VSpacer(),
+        // LabeledInput(
+        //   label: Text(t.types.gameHowLongToBeat.storySides),
+        //   child: NumberBox(
+        //     placeholder: t.ui.general.hoursText,
+        //     value: value.storySides,
+        //     onChanged: _onStorySidesChanged,
+        //   )
+        // ),
+        // VSpacer(),
+        // LabeledInput(
+        //   label: Text(t.types.gameHowLongToBeat.completionist),
+        //   child: NumberBox(
+        //     placeholder: t.ui.general.hoursText,
+        //     value: value.completionist,
+        //     onChanged: _onCompletionistChanged,
+        //   )
+        // ),
+      ],
     );
   }
 

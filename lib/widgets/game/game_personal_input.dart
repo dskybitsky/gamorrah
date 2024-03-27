@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
@@ -22,35 +22,33 @@ class GamePersonalInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expander(
-      header: _buildHeader(context),
-      content: Column(
-        children: [
-          LabeledInput(
-            label: Text(t.ui.gamePersonalControl.beatenLabel), 
-            child: GamePersonalBeatenInput(
-              value: value.beaten, 
-              onChanged: _onBeatenChanged,
-            )
-          ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.ui.gamePersonalControl.ratingLabel), 
-            child: GamePersonalRatingInput(
-              value: value.rating, 
-              onChanged: _onRatingChanged,
-            )
-          ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.ui.gamePersonalControl.timeSpentLabel), 
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.timeSpent,
-              onChanged: _onTimeSpentChanged
-            )),
-        ],
-      )
+    return ExpansionTile(
+      title: _buildHeader(context),
+      children: [
+        LabeledInput(
+          label: Text(t.ui.gamePersonalControl.beatenLabel), 
+          child: GamePersonalBeatenInput(
+            value: value.beaten, 
+            onChanged: _onBeatenChanged,
+          )
+        ),
+        VSpacer(),
+        LabeledInput(
+          label: Text(t.ui.gamePersonalControl.ratingLabel), 
+          child: GamePersonalRatingInput(
+            value: value.rating, 
+            onChanged: _onRatingChanged,
+          )
+        ),
+        VSpacer(),
+        // LabeledInput(
+        //   label: Text(t.ui.gamePersonalControl.timeSpentLabel), 
+        //   child: NumberBox(
+        //     placeholder: t.ui.general.hoursText,
+        //     value: value.timeSpent,
+        //     onChanged: _onTimeSpentChanged
+        //   )),
+      ],
     );
   }
   
@@ -58,7 +56,9 @@ class GamePersonalInput extends StatelessWidget {
     var widgets = <Widget>[
         Text(t.ui.gamePersonalControl.headerLabel),
         HSpacer(),
-        GamePersonalBeatenText(value: value.beaten!)
+        value.beaten != null 
+          ? GamePersonalBeatenText(value: value.beaten!)
+          : Text(t.types.gamePersonalBeaten.none)
         // GamePersonalBeatenView(value: value.beaten)
     ];
 
