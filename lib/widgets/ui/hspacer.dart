@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/widgets/ui/space_size.dart';
 
 class HSpacer extends StatelessWidget {

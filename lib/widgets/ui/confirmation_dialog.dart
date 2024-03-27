@@ -1,6 +1,7 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
+import 'package:gamorrah/widgets/ui/hspacer.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   ConfirmationDialog({
@@ -15,27 +16,35 @@ class ConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     closeDialog(BuildContext context) => Navigator.pop(context);
 
-    return ContentDialog(
-      content: Text(message),
-      actions: [
-        Button(
-          onPressed: () {
-            closeDialog(context);
-          },
-          child: Text(t.ui.general.cancelButton),
-        ),
-        FilledButton(
-          autofocus: true,
-          onPressed: () async {
-            await callback();
-            
-            if (context.mounted) {
-              closeDialog(context);
-            }
-          },
-          child: Text(t.ui.general.okButton),
-        ),
-      ],
+    return Dialog(
+      child: Column(
+        children: [
+          Text(message),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton(
+                onPressed: () {
+                  closeDialog(context);
+                },
+                child: Text(t.ui.general.cancelButton),
+              ),
+              HSpacer(),
+              TextButton(
+                onPressed: () async {
+                  await callback();
+                
+                  if (context.mounted) {
+                    closeDialog(context);
+                  }
+                },
+                child: Text(t.ui.general.okButton),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
