@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   ConfirmationDialog({
@@ -16,35 +15,27 @@ class ConfirmationDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     closeDialog(BuildContext context) => Navigator.pop(context);
 
-    return Dialog(
-      child: Column(
-        children: [
-          Text(message),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () {
-                  closeDialog(context);
-                },
-                child: Text(t.ui.general.cancelButton),
-              ),
-              HSpacer(),
-              TextButton(
-                onPressed: () async {
-                  await callback();
-                
-                  if (context.mounted) {
-                    closeDialog(context);
-                  }
-                },
-                child: Text(t.ui.general.okButton),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return AlertDialog(
+      title: Text(t.ui.general.confimationTitle),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () {
+            closeDialog(context);
+          },
+          child: Text(t.ui.general.cancelButton),
+        ),
+        TextButton(
+          onPressed: () async {
+            await callback();
+          
+            if (context.mounted) {
+              closeDialog(context);
+            }
+          },
+          child: Text(t.ui.general.okButton),
+        ),
+      ],
     );
   }
 }

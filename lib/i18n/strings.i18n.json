@@ -11,7 +11,9 @@
       "hoursText": "Hours",
       "hoursCountText": "${count} hours",
       "hoursCountShortText": "${count}h",
-      "anyText": "Any"
+      "anyText": "Any",
+      "confimationTitle": "Confirmation",
+      "notificationTitle": "Information"
     },
     "homePage": {
       "settingsLink": "Settings"

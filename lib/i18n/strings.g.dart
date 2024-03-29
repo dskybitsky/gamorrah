@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 84
+/// Strings: 86
 ///
-/// Built on 2024-03-29 at 11:57 UTC
+/// Built on 2024-03-29 at 14:05 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -202,6 +202,8 @@ class _StringsUiGeneralEn {
 	String hoursCountText({required Object count}) => '${count} hours';
 	String hoursCountShortText({required Object count}) => '${count}h';
 	String get anyText => 'Any';
+	String get confimationTitle => 'Confirmation';
+	String get notificationTitle => 'Information';
 }
 
 // Path: ui.homePage
@@ -420,6 +422,8 @@ extension on Translations {
 			case 'ui.general.hoursCountText': return ({required Object count}) => '${count} hours';
 			case 'ui.general.hoursCountShortText': return ({required Object count}) => '${count}h';
 			case 'ui.general.anyText': return 'Any';
+			case 'ui.general.confimationTitle': return 'Confirmation';
+			case 'ui.general.notificationTitle': return 'Information';
 			case 'ui.homePage.settingsLink': return 'Settings';
 			case 'ui.gamesPage.addGameButton': return 'Add new game';
 			case 'ui.gamesPage.filterButton': return 'Filter games';

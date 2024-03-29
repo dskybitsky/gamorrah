@@ -10,24 +10,17 @@ class NotificationDialog extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Column(
-        children: [
-          Text(message),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text(t.ui.general.okButton),
-              ),
-            ],
-          ),
-        ],
-      ),
+    return AlertDialog(
+      title: Text(t.ui.general.notificationTitle),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(t.ui.general.okButton),
+        ),
+      ],
     );
   }
 }
