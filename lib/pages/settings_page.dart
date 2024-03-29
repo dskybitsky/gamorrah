@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
 import 'package:gamorrah/widgets/ui/notification_dialog.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage();
@@ -18,23 +17,20 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<GamesBloc, GamesState>(
       builder: (context, state) {
-        return NavigationView(
-          appBar: NavigationAppBar(
-              title: Text(t.ui.settingsPage.settingsTitle),
-              automaticallyImplyLeading: false,
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(t.ui.settingsPage.settingsTitle),
           ),
-          content: ScaffoldPage(
-            content: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(flex: 1, child: Container()),
-                  Expanded(flex: 3, child: _buildContent(context)),
-                  Expanded(flex: 1, child: Container()),
-                ],
-              ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                Expanded(flex: 3, child: _buildContent(context)),
+                Expanded(flex: 1, child: Container()),
+              ],
             ),
-          )
+          ),
         );
       },
     );
@@ -46,9 +42,9 @@ class SettingsPage extends StatelessWidget {
       children: [
         Row(
           children: [
-            Icon(FluentIcons.import, size: 24.0),
+            Icon(Icons.file_upload, size: 24.0),
             HSpacer(),
-            Expanded(child: Button(
+            Expanded(child: OutlinedButton(
               onPressed: () {
                 _handleImport(context);
               },
@@ -59,9 +55,9 @@ class SettingsPage extends StatelessWidget {
         VSpacer(),
         Row(
           children: [
-            Icon(FluentIcons.export, size: 24.0),
+            Icon(Icons.file_download, size: 24.0),
             HSpacer(),
-            Expanded(child: Button(
+            Expanded(child: OutlinedButton(
               onPressed: () {
                 _handleExport(context);
               },
@@ -72,12 +68,9 @@ class SettingsPage extends StatelessWidget {
         VSpacer(),
         Row(
           children: [
-            Icon(FluentIcons.delete, size: 24.0),
+            Icon(Icons.delete, size: 24.0),
             HSpacer(),
             Expanded(child: FilledButton(
-              style: ButtonStyle(
-                backgroundColor: ButtonState.all(Colors.warningPrimaryColor),
-              ),
               onPressed: () async {
                 _handleDeleteAll(context);
               },

@@ -1,11 +1,9 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
-import 'package:gamorrah/widgets/ui/labeled_input.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GameHowLongToBeatInput extends StatelessWidget {
   const GameHowLongToBeatInput({
@@ -19,75 +17,65 @@ class GameHowLongToBeatInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expander(
-      header: _buildHeader(),
-      content: Column(
-        children: [
-          LabeledInput(
-            label: Text(t.types.gameHowLongToBeat.story),
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.story,
-              onChanged: _onStoryChanged,
-            )
+    return ExpansionTile(
+      title: Text(t.ui.gameHowLongToBeatControl.headerLabel),
+      subtitle: _buildSubtitle(),
+      children: [
+        VSpacer(),
+        TextField(
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          onChanged: (value) {
+            _onStoryChanged(double.parse(value));
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: t.types.gameHowLongToBeat.story,
           ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.types.gameHowLongToBeat.storySides),
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.storySides,
-              onChanged: _onStorySidesChanged,
-            )
+        ),
+        VSpacer(),
+        TextField(
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          onChanged: (value) {
+            _onStorySidesChanged(double.parse(value));
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: t.types.gameHowLongToBeat.storySides,
           ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.types.gameHowLongToBeat.completionist),
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.completionist,
-              onChanged: _onCompletionistChanged,
-            )
+        ),
+        VSpacer(),
+        TextField(
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          onChanged: (value) {
+            _onCompletionistChanged(double.parse(value));
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: t.types.gameHowLongToBeat.completionist,
           ),
-        ],
-      )
+        ),
+        VSpacer(),
+      ],
     );
   }
 
-  Widget _buildHeader() {
-    final widgets = <Widget>[
-      Text(t.ui.gameHowLongToBeatControl.headerLabel),
-      HSpacer(),
-    ];
-
-    final story = value.story;
-
-    if (story != null) {
-      widgets.add(Text(t.ui.gameHowLongToBeatControl.storyLabel(
-        count: story
-      )));
-      widgets.add(HSpacer(size: SpaceSize.s));
-    }
-
-    final storySides = value.storySides;
-
-    if (storySides != null) {
-      widgets.add(Text(t.ui.gameHowLongToBeatControl.storySidesLabel(
-        count: storySides
-      )));
-      widgets.add(HSpacer(size: SpaceSize.s));
-    }
-
-    final completionist = value.completionist;
-
-    if (completionist != null) {
-      widgets.add(Text(t.ui.gameHowLongToBeatControl.completionistLabel(
-        count: completionist
-      )));
-      widgets.add(HSpacer(size: SpaceSize.s));
-    }
-
-    return Row(children: widgets);
+  Widget _buildSubtitle() {
+    return Row(
+      children: [
+        Text(t.ui.gameHowLongToBeatControl.storyLabel(count: value.story ?? "?")),
+        HSpacer(),
+        Text(t.ui.gameHowLongToBeatControl.storySidesLabel(count: value.storySides ?? "?")),
+        HSpacer(),
+        Text(t.ui.gameHowLongToBeatControl.completionistLabel(count: value.completionist ?? "?")),
+        HSpacer(),
+      ],
+    );
   }
 
   void _onStoryChanged(double? story) {

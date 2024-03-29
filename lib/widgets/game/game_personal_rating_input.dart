@@ -1,4 +1,5 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class GamePersonalRatingInput extends StatelessWidget {
   const GamePersonalRatingInput({
@@ -12,10 +13,14 @@ class GamePersonalRatingInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RatingBar(
-      rating: value ?? 0,
-      unratedIconColor: FluentTheme.of(context).inactiveBackgroundColor,
-      onChanged: (value) {
+    return RatingBar.builder(
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      allowHalfRating: true,
+      initialRating: value ?? 0,
+      onRatingUpdate: (value) {
         final onChanged = this.onChanged;
 
         if (onChanged != null) {

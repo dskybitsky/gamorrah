@@ -1,22 +1,23 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/game_platforms_input.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
-class GamePageModal extends StatefulWidget {
-  const GamePageModal({ required this.game });
+class GamePageDialog extends StatefulWidget {
+  const GamePageDialog({ required this.game });
 
   final Game game;
 
   @override
-  State<GamePageModal> createState() => _GameModalState();
+  State<GamePageDialog> createState() => _GamePageDialogState();
 }
 
-class _GameModalState extends State<GamePageModal> {
+class _GamePageDialogState extends State<GamePageDialog> {
   late TextEditingController _titleController;
   late TextEditingController _franchiseController;
   late TextEditingController _editionController;
@@ -38,14 +39,15 @@ class _GameModalState extends State<GamePageModal> {
 
   @override
   Widget build(BuildContext context) {
-    return ContentDialog(
+    return AlertDialog(
+      title: Text(t.ui.gamePage.dialogTitle),
       content: _buildDialogContent(context),
       actions: [
-        Button(
+        TextButton(
           child: Text(t.ui.general.cancelButton),
           onPressed: () => Navigator.pop(context),
         ),
-        FilledButton(
+        TextButton(
           onPressed: () {
             context.read<GamesBloc>().add(
               SaveGame(game: widget.game.copyWith(
@@ -66,56 +68,55 @@ class _GameModalState extends State<GamePageModal> {
   }
 
   Widget _buildDialogContent(BuildContext context) {
-    return ListView(
-      children: [
-        InfoLabel(
-          label: t.ui.gamePage.titleLabel,
-          child: TextBox(
+    return SingleChildScrollView(
+      child: ListBody(
+        children: [
+          TextField(
             controller: _titleController,
-            placeholder: t.ui.gamePage.titlePlaceholder,
-            expands: false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.gamePage.titleLabel,
+            ),
           ),
-        ),
-        VSpacer(),
-        InfoLabel(
-          label: t.ui.gamePage.franchiseLabel,
-          child: TextBox(
+          VSpacer(),
+          TextField(
             controller: _franchiseController,
-            placeholder: t.ui.gamePage.franchisePlaceholder,
-            expands: false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.gamePage.franchiseLabel,
+            ),
           ),
-        ),
-        VSpacer(),
-        InfoLabel(
-          label: t.ui.gamePage.editionLabel,
-          child: TextBox(
+          VSpacer(),
+          TextField(
             controller: _editionController,
-            placeholder: t.ui.gamePage.editionPlaceholder,
-            expands: false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.gamePage.editionLabel,
+            ),
           ),
-        ),
-        VSpacer(),
-        InfoLabel(
-          label: t.ui.gamePage.yearLabel,
-          child: NumberBox(
-            placeholder: t.ui.gamePage.yearPlaceholder,
-            value: _year,
-            onChanged: (value) => { _year = value },
+          VSpacer(),
+          TextField(
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            onChanged: (value) {
+              _year = int.parse(value);
+            },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.gamePage.yearLabel,
+            ),
           ),
-        ),
-        VSpacer(),
-        InfoLabel(
-          label: t.ui.gamePage.thumbUrlLabel,
-          child: TextBox(
+          VSpacer(),
+          TextField(
             controller: _thumbUrlController,
-            placeholder: t.ui.gamePage.thumbUrlPlaceholder,
-            expands: false,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.gamePage.thumbUrlLabel,
+            ),
           ),
-        ),
-        VSpacer(),
-        InfoLabel(
-          label: t.ui.gamePage.platformsLabel,
-          child: GamePlatformsInput(
+          VSpacer(),
+          GamePlatformsInput(
             value: _platforms,
             onChanged: (value) {
               setState((){ 
@@ -123,8 +124,8 @@ class _GameModalState extends State<GamePageModal> {
               });
             },
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

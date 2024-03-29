@@ -1,14 +1,12 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_view.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_text.dart';
 import 'package:gamorrah/widgets/game/game_personal_rating_input.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
-import 'package:gamorrah/widgets/ui/labeled_input.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamePersonalInput extends StatelessWidget {
   const GamePersonalInput({
@@ -22,43 +20,44 @@ class GamePersonalInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expander(
-      header: _buildHeader(context),
-      content: Column(
-        children: [
-          LabeledInput(
-            label: Text(t.ui.gamePersonalControl.beatenLabel), 
-            child: GamePersonalBeatenInput(
-              value: value.beaten, 
-              onChanged: _onBeatenChanged,
-            )
+    return ExpansionTile(
+      title: Text(t.ui.gamePersonalControl.headerLabel),
+      subtitle: _buildSubtitle(context),
+      children: [
+        VSpacer(),
+        GamePersonalBeatenInput(
+          value: value.beaten, 
+          onChanged: _onBeatenChanged,
+        ),
+        VSpacer(),
+        GamePersonalRatingInput(
+          value: value.rating, 
+          onChanged: _onRatingChanged,
+        ),
+        VSpacer(),
+        TextField(
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          onChanged: (value) {
+            _onTimeSpentChanged(double.parse(value));
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: t.ui.gamePersonalControl.timeSpentLabel,
           ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.ui.gamePersonalControl.ratingLabel), 
-            child: GamePersonalRatingInput(
-              value: value.rating, 
-              onChanged: _onRatingChanged,
-            )
-          ),
-          VSpacer(),
-          LabeledInput(
-            label: Text(t.ui.gamePersonalControl.timeSpentLabel), 
-            child: NumberBox(
-              placeholder: t.ui.general.hoursText,
-              value: value.timeSpent,
-              onChanged: _onTimeSpentChanged
-            )),
-        ],
-      )
+        ),
+        VSpacer(),
+      ],
     );
   }
   
-  Widget _buildHeader(BuildContext context) {
+  Widget _buildSubtitle(BuildContext context) {
     var widgets = <Widget>[
-        Text(t.ui.gamePersonalControl.headerLabel),
-        HSpacer(),
-        GamePersonalBeatenView(value: value.beaten)
+        value.beaten != null 
+          ? GamePersonalBeatenText(value: value.beaten!)
+          : Text(t.types.gamePersonalBeaten.none)
+        // GamePersonalBeatenView(value: value.beaten)
     ];
 
     final timeSpent = value.timeSpent;

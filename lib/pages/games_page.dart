@@ -1,136 +1,259 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/preferences/preferences.dart';
-import 'package:gamorrah/state/preferences/preferences_bloc.dart';
-import 'package:gamorrah/widgets/game/games_filter_dialog.dart';
-import 'package:gamorrah/widgets/game/games_list.dart';
+import 'package:gamorrah/models/games_view/games_view.dart';
+import 'package:gamorrah/models/optional.dart';
+import 'package:gamorrah/pages/games_page_filter_dialog.dart';
+import 'package:gamorrah/pages/games_page_save_view_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
-import 'package:gamorrah/widgets/game/games_navigator.dart';
-import 'package:gamorrah/widgets/game/games_preset_dialog.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
+import 'package:gamorrah/state/games_view/games_views_bloc.dart';
+import 'package:gamorrah/state/state_phase.dart';
+import 'package:gamorrah/widgets/game/game_status_text.dart';
+import 'package:gamorrah/widgets/game/games_list.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPage extends StatefulWidget {
-  const GamesPage({ 
+  GamesPage({
+    super.key,
     required this.status,
-    this.preset,
   });
 
   final GameStatus status;
-  final GamesPreset? preset;
 
   @override
-  State<GamesPage> createState() => _GamesScreenState();
+  State<GamesPage> createState() => _GamesPageState();
 }
 
-class _GamesScreenState extends State<GamesPage> {
+class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
+  late TabController _tabController;
   late TextEditingController _searchController;
-  late GamesFilter _filter;
+
+  int _tabIndex = 0;
+
+  GamesFilter? _defaultFilter;
 
   @override
   void initState() {
     super.initState();
 
+    _initTabController([], false);
+
     _searchController = TextEditingController(text: '');
-    _filter = widget.preset?.filter ?? GamesFilter();
+  }
+
+  void _initTabController(List<GamesView> gamesViews, bool needsDispose) {
+    if (needsDispose) {
+      _tabController.dispose();
+    }
+
+    _tabIndex = max(min(_tabIndex, gamesViews.length - 1), 0);
+
+    _tabController = TabController(
+      length: gamesViews.length,
+      initialIndex: _tabIndex,
+      vsync: this,
+    );
+
+    _tabController.addListener(() {
+      if (_tabIndex != _tabController.index) {
+        setState(() {
+          _tabIndex = _tabController.index;
+        });
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<GamesBloc, GamesState>(
-      builder: (context, state) {
-        if (state.phase.isInitial) {
+      builder: (context, gamesState) {
+        if (gamesState.phase.isInitial) {
           return Container();
         }
 
-        if (state.phase.isLoading) {
+        if (gamesState.phase.isLoading) {
           return Center(
-            child: ProgressRing(),
+            child: CircularProgressIndicator(),
           );
         }
 
-        if (state.phase.isError) {
+        if (gamesState.phase.isError) {
           return Center(
             child: Text(t.ui.general.errorText),
           );
         }
         
-        return _buildContent(context, state);
+        return BlocBuilder<GamesViewsBloc, GamesViewsState>(
+          builder: (context, gamesViewsState) {
+            if (gamesViewsState.phase.isInitial) {
+              return Container();
+            }
+
+            if (gamesViewsState.phase.isLoading) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+
+            if (gamesViewsState.phase.isError) {
+              return Center(
+                child: Text(t.ui.general.errorText),
+              );
+            }
+            
+            return _buildContent(context, gamesState, gamesViewsState);
+          },
+        );
       },
     );
   }
 
-  Widget _buildContent(BuildContext context, GamesState state) {
-    final games = _getGamesList(state);
+  Widget _buildContent(BuildContext context, GamesState gamesState, GamesViewsState gamesViewsState) {
+    final gamesViews = _getGamesViews(gamesViewsState);
 
-    return NavigationView(
-      appBar: NavigationAppBar(
-        automaticallyImplyLeading: false,
-        title: Text(_getTitle()),
-        actions: _buildActions(context, state),
+    if (_tabController.length != gamesViews.length) {
+      _initTabController(gamesViews, true);
+    }
+
+    final games = _getGames(gamesState);
+
+    final gamesViewsGames = gamesViews
+      .map((gamesView) => _filterGames(games, gamesView.filter))
+      .toList();
+
+    final defaultGames = _filterGames(games, _defaultFilter);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: GameStatusText(value: widget.status),
+        actions: _buildActions(context, gamesViews),
+        bottom: gamesViews.isNotEmpty
+          ? TabBar(
+              controller: _tabController,
+              tabs: gamesViews.map((gamesView) => Tab(
+                text: gamesView.name,
+              )).toList()
+          ) : null,
       ),
-      content: Builder(
-        builder: (context) {
-          if (state.games.isEmpty) {
-            return Center(
-              child: Text(t.ui.general.emptyText),
-            );
-          }
-
-          return ScaffoldPage(
-            padding: EdgeInsets.zero,
-            content: SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: GamesList(games: games),
+      body: gamesViews.isNotEmpty
+        ? TabBarView(
+          controller: _tabController,
+          children: gamesViewsGames
+            .map((games) => _buildGamesList(context, games))
+            .toList()
+        )
+        : _buildGamesList(context, defaultGames),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {},
+      ),
+      bottomNavigationBar: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 0, top: 8.0, bottom: 8.0, right: 16.0),
+            child: Text(
+              t.ui.gamesPage.gamesTotalText(
+                count: gamesViews.isNotEmpty 
+                  ? gamesViewsGames[_tabIndex].length
+                  : defaultGames.length
+              )
             ),
-            bottomBar: Container(
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.only(top: 8, bottom: 8, right: 24),
-              child: Text(
-                t.ui.gamesPage.gamesTotalText(count: games.length),
-                style: FluentTheme.of(context).typography.caption,
-              ),
-            ),
-          );
-        },
+          )
+        ],
       ),
     );
   }
 
-  Widget _buildActions(BuildContext context, GamesState state) {
-    final searchWidget = Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 256,
-          child: TextBox(
-            controller: _searchController,
-            placeholder: t.ui.gamesPage.searchPlaceholder,
-            onChanged: (value) {
-              setState(() {});
-            },
+  Widget _buildGamesList(BuildContext context, List<Game> games) {
+    return SingleChildScrollView(
+      padding: EdgeInsets.all(16.0),
+      child: Center(
+        child: GamesList(games: _searchGames(games, _searchController.text)),
+      ),
+    );
+  }
+
+  List<Widget> _buildActions(BuildContext context, List<GamesView> gamesViews) {
+    final List<Widget> widgets = [];
+
+    widgets.add(
+      SizedBox(
+        width: 150,
+        child: TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            icon: Icon(Icons.search),
+            hintText: t.ui.gamesPage.searchPlaceholder,
+            border: InputBorder.none,
           ),
+          onChanged: (value) {
+            setState(() {
+              
+            });
+          },
         ),
-      ],
+      )
     );
-    
-    final filterWidget = Tooltip(
-      message: t.ui.gamesPage.filterButton,
-      child: IconButton(
-        icon: _filter.isEmpty
-          ? Icon(FluentIcons.filter)
-          : Icon(FluentIcons.filter_solid, color: Colors.blue),
+
+    widgets.add(
+      IconButton(
+        icon: Icon(Icons.filter_alt),
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => GamesFilterDialog(
-              filter: _filter,
+            builder: (context) => GamesPageFilterDialog(
+              filter: gamesViews.isNotEmpty
+                ? gamesViews[_tabIndex].filter
+                : _defaultFilter,
               onChanged: (value) {
-                setState(() {
-                  _filter = value;
-                });
+                if (gamesViews.isNotEmpty) {
+                  final newGamesView = gamesViews[_tabIndex].copyWith(
+                      filter: Optional(value)
+                  );
+
+                  context
+                    .read<GamesViewsBloc>()
+                    .add(SaveGamesView(gamesView: newGamesView));
+                } else {
+                  setState(() {
+                    _defaultFilter = value;
+                  });
+                }
+              },
+            ),
+            useRootNavigator: false,
+          );  
+        }, 
+      )
+    );
+  
+    widgets.add(HSpacer(size: SpaceSize.m));
+    widgets.add(
+      IconButton(
+        icon: Icon(Icons.bookmark_add),
+        onPressed:() {
+          showDialog(
+            context: context,
+            builder: (context) => GamesPageSaveViewDialog(
+              onChanged: (value) {
+                final newGamesView = GamesView.create(
+                  name: value, 
+                  status: widget.status,
+                  index: gamesViews.isNotEmpty 
+                    ? gamesViews.last.index + 1
+                    : 0,
+                  filter: gamesViews.isNotEmpty 
+                    ? gamesViews.last.filter
+                    : _defaultFilter
+                );
+
+                context
+                  .read<GamesViewsBloc>()
+                  .add(SaveGamesView(gamesView: newGamesView));
               },
             ),
             useRootNavigator: false,
@@ -139,68 +262,41 @@ class _GamesScreenState extends State<GamesPage> {
       )
     );
 
-    final savePresetWidget = Tooltip(
-      message: t.ui.gamesPage.savePresetButton,
-      child: IconButton(
-        icon: Icon(FluentIcons.save_template),
-        onPressed: _filter.isEmpty ? null : () {
-          showDialog(
-            context: context,
-            builder: (context) => GamesPresetDialog(
-              onChanged: (value) {
-                context.read<PreferencesBloc>()
-                  .add(SaveGamesPreset(
-                    gamesPreset: GamesPreset(
-                      name: value, 
-                      status: widget.status,
-                      filter: _filter
-                    )
-                  ));
-              },
-            ),
-            useRootNavigator: false,
-          );
-        },
-      )
-    );
+    if (gamesViews.isNotEmpty) {
+      widgets.add(HSpacer(size: SpaceSize.xs));
+      widgets.add(
+        IconButton(
+          icon: Icon(Icons.bookmark_remove),
+          onPressed: () {
+            final id = gamesViews[_tabIndex].id;
 
-    final createGameWidget = Tooltip(
-      message: t.ui.gamesPage.addGameButton,
-      child: IconButton(
-        icon: const Icon(FluentIcons.add),
-        onPressed: () {
-          final game = Game.create(
-            title: t.ui.gamesPage.defaultGameTitle, 
-            thumbUrl: null,
-            status: widget.status,
-          );
+            context
+              .read<GamesViewsBloc>()
+              .add(DeleteGamesView(id: id));
+          },
+        ),
+      );
+    }
 
-          context.read<GamesBloc>().add(SaveGame(game: game));
+    widgets.add(HSpacer(size: SpaceSize.l));
 
-          GamesNavigator.goGame(context, id: game.id);
-        },
-      )
-    );
-      
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        HSpacer(size: SpaceSize.xxxl),
-        searchWidget,
-        HSpacer(size: SpaceSize.s),
-        filterWidget,
-        HSpacer(size: SpaceSize.s),
-        savePresetWidget,
-        HSpacer(size: SpaceSize.l),
-        createGameWidget,
-        HSpacer(size: SpaceSize.xl),
-      ]
-    );
+    return widgets;
   }
 
-  List<Game> _getGamesList(GamesState state) {
-    final searchText = _searchController.text;
+  List<GamesView> _getGamesViews(GamesViewsState state) {
+    final gamesViews = state.gamesViews
+      .where((gamesView) => gamesView.status == widget.status)
+      .toList();
 
+    gamesViews
+      .sort((gamesViewA, gamesViewB) {
+        return gamesViewA.index.compareTo(gamesViewB.index);
+      });
+
+    return gamesViews;
+  }
+
+  List<Game> _getGames(GamesState state) {
     final games = state.games
       .where((game) {
         if (game.status != widget.status) {
@@ -211,10 +307,7 @@ class _GamesScreenState extends State<GamesPage> {
           return false;
         }
 
-        return (
-          (searchText == '' || game.title.contains(RegExp(searchText, caseSensitive: false)))
-          && _filter.matches(game)
-        );
+        return true;
       })
       .toList();
 
@@ -235,16 +328,23 @@ class _GamesScreenState extends State<GamesPage> {
     return games;
   }
 
-  String _getTitle() {
-    switch (widget.status) {
-      case GameStatus.backlog:
-        return t.types.gameStatus.backlog;
-      case GameStatus.playing:
-        return t.types.gameStatus.playing;
-      case GameStatus.finished:
-        return t.types.gameStatus.finished;
-      case GameStatus.wishlist:
-        return t.types.gameStatus.wishlist;
+  List<Game> _filterGames(List<Game> games, GamesFilter? filter) {
+    if (filter != null) {
+      return games
+        .where((game) => filter.matches(game))
+        .toList();
     }
+
+    return games;
+  }
+
+  List<Game> _searchGames(List<Game> games, String searchText) {
+    if (searchText != '') {
+      return games
+        .where((game) => game.title.contains(RegExp(searchText, caseSensitive: false)))
+        .toList();
+    }
+    
+    return games;
   }
 }

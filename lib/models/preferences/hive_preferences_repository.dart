@@ -6,8 +6,8 @@ import 'hive_preferences.dart';
 
 class HivePreferencesRepository extends PreferencesRepository {
   static const boxName = kDebugMode
-    ? 'preferences:v:01:debug'
-    : 'preferences:v:01';
+    ? 'preferences:v:02:debug'
+    : 'preferences:v:02';
 
   Box<HivePreferences>? _box;
 
