@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 80
+/// Strings: 83
 ///
-/// Built on 2024-03-24 at 12:30 UTC
+/// Built on 2024-03-29 at 09:57 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -163,6 +163,7 @@ class _StringsUiEn {
 	late final _StringsUiGamesPageEn gamesPage = _StringsUiGamesPageEn._(_root);
 	late final _StringsUiGamePageEn gamePage = _StringsUiGamePageEn._(_root);
 	late final _StringsUiSettingsPageEn settingsPage = _StringsUiSettingsPageEn._(_root);
+	late final _StringsUiGamePlatformsControlEn gamePlatformsControl = _StringsUiGamePlatformsControlEn._(_root);
 	late final _StringsUiGamePersonalControlEn gamePersonalControl = _StringsUiGamePersonalControlEn._(_root);
 	late final _StringsUiGameHowLongToBeatControlEn gameHowLongToBeatControl = _StringsUiGameHowLongToBeatControlEn._(_root);
 }
@@ -236,6 +237,7 @@ class _StringsUiGamePageEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
+	String get dialogTitle => 'Edit Game Information';
 	String get addIncludedItemButton => 'Add Included Item';
 	String get titleLabel => '${_root.types.game.title}:';
 	String get titlePlaceholder => '${_root.types.game.title}';
@@ -269,6 +271,17 @@ class _StringsUiSettingsPageEn {
 	String get exportToJsonSuccessMessage => 'Export finished succesfully';
 	String get deleteAllGamesButton => 'Delete All Games';
 	String get deleteAllGamesConfirmationMessage => 'All games will be deleted. Proceed?';
+}
+
+// Path: ui.gamePlatformsControl
+class _StringsUiGamePlatformsControlEn {
+	_StringsUiGamePlatformsControlEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get titleLabel => '${_root.types.game.platforms}:';
+	String get titlePlaceholder => 'Choose ${_root.types.game.platforms}';
 }
 
 // Path: ui.gamePersonalControl
@@ -405,6 +418,7 @@ extension on Translations {
 			case 'ui.gamesPage.defaultGameTitle': return 'New game';
 			case 'ui.gamesPage.presetNameLabel': return 'Preset';
 			case 'ui.gamesPage.presetNamePlaceholder': return 'Preset Name';
+			case 'ui.gamePage.dialogTitle': return 'Edit Game Information';
 			case 'ui.gamePage.addIncludedItemButton': return 'Add Included Item';
 			case 'ui.gamePage.titleLabel': return '${_root.types.game.title}:';
 			case 'ui.gamePage.titlePlaceholder': return '${_root.types.game.title}';
@@ -429,6 +443,8 @@ extension on Translations {
 			case 'ui.settingsPage.exportToJsonSuccessMessage': return 'Export finished succesfully';
 			case 'ui.settingsPage.deleteAllGamesButton': return 'Delete All Games';
 			case 'ui.settingsPage.deleteAllGamesConfirmationMessage': return 'All games will be deleted. Proceed?';
+			case 'ui.gamePlatformsControl.titleLabel': return '${_root.types.game.platforms}:';
+			case 'ui.gamePlatformsControl.titlePlaceholder': return 'Choose ${_root.types.game.platforms}';
 			case 'ui.gamePersonalControl.headerLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.beatenLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.ratingLabel': return '${_root.types.gamePersonal.rating}:';

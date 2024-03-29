@@ -4,8 +4,7 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/games_view/games_view.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
-import 'package:gamorrah/widgets/ui/vspacer.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPageFilterDialog extends StatefulWidget {
   const GamesPageFilterDialog({

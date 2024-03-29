@@ -13,8 +13,7 @@ import 'package:gamorrah/state/games_view/games_views_bloc.dart';
 import 'package:gamorrah/state/state_phase.dart';
 import 'package:gamorrah/widgets/game/game_status_text.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPage extends StatefulWidget {
   GamesPage({

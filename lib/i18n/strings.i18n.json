@@ -27,6 +27,7 @@
       "presetNamePlaceholder": "Preset Name"
     },
     "gamePage": {
+      "dialogTitle": "Edit Game Information",
       "addIncludedItemButton": "Add Included Item",
       "titleLabel": "@:types.game.title:",
       "titlePlaceholder": "@:types.game.title",
@@ -53,6 +54,10 @@
       "exportToJsonSuccessMessage": "Export finished succesfully",
       "deleteAllGamesButton": "Delete All Games",
       "deleteAllGamesConfirmationMessage": "All games will be deleted. Proceed?"
+    },
+    "gamePlatformsControl": {
+      "titleLabel": "@:types.game.platforms:",
+      "titlePlaceholder": "Choose @:types.game.platforms"
     },
     "gamePersonalControl": {
       "headerLabel": "@:types.gamePersonal.beaten:",

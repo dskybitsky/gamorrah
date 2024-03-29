@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class GamePlatformsInput extends StatelessWidget {
   const GamePlatformsInput({
@@ -15,58 +17,32 @@ class GamePlatformsInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExpansionTile(
-      title: _getHeader(context),
-      children:[
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start, 
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: GamePlatform.values
-                .map(
-                  (e) => Padding(
-                    padding: const EdgeInsetsDirectional.only(bottom: 8.0),
-                    child: Checkbox(
-                      value: value.contains(e),
-                      onChanged: (selected) {
-                        if (onChanged != null) {
-                          final newValue = value;
-                        
-                          if (selected == true) { 
-                            newValue.add(e);
-                          } else {
-                            newValue.remove(e);
-                          }
+    final items = GamePlatform.values
+        .map((platform) => MultiSelectItem(platform, platform.title))
+        .toList();
 
-                          onChanged!(newValue);
-                        }
-                      },
-                      // content: Text(e.title),
-                    ),
-                  ),
-                )
-                .toList(),
-            ),
-        ]),
-      ]
-    );
-  }
+    return MultiSelectDialogField<GamePlatform>(
+      title: Text(t.ui.gamePlatformsControl.titleLabel),
+      buttonText: Text(t.ui.gamePlatformsControl.titlePlaceholder),
+      items: items,
+      initialValue: value.toList(),
+      onConfirm: (items) {
+        if (onChanged != null) {
+          onChanged!(items.toSet());
+        }
+      },
+      chipDisplay: MultiSelectChipDisplay(
+        items: items,
+        onTap: (item) {
+          if (onChanged != null) {
+            final newValue = value.toSet();
+            
+            newValue.remove(item);
 
-  Widget _getHeader(BuildContext context) {
-    if (value.isEmpty && emptyState != null) {
-      return emptyState!;
-    }
-
-    return Wrap(
-      children: value
-        .map((e) => Padding(
-          padding: EdgeInsets.only(right: 2),
-          child: Text(
-            '${e.title}; ',
-            // style: FluentTheme.of(context).typography.caption
-          ),
-        )).toList(),
+            onChanged!(newValue);
+          }
+        },
+      ),
     );
   }
 }
