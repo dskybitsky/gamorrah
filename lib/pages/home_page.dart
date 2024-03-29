@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
+import 'package:gamorrah/pages/settings_page.dart';
 import 'package:gamorrah/state/preferences/preferences_bloc.dart';
 import 'package:gamorrah/state/state_phase.dart';
 import 'package:gamorrah/widgets/game/game_status_icon.dart';
@@ -61,10 +62,11 @@ class _HomePageState extends State<HomePage> {
     return Row(
       children: [
         NavigationRail(
-          destinations: destinations.map((destination) => NavigationRailDestination(
-            icon: destination.icon, 
-            label: Text(destination.title),
-          )).toList(), 
+          destinations: destinations
+            .map((destination) => NavigationRailDestination(
+              icon: destination.icon, 
+              label: Text(destination.title),
+            )).toList(), 
           selectedIndex: _destinationIndex,
           labelType: NavigationRailLabelType.all,
           onDestinationSelected: (index) {
@@ -85,6 +87,11 @@ class _HomePageState extends State<HomePage> {
       _getGamesDestination(GameStatus.playing, state),
       _getGamesDestination(GameStatus.finished, state),
       _getGamesDestination(GameStatus.wishlist, state),
+      _HomePageDestination(
+        title: t.ui.settingsPage.settingsTitle, 
+        icon: Icon(Icons.settings),
+        child: SettingsPage()
+      ),
     ];
   }
 
