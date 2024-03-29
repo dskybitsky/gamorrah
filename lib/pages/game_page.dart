@@ -14,7 +14,6 @@ import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
-import 'package:gamorrah/widgets/ui/labeled_input.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({ 
@@ -119,7 +118,6 @@ class _GamePageState extends State<GamePage> {
       widgets.add(Center(
         child: Text(
           game.edition!.toUpperCase(),
-          // style: FluentTheme.of(context).typography.caption,
         )
       ));
     }
@@ -130,7 +128,6 @@ class _GamePageState extends State<GamePage> {
       widgets.add(Center(
         child: Text(
           game.year!.toString(),
-          // style: FluentTheme.of(context).typography.caption,
         )
       ));
     }
@@ -163,36 +160,37 @@ class _GamePageState extends State<GamePage> {
 
     if (game.parentId == null) {
       widgets.add(
-        LabeledInput(
-          label: Text(t.ui.gamePage.kindBundleLabel), 
-          expanded: false,
-          child: Switch(
-            value: _kind == GameKind.bundle,
-            onChanged: (value) { 
-              setState(() {
-                _kind = value ? GameKind.bundle : null;
-              });
-            },
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(t.ui.gamePage.kindBundleLabel),
+            Switch(
+              value: _kind == GameKind.bundle,
+              onChanged: (value) { 
+                setState(() {
+                  _kind = value ? GameKind.bundle : null;
+                });
+              },
+            )
+          ],
         )
       );
     } else {
       widgets.add(
-        LabeledInput(
+        DropdownMenu<GameKind?>(
           label: Text(t.ui.gamePage.kindLabel),
-          child: DropdownMenu<GameKind?>(
-            initialSelection: _kind,
-            dropdownMenuEntries: [
-              DropdownMenuEntry(value: null, label: t.types.gameKind.none),
-              DropdownMenuEntry(value: GameKind.dlc, label: t.types.gameKind.dlc),
-              DropdownMenuEntry(value: GameKind.content, label: t.types.gameKind.content),
-            ],
-            onSelected: (value) {
-              setState(() {
-                _kind = value;
-              });
-            },
-          )
+          expandedInsets: EdgeInsets.zero,
+          initialSelection: _kind,
+          dropdownMenuEntries: [
+            DropdownMenuEntry(value: null, label: t.types.gameKind.none),
+            DropdownMenuEntry(value: GameKind.dlc, label: t.types.gameKind.dlc),
+            DropdownMenuEntry(value: GameKind.content, label: t.types.gameKind.content),
+          ],
+          onSelected: (value) {
+            setState(() {
+              _kind = value;
+            });
+          },
         )
       );
     }
@@ -229,16 +227,13 @@ class _GamePageState extends State<GamePage> {
       widgets.add(VSpacer());
 
       widgets.add(
-        LabeledInput(
-          label: Text(t.ui.gamePage.statusLabel),
-          child: GameStatusInput(
-            value: _status,
-            onChanged: (value) {
-              setState(() {
-                _status = value ?? GameStatus.backlog;
-              });
-            },
-          )
+        GameStatusInput(
+          value: _status,
+          onChanged: (value) {
+            setState(() {
+              _status = value ?? GameStatus.backlog;
+            });
+          },
         )
       );
     }

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 83
+/// Strings: 84
 ///
-/// Built on 2024-03-29 at 09:57 UTC
+/// Built on 2024-03-29 at 11:57 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -166,6 +166,7 @@ class _StringsUiEn {
 	late final _StringsUiGamePlatformsControlEn gamePlatformsControl = _StringsUiGamePlatformsControlEn._(_root);
 	late final _StringsUiGamePersonalControlEn gamePersonalControl = _StringsUiGamePersonalControlEn._(_root);
 	late final _StringsUiGameHowLongToBeatControlEn gameHowLongToBeatControl = _StringsUiGameHowLongToBeatControlEn._(_root);
+	late final _StringsUiGameStatusControlEn gameStatusControl = _StringsUiGameStatusControlEn._(_root);
 }
 
 // Path: types
@@ -199,7 +200,7 @@ class _StringsUiGeneralEn {
 	String get emptyText => 'Empty';
 	String get hoursText => 'Hours';
 	String hoursCountText({required Object count}) => '${count} hours';
-	String hoursCountShortText({required Object count}) => '${count} h.';
+	String hoursCountShortText({required Object count}) => '${count}h';
 	String get anyText => 'Any';
 }
 
@@ -305,9 +306,19 @@ class _StringsUiGameHowLongToBeatControlEn {
 
 	// Translations
 	String get headerLabel => '${_root.types.game.howLongToBeat}:';
-	String storyLabel({required Object count}) => 'S: ${_root.ui.general.hoursCountShortText(count: count)}';
-	String storySidesLabel({required Object count}) => 'S+S: ${_root.ui.general.hoursCountShortText(count: count)}';
-	String completionistLabel({required Object count}) => 'C: ${_root.ui.general.hoursCountShortText(count: count)}';
+	String storyLabel({required Object count}) => 'Story: ${_root.ui.general.hoursCountText(count: count)}';
+	String storySidesLabel({required Object count}) => 'Story + Sides: ${_root.ui.general.hoursCountText(count: count)}';
+	String completionistLabel({required Object count}) => 'Completionist: ${_root.ui.general.hoursCountText(count: count)}';
+}
+
+// Path: ui.gameStatusControl
+class _StringsUiGameStatusControlEn {
+	_StringsUiGameStatusControlEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get titleLabel => '${_root.types.game.status}:';
 }
 
 // Path: types.game
@@ -407,7 +418,7 @@ extension on Translations {
 			case 'ui.general.emptyText': return 'Empty';
 			case 'ui.general.hoursText': return 'Hours';
 			case 'ui.general.hoursCountText': return ({required Object count}) => '${count} hours';
-			case 'ui.general.hoursCountShortText': return ({required Object count}) => '${count} h.';
+			case 'ui.general.hoursCountShortText': return ({required Object count}) => '${count}h';
 			case 'ui.general.anyText': return 'Any';
 			case 'ui.homePage.settingsLink': return 'Settings';
 			case 'ui.gamesPage.addGameButton': return 'Add new game';
@@ -450,9 +461,10 @@ extension on Translations {
 			case 'ui.gamePersonalControl.ratingLabel': return '${_root.types.gamePersonal.rating}:';
 			case 'ui.gamePersonalControl.timeSpentLabel': return '${_root.types.gamePersonal.timeSpent}:';
 			case 'ui.gameHowLongToBeatControl.headerLabel': return '${_root.types.game.howLongToBeat}:';
-			case 'ui.gameHowLongToBeatControl.storyLabel': return ({required Object count}) => 'S: ${_root.ui.general.hoursCountShortText(count: count)}';
-			case 'ui.gameHowLongToBeatControl.storySidesLabel': return ({required Object count}) => 'S+S: ${_root.ui.general.hoursCountShortText(count: count)}';
-			case 'ui.gameHowLongToBeatControl.completionistLabel': return ({required Object count}) => 'C: ${_root.ui.general.hoursCountShortText(count: count)}';
+			case 'ui.gameHowLongToBeatControl.storyLabel': return ({required Object count}) => 'Story: ${_root.ui.general.hoursCountText(count: count)}';
+			case 'ui.gameHowLongToBeatControl.storySidesLabel': return ({required Object count}) => 'Story + Sides: ${_root.ui.general.hoursCountText(count: count)}';
+			case 'ui.gameHowLongToBeatControl.completionistLabel': return ({required Object count}) => 'Completionist: ${_root.ui.general.hoursCountText(count: count)}';
+			case 'ui.gameStatusControl.titleLabel': return '${_root.types.game.status}:';
 			case 'types.game.title': return 'Title';
 			case 'types.game.franchise': return 'Franchise';
 			case 'types.game.edition': return 'Edition';

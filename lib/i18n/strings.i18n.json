@@ -10,7 +10,7 @@
       "emptyText": "Empty",
       "hoursText": "Hours",
       "hoursCountText": "${count} hours",
-      "hoursCountShortText": "${count} h.",
+      "hoursCountShortText": "${count}h",
       "anyText": "Any"
     },
     "homePage": {
@@ -67,9 +67,12 @@
     },
     "gameHowLongToBeatControl": {
       "headerLabel": "@:types.game.howLongToBeat:",
-      "storyLabel": "S: @:ui.general.hoursCountShortText",
-      "storySidesLabel": "S+S: @:ui.general.hoursCountShortText",
-      "completionistLabel": "C: @:ui.general.hoursCountShortText"
+      "storyLabel": "Story: @:ui.general.hoursCountText",
+      "storySidesLabel": "Story + Sides: @:ui.general.hoursCountText",
+      "completionistLabel": "Completionist: @:ui.general.hoursCountText"
+    },
+    "gameStatusControl": {
+      "titleLabel": "@:types.game.status:"
     }
   },
   "types": {

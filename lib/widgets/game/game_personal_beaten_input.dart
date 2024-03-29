@@ -21,6 +21,7 @@ class GamePersonalBeatenInput extends StatelessWidget {
     return DropdownMenu<GamePersonalBeaten?>(
       label: Text(t.ui.gamePersonalControl.beatenLabel),
       initialSelection: value,
+      expandedInsets: EdgeInsets.zero,
       dropdownMenuEntries: [
         DropdownMenuEntry(
           value: null, 

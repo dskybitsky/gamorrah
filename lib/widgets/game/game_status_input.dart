@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/game_status_icon.dart';
 import 'package:gamorrah/widgets/game/game_status_text.dart';
@@ -16,7 +17,9 @@ class GameStatusInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<GameStatus>(
+      label: Text(t.ui.gameStatusControl.titleLabel),
       initialSelection: value,
+      expandedInsets: EdgeInsets.zero,
       dropdownMenuEntries: GameStatus.values.map((status) => DropdownMenuEntry(
         value: GameStatus.backlog, 
         label: GameStatusText.getString(status),
