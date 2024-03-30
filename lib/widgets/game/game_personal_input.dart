@@ -25,26 +25,34 @@ class GamePersonalInput extends StatelessWidget {
       subtitle: _buildSubtitle(context),
       children: [
         VSpacer(),
-        GamePersonalBeatenInput(
-          value: value.beaten, 
-          onChanged: _onBeatenChanged,
-        ),
-        VSpacer(),
-        GamePersonalRatingInput(
-          value: value.rating, 
-          onChanged: _onRatingChanged,
-        ),
-        VSpacer(),
-        TextField(
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(child: GamePersonalBeatenInput(
+              value: value.beaten, 
+              onChanged: _onBeatenChanged,
+            )),
+            HSpacer(),
+            Flexible(child: TextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                _onTimeSpentChanged(double.parse(value));
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: t.ui.gamePersonalControl.timeSpentLabel,
+              ),
+            ))
           ],
-          onChanged: (value) {
-            _onTimeSpentChanged(double.parse(value));
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: t.ui.gamePersonalControl.timeSpentLabel,
+        ),
+        VSpacer(),
+        ListTile(
+          title: Text(t.ui.gamePersonalControl.ratingLabel),
+          trailing: GamePersonalRatingInput(
+            value: value.rating, 
+            onChanged: _onRatingChanged,
           ),
         ),
         VSpacer(),
@@ -54,10 +62,7 @@ class GamePersonalInput extends StatelessWidget {
   
   Widget _buildSubtitle(BuildContext context) {
     var widgets = <Widget>[
-        value.beaten != null 
-          ? GamePersonalBeatenText(value: value.beaten!)
-          : Text(t.types.gamePersonalBeaten.none)
-        // GamePersonalBeatenView(value: value.beaten)
+        GamePersonalBeatenText(value: value.beaten)
     ];
 
     final timeSpent = value.timeSpent;

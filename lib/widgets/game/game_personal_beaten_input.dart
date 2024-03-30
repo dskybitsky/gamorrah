@@ -25,7 +25,7 @@ class GamePersonalBeatenInput extends StatelessWidget {
       dropdownMenuEntries: [
         DropdownMenuEntry(
           value: null, 
-          label: nullValueLabel ?? t.types.gamePersonalBeaten.none
+          label: nullValueLabel ?? GamePersonalBeatenText.getString(null)
         ),
         ...GamePersonalBeaten.values.map((beaten) => DropdownMenuEntry(
             value: beaten, 

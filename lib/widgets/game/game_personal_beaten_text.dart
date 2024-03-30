@@ -5,12 +5,12 @@ import 'package:gamorrah/models/game/game.dart';
 class GamePersonalBeatenText extends StatelessWidget {
   const GamePersonalBeatenText({
     super.key,
-    required this.value,
+    this.value,
   });
 
-  final GamePersonalBeaten value;
+  final GamePersonalBeaten? value;
 
-  static String getString(GamePersonalBeaten value) {
+  static String getString(GamePersonalBeaten? value) {
     switch (value) {
       case GamePersonalBeaten.bronze:
         return t.types.gamePersonalBeaten.bronze;
@@ -23,6 +23,9 @@ class GamePersonalBeatenText extends StatelessWidget {
       
       case GamePersonalBeaten.platinum:
         return t.types.gamePersonalBeaten.platinum;
+
+      default:
+        return t.types.gamePersonalBeaten.none;
     }
   }
   

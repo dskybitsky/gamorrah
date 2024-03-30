@@ -70,21 +70,6 @@ class MyApp extends StatelessWidget {
 
         return MaterialApp(
           title: 'Gamorrah',
-          // darkTheme: FluentThemeData(
-          //   brightness: Brightness.dark,
-          //   accentColor: appTheme.color,
-          //   visualDensity: VisualDensity.standard,
-          //   focusTheme: FocusThemeData(
-          //     glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-          //   ),
-          // ),
-          // theme: FluentThemeData(
-          //   accentColor: appTheme.color,
-          //   visualDensity: VisualDensity.standard,
-          //   focusTheme: FocusThemeData(
-          //     glowFactor: is10footScreen(context) ? 2.0 : 0.0,
-          //   ),
-          // ),
           locale: appTheme.locale,
           home: MultiRepositoryProvider(
             providers: [

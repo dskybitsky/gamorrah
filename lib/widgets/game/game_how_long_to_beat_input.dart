@@ -22,43 +22,48 @@ class GameHowLongToBeatInput extends StatelessWidget {
       subtitle: _buildSubtitle(),
       children: [
         VSpacer(),
-        TextField(
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Flexible(child: TextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                _onStoryChanged(double.parse(value));
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: t.types.gameHowLongToBeat.story,
+              ),
+            )),
+            HSpacer(),
+            Flexible(child: TextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                _onStorySidesChanged(double.parse(value));
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: t.types.gameHowLongToBeat.storySides,
+              ),
+            )),
+            HSpacer(),
+            Flexible(child: TextField(
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                _onCompletionistChanged(double.parse(value));
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: t.types.gameHowLongToBeat.completionist,
+              ),
+            )),
           ],
-          onChanged: (value) {
-            _onStoryChanged(double.parse(value));
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: t.types.gameHowLongToBeat.story,
-          ),
-        ),
-        VSpacer(),
-        TextField(
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          onChanged: (value) {
-            _onStorySidesChanged(double.parse(value));
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: t.types.gameHowLongToBeat.storySides,
-          ),
-        ),
-        VSpacer(),
-        TextField(
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly
-          ],
-          onChanged: (value) {
-            _onCompletionistChanged(double.parse(value));
-          },
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: t.types.gameHowLongToBeat.completionist,
-          ),
         ),
         VSpacer(),
       ],
@@ -66,15 +71,27 @@ class GameHowLongToBeatInput extends StatelessWidget {
   }
 
   Widget _buildSubtitle() {
+    final List<Widget> widgets = [];
+
+    if (value.story != null) {
+      widgets.add(Text(t.ui.gameHowLongToBeatControl.storyLabel(count: value.story!)));
+    }
+    
+    if (value.storySides != null) {
+      widgets.add(Text(t.ui.gameHowLongToBeatControl.storySidesLabel(count: value.storySides!)));
+    }
+
+    if (value.completionist != null) {
+      widgets.add(Text(t.ui.gameHowLongToBeatControl.completionistLabel(count: value.completionist!)));
+    }
+
+    if (widgets.isEmpty) {
+      widgets.add(Text(t.ui.general.noText));
+    }
+
     return Row(
-      children: [
-        Text(t.ui.gameHowLongToBeatControl.storyLabel(count: value.story ?? "?")),
-        HSpacer(),
-        Text(t.ui.gameHowLongToBeatControl.storySidesLabel(count: value.storySides ?? "?")),
-        HSpacer(),
-        Text(t.ui.gameHowLongToBeatControl.completionistLabel(count: value.completionist ?? "?")),
-        HSpacer(),
-      ],
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: widgets
     );
   }
 

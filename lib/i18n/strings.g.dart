@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 89
+/// Strings: 90
 ///
-/// Built on 2024-03-30 at 12:30 UTC
+/// Built on 2024-03-30 at 18:52 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -198,6 +198,7 @@ class _StringsUiGeneralEn {
 	String get deleteButton => 'Delete';
 	String get errorText => 'Error';
 	String get emptyText => 'Empty';
+	String get noText => 'No';
 	String get hoursText => 'Hours';
 	String hoursCountText({required Object count}) => '${count} hours';
 	String hoursCountShortText({required Object count}) => '${count}h';
@@ -286,8 +287,8 @@ class _StringsUiGamePlatformsControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get titleLabel => '${_root.types.game.platforms}:';
-	String get titlePlaceholder => 'Choose ${_root.types.game.platforms}';
+	String get dialogTitle => 'Choose ${_root.types.game.platforms}';
+	String get placeholder => '${_root.types.game.platforms}';
 }
 
 // Path: ui.gamePersonalControl
@@ -421,6 +422,7 @@ extension on Translations {
 			case 'ui.general.deleteButton': return 'Delete';
 			case 'ui.general.errorText': return 'Error';
 			case 'ui.general.emptyText': return 'Empty';
+			case 'ui.general.noText': return 'No';
 			case 'ui.general.hoursText': return 'Hours';
 			case 'ui.general.hoursCountText': return ({required Object count}) => '${count} hours';
 			case 'ui.general.hoursCountShortText': return ({required Object count}) => '${count}h';
@@ -464,8 +466,8 @@ extension on Translations {
 			case 'ui.settingsPage.exportToJsonSuccessMessage': return 'Export finished succesfully';
 			case 'ui.settingsPage.deleteAllGamesButton': return 'Delete All Games';
 			case 'ui.settingsPage.deleteAllGamesConfirmationMessage': return 'All games will be deleted. Proceed?';
-			case 'ui.gamePlatformsControl.titleLabel': return '${_root.types.game.platforms}:';
-			case 'ui.gamePlatformsControl.titlePlaceholder': return 'Choose ${_root.types.game.platforms}';
+			case 'ui.gamePlatformsControl.dialogTitle': return 'Choose ${_root.types.game.platforms}';
+			case 'ui.gamePlatformsControl.placeholder': return '${_root.types.game.platforms}';
 			case 'ui.gamePersonalControl.headerLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.beatenLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.ratingLabel': return '${_root.types.gamePersonal.rating}:';

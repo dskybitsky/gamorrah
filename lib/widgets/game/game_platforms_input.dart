@@ -22,10 +22,12 @@ class GamePlatformsInput extends StatelessWidget {
         .toList();
 
     return MultiSelectDialogField<GamePlatform>(
-      title: Text(t.ui.gamePlatformsControl.titleLabel),
-      buttonText: Text(t.ui.gamePlatformsControl.titlePlaceholder),
+      title: Text(t.ui.gamePlatformsControl.dialogTitle),
+      buttonText: Text(t.ui.gamePlatformsControl.placeholder),
       items: items,
       initialValue: value.toList(),
+      searchable: true,
+      listType: MultiSelectListType.LIST,
       onConfirm: (items) {
         if (onChanged != null) {
           onChanged!(items.toSet());
@@ -33,6 +35,7 @@ class GamePlatformsInput extends StatelessWidget {
       },
       chipDisplay: MultiSelectChipDisplay(
         items: items,
+        scroll: true,
         onTap: (item) {
           if (onChanged != null) {
             final newValue = value.toSet();

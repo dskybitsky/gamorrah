@@ -8,6 +8,7 @@
       "deleteButton": "Delete",
       "errorText": "Error",
       "emptyText": "Empty",
+      "noText": "No",
       "hoursText": "Hours",
       "hoursCountText": "${count} hours",
       "hoursCountShortText": "${count}h",
@@ -61,8 +62,8 @@
       "deleteAllGamesConfirmationMessage": "All games will be deleted. Proceed?"
     },
     "gamePlatformsControl": {
-      "titleLabel": "@:types.game.platforms:",
-      "titlePlaceholder": "Choose @:types.game.platforms"
+      "dialogTitle": "Choose @:types.game.platforms",
+      "placeholder": "@:types.game.platforms"
     },
     "gamePersonalControl": {
       "headerLabel": "@:types.gamePersonal.beaten:",
@@ -89,6 +90,7 @@
       "thumbUrl": "Thumbnail URL",
       "kind": "Kind",
       "platforms": "Platforms",
+      "personal": "Personal",
       "howLongToBeat": "HowLongToBeat",
       "status": "Status"
     },
