@@ -59,53 +59,58 @@ Future<void> _initWindow() async {
 }
 
 class MyApp extends StatelessWidget {
-  final _appTheme = AppTheme();
-
+  
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: _appTheme,
-      builder: (context, child) {
-        final appTheme = context.watch<AppTheme>();
+    const seedColor = Colors.deepPurple;
 
-        return MaterialApp(
-          title: 'Gamorrah',
-          locale: appTheme.locale,
-          home: MultiRepositoryProvider(
-            providers: [
-              RepositoryProvider<GameRepository>(
-                create: (context) => HiveGameRepository(),
-              ),
-              RepositoryProvider<GamesViewRepository>(
-                create: (context) => HiveGamesViewRepository(),
-              ),
-              RepositoryProvider<PreferencesRepository>(
-                create: (context) => HivePreferencesRepository(),
-              ),
-            ],
-            child: MultiBlocProvider(
-              providers: [
-                BlocProvider<GamesBloc>(
-                  create: (context) => GamesBloc(
-                    gameRepository: context.read<GameRepository>(),
-                  )..add(LoadGames()),
-                ),
-                BlocProvider<GamesViewsBloc>(
-                  create: (context) => GamesViewsBloc(
-                    gamesViewRepository: context.read<GamesViewRepository>(),
-                  )..add(LoadGamesViews()),
-                ),
-                BlocProvider<PreferencesBloc>(
-                  create: (context) => PreferencesBloc(
-                    preferencesRepository: context.read<PreferencesRepository>(),
-                  )..add(LoadPrefernces()),
-                ),
-              ],
-              child: HomePage(),
-            ),
+    return MaterialApp(
+      title: 'Gamorrah',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: seedColor,
+          brightness: Brightness.light,
+        ),
+      ),
+      darkTheme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: seedColor,
+          brightness: Brightness.dark,
+        )
+      ),
+      home: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<GameRepository>(
+            create: (context) => HiveGameRepository(),
           ),
-        );
-      }
+          RepositoryProvider<GamesViewRepository>(
+            create: (context) => HiveGamesViewRepository(),
+          ),
+          RepositoryProvider<PreferencesRepository>(
+            create: (context) => HivePreferencesRepository(),
+          ),
+        ],
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<GamesBloc>(
+              create: (context) => GamesBloc(
+                gameRepository: context.read<GameRepository>(),
+              )..add(LoadGames()),
+            ),
+            BlocProvider<GamesViewsBloc>(
+              create: (context) => GamesViewsBloc(
+                gamesViewRepository: context.read<GamesViewRepository>(),
+              )..add(LoadGamesViews()),
+            ),
+            BlocProvider<PreferencesBloc>(
+              create: (context) => PreferencesBloc(
+                preferencesRepository: context.read<PreferencesRepository>(),
+              )..add(LoadPrefernces()),
+            ),
+          ],
+          child: HomePage(),
+        ),
+      ),
     );
   }
 }
