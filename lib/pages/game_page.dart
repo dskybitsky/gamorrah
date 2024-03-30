@@ -160,20 +160,15 @@ class _GamePageState extends State<GamePage> {
 
     if (game.parentId == null) {
       widgets.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(t.ui.gamePage.kindBundleLabel),
-            Switch(
-              value: _kind == GameKind.bundle,
-              onChanged: (value) { 
-                setState(() {
-                  _kind = value ? GameKind.bundle : null;
-                });
-              },
-            )
-          ],
-        )
+        SwitchListTile(
+          title: Text(t.ui.gamePage.kindBundleLabel),
+          value: _kind == GameKind.bundle,
+          onChanged: (value) { 
+            setState(() {
+              _kind = value ? GameKind.bundle : null;
+            });
+          },
+        ),
       );
     } else {
       widgets.add(
