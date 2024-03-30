@@ -13,6 +13,7 @@ import 'package:gamorrah/state/games_view/games_views_bloc.dart';
 import 'package:gamorrah/state/state_phase.dart';
 import 'package:gamorrah/widgets/game/game_status_text.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
+import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPage extends StatefulWidget {
@@ -148,7 +149,17 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
         : _buildGamesList(context, defaultGames),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          final game = Game.create(
+            title: t.ui.gamesPage.defaultGameTitle, 
+            thumbUrl: null,
+            status: widget.status,
+          );
+
+          context.read<GamesBloc>().add(SaveGame(game: game));
+
+          GamesNavigator.goGame(context, id: game.id);
+        },
       ),
       bottomNavigationBar: Row(
         mainAxisAlignment: MainAxisAlignment.end,

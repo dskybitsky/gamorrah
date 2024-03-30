@@ -21,7 +21,7 @@ class GameStatusInput extends StatelessWidget {
       initialSelection: value,
       expandedInsets: EdgeInsets.zero,
       dropdownMenuEntries: GameStatus.values.map((status) => DropdownMenuEntry(
-        value: GameStatus.backlog, 
+        value: status, 
         label: GameStatusText.getString(status),
         leadingIcon: GameStatusIcon(value: status),
       )).toList(),
