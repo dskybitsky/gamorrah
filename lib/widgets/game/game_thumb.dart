@@ -114,11 +114,13 @@ class GameThumb extends StatelessWidget {
   }
 
   Color _getShadowColor(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return switch (game.kind) {
       GameKind.bundle => Colors.blue,
       GameKind.dlc => Colors.green,
       GameKind.content => Colors.orange,
-      _ => Colors.grey[600],
+      _ => isDark ? Colors.black : Colors.grey[600],
     }!;
   }
 

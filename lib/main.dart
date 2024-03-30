@@ -12,10 +12,8 @@ import 'package:gamorrah/models/preferences/hive_preferences_repository.dart';
 import 'package:gamorrah/models/preferences/preferences_repository.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/state/games_view/games_views_bloc.dart';
-import 'package:gamorrah/theme.dart';
 import 'package:gamorrah/pages/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
