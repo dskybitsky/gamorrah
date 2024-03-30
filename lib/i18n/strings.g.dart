@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 86
+/// Strings: 89
 ///
-/// Built on 2024-03-29 at 14:05 UTC
+/// Built on 2024-03-30 at 12:30 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -225,7 +225,10 @@ class _StringsUiGamesPageEn {
 	// Translations
 	String get addGameButton => 'Add new game';
 	String get filterButton => 'Filter games';
+	String get filterDialogTitle => 'Set Filter';
 	String get savePresetButton => 'Save current preset as...';
+	String get savePresetDialogTitle => 'Save preset';
+	String get savePresetDialogNameLabel => 'Name';
 	String get searchPlaceholder => 'Search...';
 	String gamesTotalText({required Object count}) => 'Games total: ${count}';
 	String get defaultGameTitle => 'New game';
@@ -427,7 +430,10 @@ extension on Translations {
 			case 'ui.homePage.settingsLink': return 'Settings';
 			case 'ui.gamesPage.addGameButton': return 'Add new game';
 			case 'ui.gamesPage.filterButton': return 'Filter games';
+			case 'ui.gamesPage.filterDialogTitle': return 'Set Filter';
 			case 'ui.gamesPage.savePresetButton': return 'Save current preset as...';
+			case 'ui.gamesPage.savePresetDialogTitle': return 'Save preset';
+			case 'ui.gamesPage.savePresetDialogNameLabel': return 'Name';
 			case 'ui.gamesPage.searchPlaceholder': return 'Search...';
 			case 'ui.gamesPage.gamesTotalText': return ({required Object count}) => 'Games total: ${count}';
 			case 'ui.gamesPage.defaultGameTitle': return 'New game';

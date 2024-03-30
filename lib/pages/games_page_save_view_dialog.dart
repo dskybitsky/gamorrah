@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPageSaveViewDialog extends StatefulWidget {
   const GamesPageSaveViewDialog({
@@ -27,51 +26,42 @@ class _GamesGamesPageSaveViewDialogState extends State<GamesPageSaveViewDialog> 
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            VSpacer(),
-            SizedBox(
-              width: 200,
-              child: TextField(
-                controller: _nameController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: t.ui.gamePage.titlePlaceholder,
-                ),
+    return AlertDialog(
+      title: Text(t.ui.gamesPage.savePresetDialogTitle),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 200,
+            child: TextField(
+              controller: _nameController,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: t.ui.gamesPage.savePresetDialogNameLabel,
               ),
             ),
-            VSpacer(),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text(t.ui.general.cancelButton),
-                ),
-                HSpacer(),
-                TextButton(
-                  onPressed: () {
-                    final onChanged = widget.onChanged;
-
-                    if (onChanged != null) {
-                      onChanged(_nameController.text);
-                    }
-                    
-                    Navigator.pop(context);
-                  },
-                  child: Text(t.ui.general.saveButton)
-                )
-              ],
-            ),
-          ]
-        ),
+          ),
+        ],
       ),
+      actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(t.ui.general.cancelButton),
+          ),
+          TextButton(
+            onPressed: () {
+              final onChanged = widget.onChanged;
+
+              if (onChanged != null) {
+                onChanged(_nameController.text);
+              }
+              
+              Navigator.pop(context);
+            },
+            child: Text(t.ui.general.saveButton)
+          )
+        ],
     );
   }
 }

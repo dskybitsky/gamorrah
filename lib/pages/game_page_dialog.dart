@@ -41,7 +41,7 @@ class _GamePageDialogState extends State<GamePageDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(t.ui.gamePage.dialogTitle),
-      content: _buildDialogContent(context),
+      content: _buildContent(context),
       actions: [
         TextButton(
           child: Text(t.ui.general.cancelButton),
@@ -67,9 +67,9 @@ class _GamePageDialogState extends State<GamePageDialog> {
     );
   }
 
-  Widget _buildDialogContent(BuildContext context) {
+  Widget _buildContent(BuildContext context) {
     return SingleChildScrollView(
-      child: ListBody(
+      child: Column(
         children: [
           TextField(
             controller: _titleController,

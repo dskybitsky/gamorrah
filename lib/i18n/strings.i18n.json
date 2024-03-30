@@ -21,7 +21,10 @@
     "gamesPage": {
       "addGameButton": "Add new game",
       "filterButton": "Filter games",
+      "filterDialogTitle": "Set Filter",
       "savePresetButton": "Save current preset as...",
+      "savePresetDialogTitle": "Save preset",
+      "savePresetDialogNameLabel": "Name",
       "searchPlaceholder": "Search...",
       "gamesTotalText": "Games total: ${count}",
       "defaultGameTitle": "New game",
