@@ -1,8 +1,8 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/widgets/ui/hspacer.dart';
-import 'package:gamorrah/widgets/ui/space_size.dart';
+import 'package:gamorrah/widgets/game/game_status_icon.dart';
+import 'package:gamorrah/widgets/game/game_status_text.dart';
 
 class GameStatusInput extends StatelessWidget {
   const GameStatusInput({
@@ -16,52 +16,16 @@ class GameStatusInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ComboBox<GameStatus>(
-      value: value,
-      items: [
-        ComboBoxItem(
-          value: GameStatus.backlog, 
-          child: Row(
-            children: [
-              const Icon(FluentIcons.history),
-              HSpacer(size: SpaceSize.s),
-              Text(t.types.gameStatus.backlog),
-            ]
-          ),
-        ),
-        ComboBoxItem(
-          value: GameStatus.playing, 
-          child: Row(
-            children: [
-              const Icon(FluentIcons.play),
-              HSpacer(size: SpaceSize.s),
-              Text(t.types.gameStatus.playing),
-            ]
-          )
-        ),
-        ComboBoxItem(
-          value: GameStatus.finished,
-          child: Row(
-            children: [
-              const Icon(FluentIcons.completed),
-              HSpacer(size: SpaceSize.s),
-              Text(t.types.gameStatus.finished),
-            ]
-          )
-        ),
-        ComboBoxItem(
-          value: GameStatus.wishlist,
-          child: Row(
-            children: [
-              const Icon(FluentIcons.waitlist_confirm),
-              HSpacer(size: SpaceSize.s),
-              Text(t.types.gameStatus.wishlist),
-            ]
-          )
-        ),
-      ],
-      onChanged: onChanged,
-      isExpanded: true,
+    return DropdownMenu<GameStatus>(
+      label: Text(t.ui.gameStatusControl.titleLabel),
+      initialSelection: value,
+      expandedInsets: EdgeInsets.zero,
+      dropdownMenuEntries: GameStatus.values.map((status) => DropdownMenuEntry(
+        value: status, 
+        label: GameStatusText.getString(status),
+        leadingIcon: GameStatusIcon(value: status),
+      )).toList(),
+      onSelected: onChanged,
     );
   }
 }

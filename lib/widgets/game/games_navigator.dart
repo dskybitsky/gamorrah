@@ -1,4 +1,4 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/pages/games_page.dart';
 import 'package:gamorrah/pages/game_page.dart';
@@ -20,7 +20,9 @@ class GamesNavigator extends StatelessWidget {
     );
   }
 
-  static void goGames(BuildContext context, { required GameStatus status }) {
+  static void goGames(BuildContext context, { 
+    required GameStatus status,
+  }) {
     Navigator.push(context, gamesRoute(status: status));
   }
 
@@ -28,8 +30,11 @@ class GamesNavigator extends StatelessWidget {
     Navigator.push(context, gameRoute(id: id));
   }
 
-  static FluentPageRoute gamesRoute({ required GameStatus status }) {
-    return FluentPageRoute(
+  static PageRoute gamesRoute({ 
+    required GameStatus status,
+  }) {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: '/games/$status'),
       builder: (context) {      
         return GamesPage(
           status: status,
@@ -38,9 +43,10 @@ class GamesNavigator extends StatelessWidget {
     );
   }
 
-  static FluentPageRoute gameRoute({ required String id }) {
-    return FluentPageRoute(
-      builder: (context) {      
+  static PageRoute gameRoute({ required String id }) {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: '/game/$id'),
+      builder: (context) {
         return GamePage(id: id);
       }
     );

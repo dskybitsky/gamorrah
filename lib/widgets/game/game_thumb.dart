@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluent_ui/fluent_ui.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
 
@@ -53,7 +53,7 @@ class GameThumb extends StatelessWidget {
         ),
         child: _getOverlay(context),
       ),
-      placeholder: (context, url) => ProgressRing(),
+      placeholder: (context, url) => CircularProgressIndicator(),
     );
   }
 
@@ -81,7 +81,7 @@ class GameThumb extends StatelessWidget {
           height: size.height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Colors.grey.withOpacity(0.8),
+            color: Colors.grey[900]!.withOpacity(0.6),
           ),
           child: Center(
             child: GamePersonalBeatenIcon(
@@ -102,10 +102,10 @@ class GameThumb extends StatelessWidget {
       borderRadius: borderRadius,
       boxShadow: [
         BoxShadow(
-          color: _getShadowColor(context),
-          offset: const Offset(1.0, 1.0),
-          blurRadius: 5.0,
-          spreadRadius: 2.0,
+          color: _getShadowColor(context).withOpacity(.6),
+          spreadRadius: 3.0,
+          blurRadius: 7.0,
+          offset: Offset(0, 0),
         ),
       ],
       color: Colors.grey,
@@ -114,14 +114,14 @@ class GameThumb extends StatelessWidget {
   }
 
   Color _getShadowColor(BuildContext context) {
-    final isDark = FluentTheme.of(context).brightness.isDark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return switch (game.kind) {
       GameKind.bundle => Colors.blue,
       GameKind.dlc => Colors.green,
       GameKind.content => Colors.orange,
-      _ => isDark ? Colors.grey[220] : Colors.grey[100],
-    };
+      _ => isDark ? Colors.black : Colors.grey[600],
+    }!;
   }
 
   Size _getSize() => switch (type) {

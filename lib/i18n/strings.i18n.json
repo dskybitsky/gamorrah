@@ -4,23 +4,36 @@
       "okButton": "OK",
       "cancelButton": "Cancel",
       "saveButton": "Save",
+      "applyButton": "Apply",
       "deleteButton": "Delete",
       "errorText": "Error",
       "emptyText": "Empty",
+      "noText": "No",
       "hoursText": "Hours",
       "hoursCountText": "${count} hours",
-      "hoursCountShortText": "${count} h."
+      "hoursCountShortText": "${count}h",
+      "anyText": "Any",
+      "confimationTitle": "Confirmation",
+      "notificationTitle": "Information"
     },
     "homePage": {
       "settingsLink": "Settings"
     },
     "gamesPage": {
-      "addGameButton": "Add Game",
+      "addGameButton": "Add new game",
+      "filterButton": "Filter games",
+      "filterDialogTitle": "Set Filter",
+      "savePresetButton": "Save current preset as...",
+      "savePresetDialogTitle": "Save preset",
+      "savePresetDialogNameLabel": "Name",
       "searchPlaceholder": "Search...",
       "gamesTotalText": "Games total: ${count}",
-      "defaultGameTitle": "New game"
+      "defaultGameTitle": "New game",
+      "presetNameLabel": "Preset",
+      "presetNamePlaceholder": "Preset Name"
     },
     "gamePage": {
+      "dialogTitle": "Edit Game Information",
       "addIncludedItemButton": "Add Included Item",
       "titleLabel": "@:types.game.title:",
       "titlePlaceholder": "@:types.game.title",
@@ -48,6 +61,10 @@
       "deleteAllGamesButton": "Delete All Games",
       "deleteAllGamesConfirmationMessage": "All games will be deleted. Proceed?"
     },
+    "gamePlatformsControl": {
+      "dialogTitle": "Choose @:types.game.platforms",
+      "placeholder": "@:types.game.platforms"
+    },
     "gamePersonalControl": {
       "headerLabel": "@:types.gamePersonal.beaten:",
       "beatenLabel": "@:types.gamePersonal.beaten:",
@@ -56,9 +73,12 @@
     },
     "gameHowLongToBeatControl": {
       "headerLabel": "@:types.game.howLongToBeat:",
-      "storyLabel": "S: @:ui.general.hoursCountShortText",
-      "storySidesLabel": "S+S: @:ui.general.hoursCountShortText",
-      "completionistLabel": "C: @:ui.general.hoursCountShortText"
+      "storyLabel": "Story: @:ui.general.hoursCountText",
+      "storySidesLabel": "Story + Sides: @:ui.general.hoursCountText",
+      "completionistLabel": "Completionist: @:ui.general.hoursCountText"
+    },
+    "gameStatusControl": {
+      "titleLabel": "@:types.game.status:"
     }
   },
   "types": {
@@ -70,6 +90,7 @@
       "thumbUrl": "Thumbnail URL",
       "kind": "Kind",
       "platforms": "Platforms",
+      "personal": "Personal",
       "howLongToBeat": "HowLongToBeat",
       "status": "Status"
     },

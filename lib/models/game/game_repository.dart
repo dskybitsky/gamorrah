@@ -5,8 +5,6 @@ abstract class GameRepository {
 
   Future<Game?> getById(String id);
 
-  Future<Iterable<Game>> getByStatus(GameStatus status);
-
   Future<void> save(Game game);
 
   Future<void> saveMany(Iterable<Game> games);

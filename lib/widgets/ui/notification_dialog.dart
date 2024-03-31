@@ -1,8 +1,7 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 
 class NotificationDialog extends StatelessWidget {
-
   NotificationDialog({
     required this.message,
   });
@@ -11,11 +10,11 @@ class NotificationDialog extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return ContentDialog(
+    return AlertDialog(
+      title: Text(t.ui.general.notificationTitle),
       content: Text(message),
       actions: [
-        Button(
-          autofocus: true,
+        TextButton(
           onPressed: () {
             Navigator.pop(context);
           },

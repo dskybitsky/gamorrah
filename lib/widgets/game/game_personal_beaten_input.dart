@@ -1,46 +1,41 @@
-import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart';
+import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_view.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_text.dart';
 
 class GamePersonalBeatenInput extends StatelessWidget {
   const GamePersonalBeatenInput({
     super.key,
     required this.value,
     this.onChanged,
+    this.nullValueLabel
   });
 
   final GamePersonalBeaten? value;
   final void Function(GamePersonalBeaten?)? onChanged;
+  final String? nullValueLabel;
 
   @override
   Widget build(BuildContext context) {
-    return ComboBox<GamePersonalBeaten?>(
-      value: value,
-      placeholder: GamePersonalBeatenView(),
-      items: [
-        ComboBoxItem(
+    return DropdownMenu<GamePersonalBeaten?>(
+      label: Text(t.ui.gamePersonalControl.beatenLabel),
+      initialSelection: value,
+      expandedInsets: EdgeInsets.zero,
+      dropdownMenuEntries: [
+        DropdownMenuEntry(
           value: null, 
-          child: GamePersonalBeatenView(),
+          label: nullValueLabel ?? GamePersonalBeatenText.getString(null)
         ),
-        ComboBoxItem(
-          value: GamePersonalBeaten.bronze, 
-          child: GamePersonalBeatenView(value: GamePersonalBeaten.bronze),
-        ),
-        ComboBoxItem(
-          value: GamePersonalBeaten.silver, 
-          child: GamePersonalBeatenView(value: GamePersonalBeaten.silver),
-        ),
-        ComboBoxItem(
-          value: GamePersonalBeaten.gold,
-          child: GamePersonalBeatenView(value: GamePersonalBeaten.gold),
-        ),
-        ComboBoxItem(
-          value: GamePersonalBeaten.platinum,
-          child: GamePersonalBeatenView(value: GamePersonalBeaten.platinum),
-        ),
-      ],
-      onChanged: onChanged,
-      isExpanded: true,
+        ...GamePersonalBeaten.values.map((beaten) => DropdownMenuEntry(
+            value: beaten, 
+            leadingIcon: GamePersonalBeatenIcon(value: beaten),
+            label: GamePersonalBeatenText.getString(beaten)
+        )),
+      ], 
+      onSelected: (value) {
+        onChanged!(value);
+      }
     );
   }
 }
