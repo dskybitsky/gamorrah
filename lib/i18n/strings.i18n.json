@@ -23,6 +23,7 @@
       "addGameButton": "Add new game",
       "filterButton": "Filter games",
       "filterDialogTitle": "Set Filter",
+      
       "savePresetButton": "Save current preset as...",
       "savePresetDialogTitle": "Save preset",
       "savePresetDialogNameLabel": "Name",
@@ -112,7 +113,7 @@
       "timeSpent": "Time Spent"
     },
     "gamePersonalBeaten": {
-      "none": "No",
+      "none": "None",
       "bronze": "Bronze",
       "silver": "Silver",
       "gold": "Gold",

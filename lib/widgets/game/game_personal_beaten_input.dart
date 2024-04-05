@@ -9,23 +9,24 @@ class GamePersonalBeatenInput extends StatelessWidget {
     super.key,
     required this.value,
     this.onChanged,
-    this.nullValueLabel
+    this.enabled = true
   });
 
   final GamePersonalBeaten? value;
   final void Function(GamePersonalBeaten?)? onChanged;
-  final String? nullValueLabel;
-
+  final bool enabled;
+  
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<GamePersonalBeaten?>(
       label: Text(t.ui.gamePersonalControl.beatenLabel),
+      enabled: enabled,
       initialSelection: value,
       expandedInsets: EdgeInsets.zero,
       dropdownMenuEntries: [
         DropdownMenuEntry(
           value: null, 
-          label: nullValueLabel ?? GamePersonalBeatenText.getString(null)
+          label: GamePersonalBeatenText.getString(null)
         ),
         ...GamePersonalBeaten.values.map((beaten) => DropdownMenuEntry(
             value: beaten, 
@@ -33,9 +34,9 @@ class GamePersonalBeatenInput extends StatelessWidget {
             label: GamePersonalBeatenText.getString(beaten)
         )),
       ], 
-      onSelected: (value) {
+      onSelected: onChanged != null ? (value) {
         onChanged!(value);
-      }
+      } : null
     );
   }
 }

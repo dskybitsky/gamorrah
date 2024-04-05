@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 90
+/// Strings: 91
 ///
-/// Built on 2024-03-30 at 18:52 UTC
+/// Built on 2024-04-03 at 07:58 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -341,6 +341,7 @@ class _StringsTypesGameEn {
 	String get thumbUrl => 'Thumbnail URL';
 	String get kind => 'Kind';
 	String get platforms => 'Platforms';
+	String get personal => 'Personal';
 	String get howLongToBeat => 'HowLongToBeat';
 	String get status => 'Status';
 }
@@ -484,6 +485,7 @@ extension on Translations {
 			case 'types.game.thumbUrl': return 'Thumbnail URL';
 			case 'types.game.kind': return 'Kind';
 			case 'types.game.platforms': return 'Platforms';
+			case 'types.game.personal': return 'Personal';
 			case 'types.game.howLongToBeat': return 'HowLongToBeat';
 			case 'types.game.status': return 'Status';
 			case 'types.gameKind.none': return 'Game';

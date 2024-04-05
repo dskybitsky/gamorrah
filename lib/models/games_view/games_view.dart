@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:uuid/uuid.dart';
@@ -49,32 +50,151 @@ class GamesFilter {
   GamesFilter({
     this.platforms,
     this.beaten,
+    this.howLongToBeat
   });
   
-  final Set<GamePlatform>? platforms;
-  final GamePersonalBeaten? beaten;
+  final GamesFilterPlatformsPredicate? platforms;
+  final GamesFilterBeatenPredicate? beaten;
+  final GamesFilterHowLongToBeatPredicate? howLongToBeat;
+
+  bool matches(Game game) {
+    return (
+      (platforms == null || platforms!.matches(game))
+      && (beaten == null || beaten!.matches(game))
+      && (howLongToBeat == null || howLongToBeat!.matches(game))
+    );
+  }
+
+  bool get isEmpty => platforms == null
+    && beaten == null
+    && howLongToBeat == null;
 
   GamesFilter copyWith({
-    Optional<Set<GamePlatform>?>? platforms,
-    Optional<GamePersonalBeaten?>? beaten
+    Optional<GamesFilterPlatformsPredicate?>? platforms,
+    Optional<GamesFilterBeatenPredicate?>? beaten,
+    Optional<GamesFilterHowLongToBeatPredicate?>? howLongToBeat,
   }) => GamesFilter(
     platforms: platforms != null ? platforms.value : this.platforms,
     beaten: beaten != null ? beaten.value : this.beaten,
+    howLongToBeat: howLongToBeat != null ? howLongToBeat.value : this.howLongToBeat,
   );
+}
 
+abstract class GamesFilterPredicate {
+  bool matches(Game game);
+}
+
+enum GamesFilterPlatformsOperator { equal, hasOneOf, hasNoneOf }
+
+class GamesFilterPlatformsPredicate extends GamesFilterPredicate {
+  GamesFilterPlatformsPredicate({
+    this.operator = GamesFilterPlatformsOperator.equal,
+    this.value = const {},
+  });
+
+  final GamesFilterPlatformsOperator operator;
+  final Set<GamePlatform> value;
+  
+  @override
   bool matches(Game game) {
-    if (beaten != null && beaten != game.personal?.beaten) {
-      return false;
-    }
+    final value = game.platforms;
 
-    if (platforms != null && platforms!.intersection(game.platforms).isEmpty) {
-      return false;
-    }
+    switch (operator) {
+      case GamesFilterPlatformsOperator.equal:
+        return setEquals(value, this.value);
 
-    return true;
+      case GamesFilterPlatformsOperator.hasOneOf:
+        return value.intersection(this.value).isNotEmpty;
+
+      case GamesFilterPlatformsOperator.hasNoneOf:
+        return value.intersection(this.value).isEmpty;
+    }
   }
 
-  bool get isEmpty => 
-    beaten == null
-    && platforms == null;
+  GamesFilterPlatformsPredicate copyWith({
+    Optional<GamesFilterPlatformsOperator>? operator,
+    Optional<Set<GamePlatform>>? value,
+  }) => GamesFilterPlatformsPredicate(
+    operator: operator != null ? operator.value : this.operator,
+    value: value != null ? value.value : this.value,
+  );
+}
+
+enum GamesFilterBeatenOperator { equal, notEqual }
+
+class GamesFilterBeatenPredicate extends GamesFilterPredicate {
+  GamesFilterBeatenPredicate({
+    this.operator = GamesFilterBeatenOperator.equal,
+    this.value,
+  });
+
+  final GamesFilterBeatenOperator operator;
+  final GamePersonalBeaten? value;
+
+  @override
+  bool matches(Game game) {
+    final value = game.personal?.beaten;
+
+    switch (operator) {
+      case GamesFilterBeatenOperator.equal:
+        return value == this.value;
+      
+      case GamesFilterBeatenOperator.notEqual:
+        return value != this.value;
+    }
+  }
+
+  GamesFilterBeatenPredicate copyWith({
+    Optional<GamesFilterBeatenOperator>? operator,
+    Optional<GamePersonalBeaten?>? value,
+  }) => GamesFilterBeatenPredicate(
+    operator: operator != null ? operator.value : this.operator,
+    value: value != null ? value.value : this.value,
+  );
+}
+
+enum GamesFilterHowLongToBeatOperator { less, more }
+enum GamesFilterHowLongToBeatField { story, storySides, completionist }
+
+class GamesFilterHowLongToBeatPredicate extends GamesFilterPredicate {
+  GamesFilterHowLongToBeatPredicate({
+    this.operator = GamesFilterHowLongToBeatOperator.less,
+    this.field = GamesFilterHowLongToBeatField.story,
+    this.value = 60.0,
+  });
+
+  final GamesFilterHowLongToBeatOperator operator;
+  final GamesFilterHowLongToBeatField field;
+  final double value;
+
+  @override
+  bool matches(Game game) {
+    final value = switch (field) {
+      GamesFilterHowLongToBeatField.story => game.howLongToBeat?.story,
+      GamesFilterHowLongToBeatField.storySides => game.howLongToBeat?.storySides,
+      GamesFilterHowLongToBeatField.completionist => game.howLongToBeat?.completionist,
+    };
+
+    if (value == null) {
+      return true;
+    }
+
+    switch (operator) {
+      case GamesFilterHowLongToBeatOperator.less:
+        return value <= this.value;
+      
+      case GamesFilterHowLongToBeatOperator.more:
+        return value >= this.value;
+    }
+  }
+
+  GamesFilterHowLongToBeatPredicate copyWith({
+    Optional<GamesFilterHowLongToBeatOperator>? operator,
+    Optional<GamesFilterHowLongToBeatField>? field,
+    Optional<double>? value,
+  }) => GamesFilterHowLongToBeatPredicate(
+    operator: operator != null ? operator.value : this.operator,
+    field: field != null ? field.value : this.field,
+    value: value != null ? value.value : this.value,
+  );
 }
