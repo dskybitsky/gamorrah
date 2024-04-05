@@ -52,11 +52,13 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
               final newFilter = widget.filter != null
                 ? widget.filter!.copyWith(
                     beaten: Optional(_beaten),
-                    platforms: Optional(_platforms)
+                    platforms: Optional(_platforms),
+                    howLongToBeat: Optional(_howLongToBeat),
                   )
                 : GamesFilter(
                   beaten: _beaten, 
-                  platforms: _platforms
+                  platforms: _platforms,
+                  howLongToBeat: _howLongToBeat,
                 );
 
               onChanged(newFilter);
@@ -73,7 +75,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
   Widget _buildContent(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
-        width: 400,
+        width: 520,
         child: Column(
           children: [
             _buildContentFilterPlatforms(context),
@@ -81,7 +83,6 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
             _buildContentFilterBeaten(context),
             VSpacer(),
             _buildContentFilterHowLongToBeat(context),
-            VSpacer(),
          ],
         ),
       )
@@ -90,17 +91,17 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
 
   Widget _buildContentFilterPlatforms(BuildContext context) {
     final operatorDropDownMenu = DropdownMenu<GamesFilterPlatformsOperator?>(
-      label: Text("Platforms Filter"),
+      label: Text(t.ui.gamesPage.filterPlatformsOperatorLabel),
       expandedInsets: EdgeInsets.zero,
       initialSelection: _platforms?.operator,
       dropdownMenuEntries: [
         DropdownMenuEntry(
           value: null,
-          label: "Off",
+          label: t.ui.general.offText,
         ),
         ...GamesFilterPlatformsOperator.values.map((operator) => DropdownMenuEntry(
           value: operator,
-          label: operator.name
+          label: t.types.gamesFilterPlatformsOperator.values[operator.name]!
         ))
       ], 
       onSelected: (value) {
@@ -136,17 +137,17 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
 
   Widget _buildContentFilterBeaten(BuildContext context) {
     final operatorDropDownMenu = DropdownMenu<GamesFilterBeatenOperator?>(
-      label: Text("Beaten Filter"),
+      label: Text(t.ui.gamesPage.filterBeatenOperatorLabel),
       expandedInsets: EdgeInsets.zero,
       initialSelection: _beaten?.operator,
       dropdownMenuEntries: [
         DropdownMenuEntry(
           value: null,
-          label: "Off",
+          label: t.ui.general.offText,
         ),
         ...GamesFilterBeatenOperator.values.map((operator) => DropdownMenuEntry(
           value: operator,
-          label: operator.name
+          label: t.types.gamesFilterBeatenOperator.values[operator.name]!,
         ))
       ], 
       onSelected: (value) {
@@ -182,17 +183,17 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
 
   Widget _buildContentFilterHowLongToBeat(BuildContext context) {
     final operatorDropDownMenu = DropdownMenu<GamesFilterHowLongToBeatOperator?>(
-      label: Text("HowLongToBeat Filter"),
+      label: Text(t.ui.gamesPage.filterHowLongToBeatOperatorLabel),
       expandedInsets: EdgeInsets.zero,
       initialSelection: _howLongToBeat?.operator,
       dropdownMenuEntries: [
         DropdownMenuEntry(
           value: null,
-          label: "Off",
+          label: t.ui.general.offText,
         ),
         ...GamesFilterHowLongToBeatOperator.values.map((operator) => DropdownMenuEntry(
           value: operator,
-          label: operator.name
+          label: t.types.gamesFilterHowLongToBeatOperator.values[operator.name]!,
         ))
       ], 
       onSelected: (value) {
@@ -212,38 +213,44 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
       );
     }
 
-    return Row(children: [
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
       Expanded(flex: 1, child: operatorDropDownMenu),
       HSpacer(),
-      Expanded(flex: 1, child: DropdownMenu<GamesFilterHowLongToBeatField>(
-        label: Text("Field"),
-        expandedInsets: EdgeInsets.zero,
-        initialSelection: _howLongToBeat!.field,
-        dropdownMenuEntries: GamesFilterHowLongToBeatField.values.map((field) => DropdownMenuEntry(
-          value: field,
-          label: field.name
-        )).toList(), 
-        onSelected: (value) {
-          setState(() {
-            _howLongToBeat = _howLongToBeat!.copyWith(field: Optional(value!));
-          });
-        }
-      )),
-      HSpacer(),
-      Expanded(flex: 2, child: TextField(
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly
+      Expanded(flex: 2, child: Row(
+        children: [
+          Expanded(flex: 1, child: DropdownMenu<GamesFilterHowLongToBeatField>(
+            label: Text(t.ui.gamesPage.filterHowLongToBeatFieldLabel),
+            expandedInsets: EdgeInsets.zero,
+            initialSelection: _howLongToBeat!.field,
+            dropdownMenuEntries: GamesFilterHowLongToBeatField.values.map((field) => DropdownMenuEntry(
+              value: field,
+              label: t.types.gamesFilterHowLongToBeatField.values[field.name]!,
+            )).toList(), 
+            onSelected: (value) {
+              setState(() {
+                _howLongToBeat = _howLongToBeat!.copyWith(field: Optional(value!));
+              });
+            }
+          )),
+          
+          HSpacer(),
+          Expanded(flex: 1, child: TextFormField(
+            initialValue: _howLongToBeat?.value.toString(),
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            onChanged: (value) {
+              setState(() {
+                _howLongToBeat = _howLongToBeat!.copyWith(value: Optional(double.parse(value)));
+              });
+            },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: t.ui.general.hoursText,
+            ),
+          )),
         ],
-        onChanged: (value) {
-          setState(() {
-            _howLongToBeat = _howLongToBeat!.copyWith(value: Optional(double.parse(value)));
-          });
-        },
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: t.types.gameHowLongToBeat.storySides,
-        ),
-      )),
+      )),      
     ]);
   }
 }

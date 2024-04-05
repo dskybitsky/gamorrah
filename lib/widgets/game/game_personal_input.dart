@@ -4,7 +4,6 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_text.dart';
 import 'package:gamorrah/widgets/game/game_personal_rating_input.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
@@ -61,8 +60,14 @@ class GamePersonalInput extends StatelessWidget {
   }
   
   Widget _buildSubtitle(BuildContext context) {
+    final beaten = value.beaten;
+
     var widgets = <Widget>[
-        GamePersonalBeatenText(value: value.beaten)
+        Text(
+          beaten != null 
+            ? t.types.gamePersonalBeaten.values[beaten.name]!
+            : t.types.gamePersonalBeaten.none
+        )
     ];
 
     final timeSpent = value.timeSpent;

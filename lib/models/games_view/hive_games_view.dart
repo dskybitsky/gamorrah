@@ -165,7 +165,7 @@ class HiveGamesFilterHowLongToBeatPredicate {
 
   GamesFilterHowLongToBeatPredicate toGamesFilterHowLongToBeatPredicate() => GamesFilterHowLongToBeatPredicate(
     operator: GamesFilterHowLongToBeatOperator.values.byName(operator),
-    field: GamesFilterHowLongToBeatField.values.byName(operator),
+    field: GamesFilterHowLongToBeatField.values.byName(field),
     value: value
   );
 }

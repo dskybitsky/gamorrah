@@ -176,7 +176,7 @@ class GamesFilterHowLongToBeatPredicate extends GamesFilterPredicate {
     };
 
     if (value == null) {
-      return true;
+      return false;
     }
 
     switch (operator) {

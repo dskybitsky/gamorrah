@@ -9,6 +9,7 @@
       "errorText": "Error",
       "emptyText": "Empty",
       "noText": "No",
+      "offText": "Off",
       "hoursText": "Hours",
       "hoursCountText": "${count} hours",
       "hoursCountShortText": "${count}h",
@@ -22,8 +23,11 @@
     "gamesPage": {
       "addGameButton": "Add new game",
       "filterButton": "Filter games",
-      "filterDialogTitle": "Set Filter",
-      
+      "filterDialogTitle": "Set Games Filter",
+      "filterPlatformsOperatorLabel": "@:types.game.platforms",
+      "filterBeatenOperatorLabel": "@:types.gamePersonal.beaten",
+      "filterHowLongToBeatOperatorLabel": "@:types.game.howLongToBeat",
+      "filterHowLongToBeatFieldLabel": "@:types.gamesFilterHowLongToBeatPredicate.field",
       "savePresetButton": "Save current preset as...",
       "savePresetDialogTitle": "Save preset",
       "savePresetDialogNameLabel": "Name",
@@ -47,7 +51,6 @@
       "thumbUrlLabel": "@:types.game.thumbUrl:",
       "thumbUrlPlaceholder": "URL",
       "kindLabel": "@:types.game.kind:",
-      "kindBundleLabel": "@:types.gameKind.bundle",
       "platformsLabel": "@:types.game.platforms:", 
       "statusLabel": "@:types.game.status:",
       "defaultIncludedGameTitle": "New included game",
@@ -97,15 +100,19 @@
     },
     "gameKind": {
       "none": "Game",
-      "bundle": "Bundle",
-      "dlc": "DLC/Expansion/Addon",
-      "content": "Content Pack"
+      "values(map)": {
+        "bundle": "Bundle",
+        "dlc": "DLC/Expansion/Addon",
+        "content": "Content Pack"
+      }
     },
     "gameStatus": {
-      "backlog": "Backlog",
-      "playing": "Playing",
-      "finished": "Finished",
-      "wishlist": "Wishlist"
+      "values(map)": {
+        "backlog": "Backlog",
+        "playing": "Playing",
+        "finished": "Finished",
+        "wishlist": "Wishlist"
+      }
     },
     "gamePersonal": {
       "beaten": "Beaten",
@@ -114,15 +121,46 @@
     },
     "gamePersonalBeaten": {
       "none": "None",
-      "bronze": "Bronze",
-      "silver": "Silver",
-      "gold": "Gold",
-      "platinum": "Platinum"
+      "values(map)": {
+        "bronze": "Bronze",
+        "silver": "Silver",
+        "gold": "Gold",
+        "platinum": "Platinum"
+      }
     },
     "gameHowLongToBeat": {
       "story": "Story",
       "storySides": "Story + Sides",
       "completionist": "Completionist"
+    },
+    "gamesFilterPlatformsOperator": {
+      "values(map)": {
+        "equal": "Equals to",
+        "hasOneOf": "Has one of",
+        "hasNoneOf": "Has none of"
+      }
+    },
+    "gamesFilterBeatenOperator": {
+      "values(map)": {
+        "equal": "Equals to",
+        "notEqual": "Not equals to"
+      }
+    },
+    "gamesFilterHowLongToBeatPredicate": {
+      "field": "Field"
+    },
+    "gamesFilterHowLongToBeatOperator": {
+      "values(map)": {
+        "less": "Less than",
+        "more": "More than"
+      }
+    },
+    "gamesFilterHowLongToBeatField": {
+      "values(map)": {
+        "story": "@:types.gameHowLongToBeat.story",
+        "storySides": "@:types.gameHowLongToBeat.storySides",
+        "completionist": "@:types.gameHowLongToBeat.completionist"
+      }
     }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_text.dart';
 
 class GamePersonalBeatenInput extends StatelessWidget {
   const GamePersonalBeatenInput({
@@ -26,12 +25,12 @@ class GamePersonalBeatenInput extends StatelessWidget {
       dropdownMenuEntries: [
         DropdownMenuEntry(
           value: null, 
-          label: GamePersonalBeatenText.getString(null)
+          label: t.types.gamePersonalBeaten.none
         ),
         ...GamePersonalBeaten.values.map((beaten) => DropdownMenuEntry(
             value: beaten, 
             leadingIcon: GamePersonalBeatenIcon(value: beaten),
-            label: GamePersonalBeatenText.getString(beaten)
+            label: t.types.gamePersonalBeaten.values[beaten.name]!
         )),
       ], 
       onSelected: onChanged != null ? (value) {

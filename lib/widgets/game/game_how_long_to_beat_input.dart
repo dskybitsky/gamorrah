@@ -25,7 +25,8 @@ class GameHowLongToBeatInput extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(child: TextField(
+            Flexible(child: TextFormField(
+              initialValue: value.story?.toString(),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly
               ],
@@ -38,7 +39,8 @@ class GameHowLongToBeatInput extends StatelessWidget {
               ),
             )),
             HSpacer(),
-            Flexible(child: TextField(
+            Flexible(child: TextFormField(
+              initialValue: value.storySides?.toString(),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly
               ],
@@ -51,7 +53,8 @@ class GameHowLongToBeatInput extends StatelessWidget {
               ),
             )),
             HSpacer(),
-            Flexible(child: TextField(
+            Flexible(child: TextFormField(
+              initialValue: value.completionist?.toString(),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly
               ],

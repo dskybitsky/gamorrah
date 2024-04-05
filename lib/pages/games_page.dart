@@ -11,7 +11,6 @@ import 'package:gamorrah/pages/games_page_save_view_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/state/games_view/games_views_bloc.dart';
 import 'package:gamorrah/state/state_phase.dart';
-import 'package:gamorrah/widgets/game/game_status_text.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
@@ -129,7 +128,7 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: GameStatusText(value: widget.status),
+        title: Text(t.types.gameStatus.values[widget.status.name]!),
         actions: _buildActions(context, gamesViews),
         bottom: gamesViews.isNotEmpty
           ? TabBar(

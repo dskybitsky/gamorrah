@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 91
+/// Strings: 106
 ///
-/// Built on 2024-04-03 at 07:58 UTC
+/// Built on 2024-04-05 at 12:19 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -182,6 +182,11 @@ class _StringsTypesEn {
 	late final _StringsTypesGamePersonalEn gamePersonal = _StringsTypesGamePersonalEn._(_root);
 	late final _StringsTypesGamePersonalBeatenEn gamePersonalBeaten = _StringsTypesGamePersonalBeatenEn._(_root);
 	late final _StringsTypesGameHowLongToBeatEn gameHowLongToBeat = _StringsTypesGameHowLongToBeatEn._(_root);
+	late final _StringsTypesGamesFilterPlatformsOperatorEn gamesFilterPlatformsOperator = _StringsTypesGamesFilterPlatformsOperatorEn._(_root);
+	late final _StringsTypesGamesFilterBeatenOperatorEn gamesFilterBeatenOperator = _StringsTypesGamesFilterBeatenOperatorEn._(_root);
+	late final _StringsTypesGamesFilterHowLongToBeatPredicateEn gamesFilterHowLongToBeatPredicate = _StringsTypesGamesFilterHowLongToBeatPredicateEn._(_root);
+	late final _StringsTypesGamesFilterHowLongToBeatOperatorEn gamesFilterHowLongToBeatOperator = _StringsTypesGamesFilterHowLongToBeatOperatorEn._(_root);
+	late final _StringsTypesGamesFilterHowLongToBeatFieldEn gamesFilterHowLongToBeatField = _StringsTypesGamesFilterHowLongToBeatFieldEn._(_root);
 }
 
 // Path: ui.general
@@ -199,6 +204,7 @@ class _StringsUiGeneralEn {
 	String get errorText => 'Error';
 	String get emptyText => 'Empty';
 	String get noText => 'No';
+	String get offText => 'Off';
 	String get hoursText => 'Hours';
 	String hoursCountText({required Object count}) => '${count} hours';
 	String hoursCountShortText({required Object count}) => '${count}h';
@@ -226,7 +232,11 @@ class _StringsUiGamesPageEn {
 	// Translations
 	String get addGameButton => 'Add new game';
 	String get filterButton => 'Filter games';
-	String get filterDialogTitle => 'Set Filter';
+	String get filterDialogTitle => 'Set Games Filter';
+	String get filterPlatformsOperatorLabel => '${_root.types.game.platforms}';
+	String get filterBeatenOperatorLabel => '${_root.types.gamePersonal.beaten}';
+	String get filterHowLongToBeatOperatorLabel => '${_root.types.game.howLongToBeat}';
+	String get filterHowLongToBeatFieldLabel => '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
 	String get savePresetButton => 'Save current preset as...';
 	String get savePresetDialogTitle => 'Save preset';
 	String get savePresetDialogNameLabel => 'Name';
@@ -257,7 +267,6 @@ class _StringsUiGamePageEn {
 	String get thumbUrlLabel => '${_root.types.game.thumbUrl}:';
 	String get thumbUrlPlaceholder => 'URL';
 	String get kindLabel => '${_root.types.game.kind}:';
-	String get kindBundleLabel => '${_root.types.gameKind.bundle}';
 	String get platformsLabel => '${_root.types.game.platforms}:';
 	String get statusLabel => '${_root.types.game.status}:';
 	String get defaultIncludedGameTitle => 'New included game';
@@ -354,9 +363,11 @@ class _StringsTypesGameKindEn {
 
 	// Translations
 	String get none => 'Game';
-	String get bundle => 'Bundle';
-	String get dlc => 'DLC/Expansion/Addon';
-	String get content => 'Content Pack';
+	Map<String, String> get values => {
+		'bundle': 'Bundle',
+		'dlc': 'DLC/Expansion/Addon',
+		'content': 'Content Pack',
+	};
 }
 
 // Path: types.gameStatus
@@ -366,10 +377,12 @@ class _StringsTypesGameStatusEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get backlog => 'Backlog';
-	String get playing => 'Playing';
-	String get finished => 'Finished';
-	String get wishlist => 'Wishlist';
+	Map<String, String> get values => {
+		'backlog': 'Backlog',
+		'playing': 'Playing',
+		'finished': 'Finished',
+		'wishlist': 'Wishlist',
+	};
 }
 
 // Path: types.gamePersonal
@@ -391,11 +404,13 @@ class _StringsTypesGamePersonalBeatenEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get none => 'No';
-	String get bronze => 'Bronze';
-	String get silver => 'Silver';
-	String get gold => 'Gold';
-	String get platinum => 'Platinum';
+	String get none => 'None';
+	Map<String, String> get values => {
+		'bronze': 'Bronze',
+		'silver': 'Silver',
+		'gold': 'Gold',
+		'platinum': 'Platinum',
+	};
 }
 
 // Path: types.gameHowLongToBeat
@@ -408,6 +423,70 @@ class _StringsTypesGameHowLongToBeatEn {
 	String get story => 'Story';
 	String get storySides => 'Story + Sides';
 	String get completionist => 'Completionist';
+}
+
+// Path: types.gamesFilterPlatformsOperator
+class _StringsTypesGamesFilterPlatformsOperatorEn {
+	_StringsTypesGamesFilterPlatformsOperatorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	Map<String, String> get values => {
+		'equal': 'Equals to',
+		'hasOneOf': 'Has one of',
+		'hasNoneOf': 'Has none of',
+	};
+}
+
+// Path: types.gamesFilterBeatenOperator
+class _StringsTypesGamesFilterBeatenOperatorEn {
+	_StringsTypesGamesFilterBeatenOperatorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	Map<String, String> get values => {
+		'equal': 'Equals to',
+		'notEqual': 'Not equals to',
+	};
+}
+
+// Path: types.gamesFilterHowLongToBeatPredicate
+class _StringsTypesGamesFilterHowLongToBeatPredicateEn {
+	_StringsTypesGamesFilterHowLongToBeatPredicateEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get field => 'Field';
+}
+
+// Path: types.gamesFilterHowLongToBeatOperator
+class _StringsTypesGamesFilterHowLongToBeatOperatorEn {
+	_StringsTypesGamesFilterHowLongToBeatOperatorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	Map<String, String> get values => {
+		'less': 'Less than',
+		'more': 'More than',
+	};
+}
+
+// Path: types.gamesFilterHowLongToBeatField
+class _StringsTypesGamesFilterHowLongToBeatFieldEn {
+	_StringsTypesGamesFilterHowLongToBeatFieldEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	Map<String, String> get values => {
+		'story': '${_root.types.gameHowLongToBeat.story}',
+		'storySides': '${_root.types.gameHowLongToBeat.storySides}',
+		'completionist': '${_root.types.gameHowLongToBeat.completionist}',
+	};
 }
 
 /// Flat map(s) containing all translations.
@@ -424,6 +503,7 @@ extension on Translations {
 			case 'ui.general.errorText': return 'Error';
 			case 'ui.general.emptyText': return 'Empty';
 			case 'ui.general.noText': return 'No';
+			case 'ui.general.offText': return 'Off';
 			case 'ui.general.hoursText': return 'Hours';
 			case 'ui.general.hoursCountText': return ({required Object count}) => '${count} hours';
 			case 'ui.general.hoursCountShortText': return ({required Object count}) => '${count}h';
@@ -433,7 +513,11 @@ extension on Translations {
 			case 'ui.homePage.settingsLink': return 'Settings';
 			case 'ui.gamesPage.addGameButton': return 'Add new game';
 			case 'ui.gamesPage.filterButton': return 'Filter games';
-			case 'ui.gamesPage.filterDialogTitle': return 'Set Filter';
+			case 'ui.gamesPage.filterDialogTitle': return 'Set Games Filter';
+			case 'ui.gamesPage.filterPlatformsOperatorLabel': return '${_root.types.game.platforms}';
+			case 'ui.gamesPage.filterBeatenOperatorLabel': return '${_root.types.gamePersonal.beaten}';
+			case 'ui.gamesPage.filterHowLongToBeatOperatorLabel': return '${_root.types.game.howLongToBeat}';
+			case 'ui.gamesPage.filterHowLongToBeatFieldLabel': return '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
 			case 'ui.gamesPage.savePresetButton': return 'Save current preset as...';
 			case 'ui.gamesPage.savePresetDialogTitle': return 'Save preset';
 			case 'ui.gamesPage.savePresetDialogNameLabel': return 'Name';
@@ -455,7 +539,6 @@ extension on Translations {
 			case 'ui.gamePage.thumbUrlLabel': return '${_root.types.game.thumbUrl}:';
 			case 'ui.gamePage.thumbUrlPlaceholder': return 'URL';
 			case 'ui.gamePage.kindLabel': return '${_root.types.game.kind}:';
-			case 'ui.gamePage.kindBundleLabel': return '${_root.types.gameKind.bundle}';
 			case 'ui.gamePage.platformsLabel': return '${_root.types.game.platforms}:';
 			case 'ui.gamePage.statusLabel': return '${_root.types.game.status}:';
 			case 'ui.gamePage.defaultIncludedGameTitle': return 'New included game';
@@ -489,24 +572,35 @@ extension on Translations {
 			case 'types.game.howLongToBeat': return 'HowLongToBeat';
 			case 'types.game.status': return 'Status';
 			case 'types.gameKind.none': return 'Game';
-			case 'types.gameKind.bundle': return 'Bundle';
-			case 'types.gameKind.dlc': return 'DLC/Expansion/Addon';
-			case 'types.gameKind.content': return 'Content Pack';
-			case 'types.gameStatus.backlog': return 'Backlog';
-			case 'types.gameStatus.playing': return 'Playing';
-			case 'types.gameStatus.finished': return 'Finished';
-			case 'types.gameStatus.wishlist': return 'Wishlist';
+			case 'types.gameKind.values.bundle': return 'Bundle';
+			case 'types.gameKind.values.dlc': return 'DLC/Expansion/Addon';
+			case 'types.gameKind.values.content': return 'Content Pack';
+			case 'types.gameStatus.values.backlog': return 'Backlog';
+			case 'types.gameStatus.values.playing': return 'Playing';
+			case 'types.gameStatus.values.finished': return 'Finished';
+			case 'types.gameStatus.values.wishlist': return 'Wishlist';
 			case 'types.gamePersonal.beaten': return 'Beaten';
 			case 'types.gamePersonal.rating': return 'Rating';
 			case 'types.gamePersonal.timeSpent': return 'Time Spent';
-			case 'types.gamePersonalBeaten.none': return 'No';
-			case 'types.gamePersonalBeaten.bronze': return 'Bronze';
-			case 'types.gamePersonalBeaten.silver': return 'Silver';
-			case 'types.gamePersonalBeaten.gold': return 'Gold';
-			case 'types.gamePersonalBeaten.platinum': return 'Platinum';
+			case 'types.gamePersonalBeaten.none': return 'None';
+			case 'types.gamePersonalBeaten.values.bronze': return 'Bronze';
+			case 'types.gamePersonalBeaten.values.silver': return 'Silver';
+			case 'types.gamePersonalBeaten.values.gold': return 'Gold';
+			case 'types.gamePersonalBeaten.values.platinum': return 'Platinum';
 			case 'types.gameHowLongToBeat.story': return 'Story';
 			case 'types.gameHowLongToBeat.storySides': return 'Story + Sides';
 			case 'types.gameHowLongToBeat.completionist': return 'Completionist';
+			case 'types.gamesFilterPlatformsOperator.values.equal': return 'Equals to';
+			case 'types.gamesFilterPlatformsOperator.values.hasOneOf': return 'Has one of';
+			case 'types.gamesFilterPlatformsOperator.values.hasNoneOf': return 'Has none of';
+			case 'types.gamesFilterBeatenOperator.values.equal': return 'Equals to';
+			case 'types.gamesFilterBeatenOperator.values.notEqual': return 'Not equals to';
+			case 'types.gamesFilterHowLongToBeatPredicate.field': return 'Field';
+			case 'types.gamesFilterHowLongToBeatOperator.values.less': return 'Less than';
+			case 'types.gamesFilterHowLongToBeatOperator.values.more': return 'More than';
+			case 'types.gamesFilterHowLongToBeatField.values.story': return '${_root.types.gameHowLongToBeat.story}';
+			case 'types.gamesFilterHowLongToBeatField.values.storySides': return '${_root.types.gameHowLongToBeat.storySides}';
+			case 'types.gamesFilterHowLongToBeatField.values.completionist': return '${_root.types.gameHowLongToBeat.completionist}';
 			default: return null;
 		}
 	}
