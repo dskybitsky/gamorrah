@@ -37,7 +37,7 @@ class GamePersonalInput extends StatelessWidget {
                 FilteringTextInputFormatter.digitsOnly
               ],
               onChanged: (value) {
-                _onTimeSpentChanged(double.parse(value));
+                _onTimeSpentChanged(double.tryParse(value));
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
