@@ -236,34 +236,35 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
               },
             ),
             useRootNavigator: false,
-          );  
+          ); 
         }, 
       )
     );
   
-    widgets.add(HSpacer(size: SpaceSize.m));
+    widgets.add(HSpacer(size: SpaceSize.l));
     widgets.add(
       IconButton(
-        icon: Icon(Icons.bookmark_add),
+        icon: Icon(Icons.create_new_folder_outlined),
         onPressed:() {
+          final newGamesView = GamesView.create(
+            name: t.ui.gamesPage.defaultGamesViewName, 
+            status: widget.status,
+            index: gamesViews.isNotEmpty 
+              ? gamesViews.last.index + 1
+              : 0,
+            filter: gamesViews.isNotEmpty 
+              ? gamesViews.last.filter
+              : _defaultFilter
+          );
+
           showDialog(
             context: context,
             builder: (context) => GamesPageSaveViewDialog(
+              value: newGamesView,
               onChanged: (value) {
-                final newGamesView = GamesView.create(
-                  name: value, 
-                  status: widget.status,
-                  index: gamesViews.isNotEmpty 
-                    ? gamesViews.last.index + 1
-                    : 0,
-                  filter: gamesViews.isNotEmpty 
-                    ? gamesViews.last.filter
-                    : _defaultFilter
-                );
-
-                context
+                 context
                   .read<GamesViewsBloc>()
-                  .add(SaveGamesView(gamesView: newGamesView));
+                  .add(SaveGamesView(gamesView: value));
               },
             ),
             useRootNavigator: false,
@@ -276,7 +277,28 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
       widgets.add(HSpacer(size: SpaceSize.xs));
       widgets.add(
         IconButton(
-          icon: Icon(Icons.bookmark_remove),
+          icon: Icon(Icons.snippet_folder_outlined),
+          onPressed:() {
+            showDialog(
+              context: context,
+              builder: (context) => GamesPageSaveViewDialog(
+                value: gamesViews[_tabIndex],
+                onChanged: (value) {
+                  context
+                    .read<GamesViewsBloc>()
+                    .add(SaveGamesView(gamesView: value));
+                },
+              ),
+              useRootNavigator: false,
+            );
+          },
+        )
+      );
+      
+      widgets.add(HSpacer(size: SpaceSize.xs));
+      widgets.add(
+        IconButton(
+          icon: Icon(Icons.folder_delete_outlined),
           onPressed: () {
             final id = gamesViews[_tabIndex].id;
 

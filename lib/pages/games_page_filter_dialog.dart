@@ -232,7 +232,6 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
               });
             }
           )),
-          
           HSpacer(),
           Expanded(flex: 1, child: TextFormField(
             initialValue: _howLongToBeat?.value.toString(),

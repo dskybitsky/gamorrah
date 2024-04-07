@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 106
+/// Strings: 108
 ///
-/// Built on 2024-04-05 at 12:19 UTC
+/// Built on 2024-04-07 at 06:28 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -237,12 +237,14 @@ class _StringsUiGamesPageEn {
 	String get filterBeatenOperatorLabel => '${_root.types.gamePersonal.beaten}';
 	String get filterHowLongToBeatOperatorLabel => '${_root.types.game.howLongToBeat}';
 	String get filterHowLongToBeatFieldLabel => '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
-	String get savePresetButton => 'Save current preset as...';
-	String get savePresetDialogTitle => 'Save preset';
-	String get savePresetDialogNameLabel => 'Name';
+	String get saveViewButton => 'Save current view as...';
+	String get saveViewDialogTitle => 'Save view';
+	String get saveViewDialogIndexLabel => '#';
+	String get saveViewDialogNameLabel => 'Name';
 	String get searchPlaceholder => 'Search...';
 	String gamesTotalText({required Object count}) => 'Games total: ${count}';
 	String get defaultGameTitle => 'New game';
+	String get defaultGamesViewName => 'New view';
 	String get presetNameLabel => 'Preset';
 	String get presetNamePlaceholder => 'Preset Name';
 }
@@ -518,12 +520,14 @@ extension on Translations {
 			case 'ui.gamesPage.filterBeatenOperatorLabel': return '${_root.types.gamePersonal.beaten}';
 			case 'ui.gamesPage.filterHowLongToBeatOperatorLabel': return '${_root.types.game.howLongToBeat}';
 			case 'ui.gamesPage.filterHowLongToBeatFieldLabel': return '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
-			case 'ui.gamesPage.savePresetButton': return 'Save current preset as...';
-			case 'ui.gamesPage.savePresetDialogTitle': return 'Save preset';
-			case 'ui.gamesPage.savePresetDialogNameLabel': return 'Name';
+			case 'ui.gamesPage.saveViewButton': return 'Save current view as...';
+			case 'ui.gamesPage.saveViewDialogTitle': return 'Save view';
+			case 'ui.gamesPage.saveViewDialogIndexLabel': return '#';
+			case 'ui.gamesPage.saveViewDialogNameLabel': return 'Name';
 			case 'ui.gamesPage.searchPlaceholder': return 'Search...';
 			case 'ui.gamesPage.gamesTotalText': return ({required Object count}) => 'Games total: ${count}';
 			case 'ui.gamesPage.defaultGameTitle': return 'New game';
+			case 'ui.gamesPage.defaultGamesViewName': return 'New view';
 			case 'ui.gamesPage.presetNameLabel': return 'Preset';
 			case 'ui.gamesPage.presetNamePlaceholder': return 'Preset Name';
 			case 'ui.gamePage.dialogTitle': return 'Edit Game Information';
