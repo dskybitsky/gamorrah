@@ -100,7 +100,7 @@ class _GamePageDialogState extends State<GamePageDialog> {
               FilteringTextInputFormatter.digitsOnly
             ],
             onChanged: (value) {
-              _year = int.parse(value);
+              _year = int.tryParse(value);
             },
             decoration: InputDecoration(
               border: OutlineInputBorder(),

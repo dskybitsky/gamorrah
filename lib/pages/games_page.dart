@@ -11,7 +11,6 @@ import 'package:gamorrah/pages/games_page_save_view_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/state/games_view/games_views_bloc.dart';
 import 'package:gamorrah/state/state_phase.dart';
-import 'package:gamorrah/widgets/game/game_status_text.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
@@ -129,7 +128,7 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: GameStatusText(value: widget.status),
+        title: Text(t.types.gameStatus.values[widget.status.name]!),
         actions: _buildActions(context, gamesViews),
         bottom: gamesViews.isNotEmpty
           ? TabBar(
@@ -237,34 +236,35 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
               },
             ),
             useRootNavigator: false,
-          );  
+          ); 
         }, 
       )
     );
   
-    widgets.add(HSpacer(size: SpaceSize.m));
+    widgets.add(HSpacer(size: SpaceSize.l));
     widgets.add(
       IconButton(
-        icon: Icon(Icons.bookmark_add),
+        icon: Icon(Icons.create_new_folder_outlined),
         onPressed:() {
+          final newGamesView = GamesView.create(
+            name: t.ui.gamesPage.defaultGamesViewName, 
+            status: widget.status,
+            index: gamesViews.isNotEmpty 
+              ? gamesViews.last.index + 1
+              : 0,
+            filter: gamesViews.isNotEmpty 
+              ? gamesViews.last.filter
+              : _defaultFilter
+          );
+
           showDialog(
             context: context,
             builder: (context) => GamesPageSaveViewDialog(
+              value: newGamesView,
               onChanged: (value) {
-                final newGamesView = GamesView.create(
-                  name: value, 
-                  status: widget.status,
-                  index: gamesViews.isNotEmpty 
-                    ? gamesViews.last.index + 1
-                    : 0,
-                  filter: gamesViews.isNotEmpty 
-                    ? gamesViews.last.filter
-                    : _defaultFilter
-                );
-
-                context
+                 context
                   .read<GamesViewsBloc>()
-                  .add(SaveGamesView(gamesView: newGamesView));
+                  .add(SaveGamesView(gamesView: value));
               },
             ),
             useRootNavigator: false,
@@ -277,7 +277,28 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
       widgets.add(HSpacer(size: SpaceSize.xs));
       widgets.add(
         IconButton(
-          icon: Icon(Icons.bookmark_remove),
+          icon: Icon(Icons.snippet_folder_outlined),
+          onPressed:() {
+            showDialog(
+              context: context,
+              builder: (context) => GamesPageSaveViewDialog(
+                value: gamesViews[_tabIndex],
+                onChanged: (value) {
+                  context
+                    .read<GamesViewsBloc>()
+                    .add(SaveGamesView(gamesView: value));
+                },
+              ),
+              useRootNavigator: false,
+            );
+          },
+        )
+      );
+      
+      widgets.add(HSpacer(size: SpaceSize.xs));
+      widgets.add(
+        IconButton(
+          icon: Icon(Icons.folder_delete_outlined),
           onPressed: () {
             final id = gamesViews[_tabIndex].id;
 

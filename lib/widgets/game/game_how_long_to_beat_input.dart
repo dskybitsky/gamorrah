@@ -25,12 +25,17 @@ class GameHowLongToBeatInput extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(child: TextField(
+            Flexible(child: TextFormField(
+              initialValue: value.story?.toString(),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly
               ],
               onChanged: (value) {
-                _onStoryChanged(double.parse(value));
+                if (onChanged != null) {
+                  onChanged!(this.value.copyWith(
+                    story: Optional(double.tryParse(value))
+                  ));
+                }
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -38,12 +43,17 @@ class GameHowLongToBeatInput extends StatelessWidget {
               ),
             )),
             HSpacer(),
-            Flexible(child: TextField(
+            Flexible(child: TextFormField(
+              initialValue: value.storySides?.toString(),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly
               ],
               onChanged: (value) {
-                _onStorySidesChanged(double.parse(value));
+                if (onChanged != null) {
+                  onChanged!(this.value.copyWith(
+                    storySides: Optional(double.tryParse(value))
+                  ));
+                }
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -51,12 +61,17 @@ class GameHowLongToBeatInput extends StatelessWidget {
               ),
             )),
             HSpacer(),
-            Flexible(child: TextField(
+            Flexible(child: TextFormField(
+              initialValue: value.completionist?.toString(),
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly
               ],
               onChanged: (value) {
-                _onCompletionistChanged(double.parse(value));
+                if (onChanged != null) {
+                  onChanged!(this.value.copyWith(
+                    completionist: Optional(double.tryParse(value))
+                  ));
+                }
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
@@ -93,23 +108,5 @@ class GameHowLongToBeatInput extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: widgets
     );
-  }
-
-  void _onStoryChanged(double? story) {
-    if (onChanged != null) {
-      onChanged!(value.copyWith(story: Optional(story)));
-    }
-  }
-
-  void _onStorySidesChanged(double? storySides) {
-    if (onChanged != null) {
-      onChanged!(value.copyWith(storySides: Optional(storySides)));
-    }
-  }
-
-  void _onCompletionistChanged(double? completionist) {
-    if (onChanged != null) {
-      onChanged!(value.copyWith(completionist: Optional(completionist)));
-    }
   }
 }

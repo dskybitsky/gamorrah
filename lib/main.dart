@@ -37,6 +37,9 @@ Future<void> _initHive() async {
   Hive.registerAdapter(HivePreferencesAdapter());
   Hive.registerAdapter(HiveGamesViewAdapter());
   Hive.registerAdapter(HiveGamesFilterAdapter());
+  Hive.registerAdapter(HiveGamesFilterPlatformsPredicateAdapter());
+  Hive.registerAdapter(HiveGamesFilterBeatenPredicateAdapter());
+  Hive.registerAdapter(HiveGamesFilterHowLongToBeatPredicateAdapter());
 
   await Hive.initFlutter();
 }

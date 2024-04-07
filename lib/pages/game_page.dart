@@ -161,7 +161,7 @@ class _GamePageState extends State<GamePage> {
     if (game.parentId == null) {
       widgets.add(
         SwitchListTile(
-          title: Text(t.ui.gamePage.kindBundleLabel),
+          title: Text(t.types.gameKind.values[GameKind.bundle.name]!),
           value: _kind == GameKind.bundle,
           onChanged: (value) { 
             setState(() {
@@ -178,8 +178,8 @@ class _GamePageState extends State<GamePage> {
           initialSelection: _kind,
           dropdownMenuEntries: [
             DropdownMenuEntry(value: null, label: t.types.gameKind.none),
-            DropdownMenuEntry(value: GameKind.dlc, label: t.types.gameKind.dlc),
-            DropdownMenuEntry(value: GameKind.content, label: t.types.gameKind.content),
+            DropdownMenuEntry(value: GameKind.dlc, label: t.types.gameKind.values[GameKind.dlc.name]!),
+            DropdownMenuEntry(value: GameKind.content, label: t.types.gameKind.values[GameKind.content.name]!),
           ],
           onSelected: (value) {
             setState(() {

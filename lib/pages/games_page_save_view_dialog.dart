@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
+import 'package:gamorrah/models/games_view/games_view.dart';
+import 'package:gamorrah/models/optional.dart';
+import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPageSaveViewDialog extends StatefulWidget {
   const GamesPageSaveViewDialog({
-    this.value = '',
+    required this.value,
     this.onChanged,
   });
 
-  final String value;
-  final void Function(String)? onChanged;
+  final GamesView value;
+  final void Function(GamesView)? onChanged;
 
   @override
   State<GamesPageSaveViewDialog> createState() => _GamesGamesPageSaveViewDialogState();
@@ -16,33 +20,49 @@ class GamesPageSaveViewDialog extends StatefulWidget {
 
 class _GamesGamesPageSaveViewDialogState extends State<GamesPageSaveViewDialog> {
   late TextEditingController _nameController;
+  late int _index;
   
   @override
   void initState() {
     super.initState();
 
-    _nameController = TextEditingController(text: widget.value);
+    _index = widget.value.index;
+    _nameController = TextEditingController(text: widget.value.name);
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(t.ui.gamesPage.savePresetDialogTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            width: 200,
-            child: TextField(
+      title: Text(t.ui.gamesPage.saveViewDialogTitle),
+      content: SizedBox(
+        width: 380,
+        child: Row(
+          children: [
+            Expanded(flex: 1, child: TextFormField(
+              initialValue: _index.toString(),
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _index = int.tryParse(value) ?? 0;
+                });
+              },
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: t.ui.gamesPage.saveViewDialogIndexLabel,
+              ),
+            )),
+            HSpacer(),
+            Expanded(flex: 3, child: TextField(
               controller: _nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: t.ui.gamesPage.savePresetDialogNameLabel,
+                labelText: t.ui.gamesPage.saveViewDialogNameLabel,
               ),
-            ),
-          ),
-        ],
+            )),
+          ],
+        ),
       ),
       actions: [
           TextButton(
@@ -54,7 +74,10 @@ class _GamesGamesPageSaveViewDialogState extends State<GamesPageSaveViewDialog> 
               final onChanged = widget.onChanged;
 
               if (onChanged != null) {
-                onChanged(_nameController.text);
+                onChanged(widget.value.copyWith(
+                  name: Optional(_nameController.text),
+                  index: Optional(_index),
+                ));
               }
               
               Navigator.pop(context);

@@ -52,26 +52,120 @@ class HiveGamesView extends HiveObject {
 class HiveGamesFilter extends HiveObject {
   HiveGamesFilter({
     this.platforms,
-    this.beaten
+    this.beaten,
+    this.howLongToBeat
   });
 
   @HiveField(0)
-  final List<String>? platforms;
+  final HiveGamesFilterPlatformsPredicate? platforms;
 
   @HiveField(1)
-  final String? beaten;
+  final HiveGamesFilterBeatenPredicate? beaten;
+
+  @HiveField(2)
+  final HiveGamesFilterHowLongToBeatPredicate? howLongToBeat;
 
   factory HiveGamesFilter.fromGamesFilter(GamesFilter gamesFilter) => HiveGamesFilter(
-    platforms: gamesFilter.platforms?.map((platform) => platform.name).toList(),
-    beaten: gamesFilter.beaten?.name,
+    platforms: gamesFilter.platforms != null
+      ? HiveGamesFilterPlatformsPredicate.fromGamesFilterPlatformsPredicate(gamesFilter.platforms!)
+      : null,
+    beaten: gamesFilter.beaten != null
+      ? HiveGamesFilterBeatenPredicate.fromGamesFilterBeatenPredicate(gamesFilter.beaten!)
+      : null,
+    howLongToBeat: gamesFilter.howLongToBeat != null
+      ? HiveGamesFilterHowLongToBeatPredicate.fromGamesFilterBeatenPredicate(gamesFilter.howLongToBeat!)
+      : null,
   );
 
   GamesFilter toGamesPageFilter() => GamesFilter(
-    platforms: platforms != null 
-      ? Set.from(platforms!.map((platformName) => GamePlatform.values.byName(platformName)))
-      : null,
-    beaten: beaten != null
-      ? GamePersonalBeaten.values.byName(beaten!)
-      : null,
+    platforms: platforms?.toGamesFilterPlatformsPredicate(),
+    beaten: beaten?.toGamesFilterBeatenPredicate(),
+    howLongToBeat: howLongToBeat?.toGamesFilterHowLongToBeatPredicate(),
+  );
+}
+
+@HiveType(typeId:12)
+class HiveGamesFilterPlatformsPredicate {
+  HiveGamesFilterPlatformsPredicate({
+    required this.operator,
+    required this.value,
+  });
+
+  @HiveField(0)
+  final String operator;
+
+  @HiveField(1)
+  final List<String> value;
+
+  factory HiveGamesFilterPlatformsPredicate.fromGamesFilterPlatformsPredicate(
+    GamesFilterPlatformsPredicate gamesFilterPlatformsPredicate
+  ) => HiveGamesFilterPlatformsPredicate(
+    operator: gamesFilterPlatformsPredicate.operator.name,
+    value: gamesFilterPlatformsPredicate.value.map((platform) => platform.name).toList(),
+  );
+
+  GamesFilterPlatformsPredicate toGamesFilterPlatformsPredicate() => GamesFilterPlatformsPredicate(
+    operator: GamesFilterPlatformsOperator.values.byName(operator),
+    value: Set.from(value.map((platformName) => GamePlatform.values.byName(platformName)))
+  );
+}
+
+@HiveType(typeId:13)
+class HiveGamesFilterBeatenPredicate {
+  HiveGamesFilterBeatenPredicate({
+    required this.operator,
+    required this.value,
+  });
+
+  @HiveField(0)
+  final String operator;
+
+  @HiveField(1)
+  final String? value;
+
+  factory HiveGamesFilterBeatenPredicate.fromGamesFilterBeatenPredicate(
+    GamesFilterBeatenPredicate gamesFilterBeatenPredicate
+  ) => HiveGamesFilterBeatenPredicate(
+    operator: gamesFilterBeatenPredicate.operator.name,
+    value: gamesFilterBeatenPredicate.value?.name,
+  );
+
+  GamesFilterBeatenPredicate toGamesFilterBeatenPredicate() => GamesFilterBeatenPredicate(
+    operator: GamesFilterBeatenOperator.values.byName(operator),
+    value: value != null
+      ? GamePersonalBeaten.values.byName(value!)
+      : null
+  );
+}
+
+@HiveType(typeId:15)
+class HiveGamesFilterHowLongToBeatPredicate {
+  HiveGamesFilterHowLongToBeatPredicate({
+    required this.operator,
+    required this.field,
+    required this.value,
+  });
+
+  @HiveField(0)
+  final String operator;
+  
+  @HiveField(1)
+  final String field;
+  
+  @HiveField(2)
+  final double value;
+
+  factory HiveGamesFilterHowLongToBeatPredicate.fromGamesFilterBeatenPredicate(
+    GamesFilterHowLongToBeatPredicate gamesFilterHowLongToBeatPredicate
+  ) => HiveGamesFilterHowLongToBeatPredicate(
+    operator: gamesFilterHowLongToBeatPredicate.operator.name,
+    field: gamesFilterHowLongToBeatPredicate.field.name,
+    value: gamesFilterHowLongToBeatPredicate.value,
+  );
+
+  GamesFilterHowLongToBeatPredicate toGamesFilterHowLongToBeatPredicate() => GamesFilterHowLongToBeatPredicate(
+    operator: GamesFilterHowLongToBeatOperator.values.byName(operator),
+    field: GamesFilterHowLongToBeatField.values.byName(field),
+    value: value
   );
 }
