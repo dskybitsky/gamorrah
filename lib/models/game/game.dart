@@ -15,6 +15,7 @@ class Game {
     this.personal,
     this.howLongToBeat,
     required this.status,
+    this.tags = const {},
     this.parentId,
   });
 
@@ -22,8 +23,8 @@ class Game {
 
   final String title;
   final String? franchise;
-  final String? edition;
   final int? year;
+  final String? edition;
   final String? thumbUrl;
 
   final GameKind? kind;
@@ -35,14 +36,16 @@ class Game {
 
   final GameStatus status;
 
+  final Set<String> tags;
+
   final String? parentId;
 
   factory Game.create({
     String? id,
     required String title,
     String? franchise,
-    String? edition,
     int? year,
+    String? edition,
     String? thumbUrl,
     GameKind? kind,
     int? index,
@@ -50,13 +53,14 @@ class Game {
     GamePersonal? personal,
     GameHowLongToBeat? howLongToBeat,
     GameStatus? status,
+    Set<String> tags = const {},
     String? parentId,
   }) => Game(
     id: id ?? const Uuid().v4(),
     title: title, 
     franchise: _normalize(franchise),
-    edition: _normalize(edition),
     year: year,
+    edition: _normalize(edition),
     thumbUrl: _normalize(thumbUrl),
     kind: kind,
     index: index,
@@ -64,6 +68,10 @@ class Game {
     personal: personal,
     howLongToBeat: howLongToBeat,
     status: status ?? GameStatus.backlog,
+    tags: tags
+      .map((tag) => tag.toLowerCase())
+      .where((tag) => tag != '')
+      .toSet(),
     parentId: parentId,
   );
 
@@ -77,8 +85,8 @@ class Game {
       id: data['id'], 
       title: data['title'],
       franchise: data['franchise'],
-      edition: data['edition'],
       year: data['year'],
+      edition: data['edition'],
       thumbUrl: data['thumbUrl'],
       kind: kindName != null
         ? GameKind.values.byName(kindName)
@@ -97,6 +105,7 @@ class Game {
         ? GameHowLongToBeat.fromJson(howLongToBeatJson)
         : null,
       status: GameStatus.values.byName(data['status']),
+      tags: data['tags'] ?? {},
       parentId: data['parentId'],
     );
   }
@@ -105,8 +114,8 @@ class Game {
     'id': id,
     'title': title,
     'franchise': franchise,
-    'edition': edition,
     'year': year,
+    'edition': edition,
     'thumbUrl': thumbUrl,
     'kind': kind?.name,
     'index': index,
@@ -114,14 +123,15 @@ class Game {
     'personal': personal?.toJson(),
     'howLongToBeat': howLongToBeat?.toJson(),
     'status': status.name,
+    'tags': tags,
     'parentId': parentId,
   };
 
   Game copyWith({
     Optional<String>? title,
     Optional<String?>? franchise,
-    Optional<String?>? edition,
     Optional<int?>? year,
+    Optional<String?>? edition,
     Optional<String?>? thumbUrl,
     Optional<GameKind?>? kind,
     Optional<int?>? index,
@@ -129,13 +139,14 @@ class Game {
     Optional<GamePersonal?>? personal,
     Optional<GameHowLongToBeat?>? howLongToBeat,
     Optional<GameStatus?>? status,
+    Optional<Set<String>>? tags,
     Optional<String?>? parentId,
   }) => Game.create(
     id: id,
     title: title != null ? title.value : this.title,
     franchise: franchise != null ? franchise.value : this.franchise,
-    edition: edition != null ? edition.value : this.edition,
     year: year != null ? year.value : this.year,
+    edition: edition != null ? edition.value : this.edition,
     thumbUrl: thumbUrl != null ? thumbUrl.value : this.thumbUrl,
     kind: kind != null ? kind.value : this.kind,
     index: index != null ? index.value : this.index,
@@ -143,6 +154,7 @@ class Game {
     personal: personal != null ? personal.value : this.personal,
     howLongToBeat: howLongToBeat != null ? howLongToBeat.value : this.howLongToBeat,
     status: status != null ? status.value : this.status,
+    tags: tags != null ? tags.value : this.tags,
     parentId: parentId != null ? parentId.value : this.parentId,
   );
 

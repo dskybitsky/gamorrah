@@ -20,8 +20,8 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       id: fields[0] as String,
       title: fields[1] as String,
       franchise: fields[2] as String?,
-      edition: fields[3] as String?,
-      year: fields[4] as int?,
+      edition: fields[4] as String?,
+      year: fields[3] as int?,
       thumbUrl: fields[5] as String?,
       kind: fields[6] as String?,
       index: fields[7] as int?,
@@ -33,14 +33,15 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       howLongToBeatStorySides: fields[13] as double?,
       howLongToBeatCompletionist: fields[14] as double?,
       status: fields[15] as String,
-      parentId: fields[16] as String?,
+      tags: (fields[16] as List).cast<String>(),
+      parentId: fields[17] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveGame obj) {
     writer
-      ..writeByte(17)
+      ..writeByte(18)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -48,9 +49,9 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       ..writeByte(2)
       ..write(obj.franchise)
       ..writeByte(3)
-      ..write(obj.edition)
-      ..writeByte(4)
       ..write(obj.year)
+      ..writeByte(4)
+      ..write(obj.edition)
       ..writeByte(5)
       ..write(obj.thumbUrl)
       ..writeByte(6)
@@ -74,6 +75,8 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       ..writeByte(15)
       ..write(obj.status)
       ..writeByte(16)
+      ..write(obj.tags)
+      ..writeByte(17)
       ..write(obj.parentId);
   }
 
