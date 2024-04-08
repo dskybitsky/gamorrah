@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 108
+/// Strings: 111
 ///
-/// Built on 2024-04-07 at 14:24 UTC
+/// Built on 2024-04-08 at 07:11 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -167,6 +167,7 @@ class _StringsUiEn {
 	late final _StringsUiGamePersonalControlEn gamePersonalControl = _StringsUiGamePersonalControlEn._(_root);
 	late final _StringsUiGameHowLongToBeatControlEn gameHowLongToBeatControl = _StringsUiGameHowLongToBeatControlEn._(_root);
 	late final _StringsUiGameStatusControlEn gameStatusControl = _StringsUiGameStatusControlEn._(_root);
+	late final _StringsUiGameTagsControlEn gameTagsControl = _StringsUiGameTagsControlEn._(_root);
 }
 
 // Path: types
@@ -338,6 +339,17 @@ class _StringsUiGameStatusControlEn {
 	String get titleLabel => '${_root.types.game.status}:';
 }
 
+// Path: ui.gameTagsControl
+class _StringsUiGameTagsControlEn {
+	_StringsUiGameTagsControlEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get dialogTitle => 'Choose ${_root.types.game.tags}';
+	String get placeholder => '${_root.types.game.tags}';
+}
+
 // Path: types.game
 class _StringsTypesGameEn {
 	_StringsTypesGameEn._(this._root);
@@ -355,6 +367,7 @@ class _StringsTypesGameEn {
 	String get personal => 'Personal';
 	String get howLongToBeat => 'HowLongToBeat';
 	String get status => 'Status';
+	String get tags => 'Tags';
 }
 
 // Path: types.gameKind
@@ -565,6 +578,8 @@ extension on Translations {
 			case 'ui.gameHowLongToBeatControl.storySidesLabel': return ({required Object count}) => 'Story + Sides: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameHowLongToBeatControl.completionistLabel': return ({required Object count}) => 'Completionist: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameStatusControl.titleLabel': return '${_root.types.game.status}:';
+			case 'ui.gameTagsControl.dialogTitle': return 'Choose ${_root.types.game.tags}';
+			case 'ui.gameTagsControl.placeholder': return '${_root.types.game.tags}';
 			case 'types.game.title': return 'Title';
 			case 'types.game.franchise': return 'Franchise';
 			case 'types.game.edition': return 'Edition';
@@ -575,6 +590,7 @@ extension on Translations {
 			case 'types.game.personal': return 'Personal';
 			case 'types.game.howLongToBeat': return 'HowLongToBeat';
 			case 'types.game.status': return 'Status';
+			case 'types.game.tags': return 'Tags';
 			case 'types.gameKind.none': return 'Game';
 			case 'types.gameKind.values.bundle': return 'Bundle';
 			case 'types.gameKind.values.dlc': return 'DLC/Expansion/Addon';

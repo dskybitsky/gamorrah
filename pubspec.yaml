@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   cached_network_image: ^3.3.1
+  choice: ^2.3.2
   get:
   equatable: ^2.0.3
   file_picker: ^6.1.1
