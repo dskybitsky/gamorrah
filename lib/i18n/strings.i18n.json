@@ -88,7 +88,8 @@
     },
     "gameTagsControl": {
       "dialogTitle": "Choose @:types.game.tags",
-      "placeholder": "@:types.game.tags"
+      "placeholder": "@:types.game.tags",
+      "newTagPlaceholder": "Add Tag"
     }
   },
   "types": {

@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 111
+/// Strings: 112
 ///
-/// Built on 2024-04-08 at 07:11 UTC
+/// Built on 2024-04-08 at 13:25 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -348,6 +348,7 @@ class _StringsUiGameTagsControlEn {
 	// Translations
 	String get dialogTitle => 'Choose ${_root.types.game.tags}';
 	String get placeholder => '${_root.types.game.tags}';
+	String get newTagPlaceholder => 'Add Tag';
 }
 
 // Path: types.game
@@ -580,6 +581,7 @@ extension on Translations {
 			case 'ui.gameStatusControl.titleLabel': return '${_root.types.game.status}:';
 			case 'ui.gameTagsControl.dialogTitle': return 'Choose ${_root.types.game.tags}';
 			case 'ui.gameTagsControl.placeholder': return '${_root.types.game.tags}';
+			case 'ui.gameTagsControl.newTagPlaceholder': return 'Add Tag';
 			case 'types.game.title': return 'Title';
 			case 'types.game.franchise': return 'Franchise';
 			case 'types.game.edition': return 'Edition';
