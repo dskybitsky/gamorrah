@@ -57,7 +57,8 @@
       "platformsLabel": "@:types.game.platforms:", 
       "statusLabel": "@:types.game.status:",
       "defaultIncludedGameTitle": "New included game",
-      "deleteGameConfirmationMessage": "This game will be deleted. Proceed?"
+      "deleteGameConfirmationMessage": "This game will be deleted. Proceed?",
+      "defaultTag": "sample tag"
     },
     "settingsPage": {
       "settingsTitle": "Settings",

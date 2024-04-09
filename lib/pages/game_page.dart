@@ -221,13 +221,15 @@ class _GamePageState extends State<GamePage> {
           },
         )
       );
+    } 
 
+    if (game.parentId == null) {
       widgets.add(VSpacer());
 
       widgets.add(
         GameTagsChoice(
           value: _tags,
-          tags: state.tags.isEmpty ? { 'sample tag' } : state.tags,
+          tags: state.tags.isEmpty ? { t.ui.gamePage.defaultTag } : state.tags,
           onChanged: (tags) {
             setState(() {
               _tags = tags;
@@ -235,9 +237,7 @@ class _GamePageState extends State<GamePage> {
           },
         )
       );
-    } 
 
-    if (game.parentId == null) {
       widgets.add(VSpacer());
 
       widgets.add(

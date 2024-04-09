@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 147
+/// Strings: 148
 ///
-/// Built on 2024-04-09 at 13:51 UTC
+/// Built on 2024-04-09 at 14:37 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -278,6 +278,7 @@ class _StringsUiGamePageEn {
 	String get statusLabel => '${_root.types.game.status}:';
 	String get defaultIncludedGameTitle => 'New included game';
 	String get deleteGameConfirmationMessage => 'This game will be deleted. Proceed?';
+	String get defaultTag => 'sample tag';
 }
 
 // Path: ui.settingsPage
@@ -633,6 +634,7 @@ extension on Translations {
 			case 'ui.gamePage.statusLabel': return '${_root.types.game.status}:';
 			case 'ui.gamePage.defaultIncludedGameTitle': return 'New included game';
 			case 'ui.gamePage.deleteGameConfirmationMessage': return 'This game will be deleted. Proceed?';
+			case 'ui.gamePage.defaultTag': return 'sample tag';
 			case 'ui.settingsPage.settingsTitle': return 'Settings';
 			case 'ui.settingsPage.importFromJsonButton': return 'Import from JSON';
 			case 'ui.settingsPage.importFromJsonSuccessMessage': return 'Import finished succesfully';
