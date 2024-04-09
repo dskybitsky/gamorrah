@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 111
+/// Strings: 143
 ///
-/// Built on 2024-04-09 at 06:08 UTC
+/// Built on 2024-04-09 at 11:52 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -179,6 +179,8 @@ class _StringsTypesEn {
 	// Translations
 	late final _StringsTypesGameEn game = _StringsTypesGameEn._(_root);
 	late final _StringsTypesGameKindEn gameKind = _StringsTypesGameKindEn._(_root);
+	late final _StringsTypesGamePlatformEn gamePlatform = _StringsTypesGamePlatformEn._(_root);
+	late final _StringsTypesGamePlatformBrandEn gamePlatformBrand = _StringsTypesGamePlatformBrandEn._(_root);
 	late final _StringsTypesGameStatusEn gameStatus = _StringsTypesGameStatusEn._(_root);
 	late final _StringsTypesGamePersonalEn gamePersonal = _StringsTypesGamePersonalEn._(_root);
 	late final _StringsTypesGamePersonalBeatenEn gamePersonalBeaten = _StringsTypesGamePersonalBeatenEn._(_root);
@@ -299,8 +301,7 @@ class _StringsUiGamePlatformsControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get dialogTitle => 'Choose ${_root.types.game.platforms}';
-	String get placeholder => '${_root.types.game.platforms}';
+	String get title => '${_root.types.game.platforms}:';
 }
 
 // Path: ui.gamePersonalControl
@@ -382,6 +383,61 @@ class _StringsTypesGameKindEn {
 		'bundle': 'Bundle',
 		'dlc': 'DLC/Expansion/Addon',
 		'content': 'Content Pack',
+	};
+}
+
+// Path: types.gamePlatform
+class _StringsTypesGamePlatformEn {
+	_StringsTypesGamePlatformEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get none => 'None';
+	Map<String, String> get values => {
+		'pc': 'PC/Mac',
+		'mobile': 'Mobile',
+		'megadrive': 'Sega MegaDrive',
+		'saturn': 'Sega Saturn',
+		'dreamcast': 'Sega Dreamcast',
+		'nes': 'Nintendo NES',
+		'snes': 'Nintendo SNES',
+		'n64': 'Nintendo 64',
+		'gamecube': 'Nintendo GameCube',
+		'wii': 'Nintendo Wii',
+		'wiiu': 'Nintendo Wii U',
+		'swtch': 'Nintendo Switch',
+		'gb': 'Nintedo GameBoy',
+		'gba': 'Nintendo GameBoy Advance',
+		'ds': 'Nintendo DS',
+		'ds3': 'Nintendo 3DS',
+		'ps': 'Sony PlayStation',
+		'ps2': 'Sony PlayStation 2',
+		'ps3': 'Sony PlayStation 3',
+		'ps4': 'Sony PlayStation 4/Pro',
+		'ps5': 'Sony PlayStation 5',
+		'psp': 'Sony PSP',
+		'psvita': 'Sony PS Vita',
+		'xbox': 'Microsoft XBox',
+		'xbox360': 'Microsoft XBox 360',
+		'xboxone': 'Microsoft XBox One',
+		'xboxseries': 'Microsoft XBox Series S/X',
+	};
+}
+
+// Path: types.gamePlatformBrand
+class _StringsTypesGamePlatformBrandEn {
+	_StringsTypesGamePlatformBrandEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get none => 'None';
+	Map<String, String> get values => {
+		'sega': 'Sega',
+		'nintendo': 'Nintedo',
+		'sony': 'Sony',
+		'microsoft': 'Microsoft',
 	};
 }
 
@@ -567,8 +623,7 @@ extension on Translations {
 			case 'ui.settingsPage.exportToJsonSuccessMessage': return 'Export finished succesfully';
 			case 'ui.settingsPage.deleteAllGamesButton': return 'Delete All Games';
 			case 'ui.settingsPage.deleteAllGamesConfirmationMessage': return 'All games will be deleted. Proceed?';
-			case 'ui.gamePlatformsControl.dialogTitle': return 'Choose ${_root.types.game.platforms}';
-			case 'ui.gamePlatformsControl.placeholder': return '${_root.types.game.platforms}';
+			case 'ui.gamePlatformsControl.title': return '${_root.types.game.platforms}:';
 			case 'ui.gamePersonalControl.headerLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.beatenLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.ratingLabel': return '${_root.types.gamePersonal.rating}:';
@@ -595,6 +650,39 @@ extension on Translations {
 			case 'types.gameKind.values.bundle': return 'Bundle';
 			case 'types.gameKind.values.dlc': return 'DLC/Expansion/Addon';
 			case 'types.gameKind.values.content': return 'Content Pack';
+			case 'types.gamePlatform.none': return 'None';
+			case 'types.gamePlatform.values.pc': return 'PC/Mac';
+			case 'types.gamePlatform.values.mobile': return 'Mobile';
+			case 'types.gamePlatform.values.megadrive': return 'Sega MegaDrive';
+			case 'types.gamePlatform.values.saturn': return 'Sega Saturn';
+			case 'types.gamePlatform.values.dreamcast': return 'Sega Dreamcast';
+			case 'types.gamePlatform.values.nes': return 'Nintendo NES';
+			case 'types.gamePlatform.values.snes': return 'Nintendo SNES';
+			case 'types.gamePlatform.values.n64': return 'Nintendo 64';
+			case 'types.gamePlatform.values.gamecube': return 'Nintendo GameCube';
+			case 'types.gamePlatform.values.wii': return 'Nintendo Wii';
+			case 'types.gamePlatform.values.wiiu': return 'Nintendo Wii U';
+			case 'types.gamePlatform.values.swtch': return 'Nintendo Switch';
+			case 'types.gamePlatform.values.gb': return 'Nintedo GameBoy';
+			case 'types.gamePlatform.values.gba': return 'Nintendo GameBoy Advance';
+			case 'types.gamePlatform.values.ds': return 'Nintendo DS';
+			case 'types.gamePlatform.values.ds3': return 'Nintendo 3DS';
+			case 'types.gamePlatform.values.ps': return 'Sony PlayStation';
+			case 'types.gamePlatform.values.ps2': return 'Sony PlayStation 2';
+			case 'types.gamePlatform.values.ps3': return 'Sony PlayStation 3';
+			case 'types.gamePlatform.values.ps4': return 'Sony PlayStation 4/Pro';
+			case 'types.gamePlatform.values.ps5': return 'Sony PlayStation 5';
+			case 'types.gamePlatform.values.psp': return 'Sony PSP';
+			case 'types.gamePlatform.values.psvita': return 'Sony PS Vita';
+			case 'types.gamePlatform.values.xbox': return 'Microsoft XBox';
+			case 'types.gamePlatform.values.xbox360': return 'Microsoft XBox 360';
+			case 'types.gamePlatform.values.xboxone': return 'Microsoft XBox One';
+			case 'types.gamePlatform.values.xboxseries': return 'Microsoft XBox Series S/X';
+			case 'types.gamePlatformBrand.none': return 'None';
+			case 'types.gamePlatformBrand.values.sega': return 'Sega';
+			case 'types.gamePlatformBrand.values.nintendo': return 'Nintedo';
+			case 'types.gamePlatformBrand.values.sony': return 'Sony';
+			case 'types.gamePlatformBrand.values.microsoft': return 'Microsoft';
 			case 'types.gameStatus.values.backlog': return 'Backlog';
 			case 'types.gameStatus.values.playing': return 'Playing';
 			case 'types.gameStatus.values.finished': return 'Finished';

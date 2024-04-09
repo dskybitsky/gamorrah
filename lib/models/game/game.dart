@@ -250,41 +250,45 @@ enum GameKind { bundle, dlc, content }
 enum GameStatus { backlog, playing, finished, wishlist }
 
 enum GamePlatform {
-  pc(title: 'PC/Mac'),
+  pc,
+  mobile,
   
-  mobile(title: 'Mobile'),
+  megadrive(brand: GamePlatformBrand.sega, generation: 4),
+  saturn(brand: GamePlatformBrand.sega, generation: 5),
+  dreamcast(brand: GamePlatformBrand.sega, generation: 6),
   
-  megadrive(title: 'Sega MegaDrive'), 
-  saturn(title: 'Sega Saturn'), 
-  dreamcast(title: 'Sega Dreamcast'),
-  
-  nes(title: 'Nintendo NES'),
-  snes(title: 'Nintendo SNES'),
-  gamecube(title: 'Nintendo GameCube'),
-  wii(title: 'Nintendo Wii'),
-  wiiu(title: 'Nintendo Wii U'), 
-  swtch(title: 'Nintendo Switch'), 
-  gb(title: 'Nintedo GameBoy'), 
-  gba(title: 'Nintendo GameBoy Advance'), 
-  ds(title: 'Nintendo DS'), 
-  ds3(title: 'Nintendo 3DS'),
+  nes(brand: GamePlatformBrand.nintendo, generation: 3),
+  snes(brand: GamePlatformBrand.nintendo, generation: 4),
+  n64(brand: GamePlatformBrand.nintendo, generation: 5),
+  gamecube(brand: GamePlatformBrand.nintendo, generation: 6),
+  wii(brand: GamePlatformBrand.nintendo, generation: 7),
+  wiiu(brand: GamePlatformBrand.nintendo, generation: 8),
+  swtch(brand: GamePlatformBrand.nintendo, generation: 8),
+  gb(brand: GamePlatformBrand.nintendo, generation: 4),
+  gba(brand: GamePlatformBrand.nintendo, generation: 6),
+  ds(brand: GamePlatformBrand.nintendo, generation: 7),
+  ds3(brand: GamePlatformBrand.nintendo, generation: 8),
 
-  ps(title: 'Sony PlayStation'),
-  ps2(title: 'Sony PlayStation 2'), 
-  ps3(title: 'Sony PlayStation 3'), 
-  ps4(title: 'Sony PlayStation 4/Pro'), 
-  ps5(title: 'Sony PlayStation 5'), 
-  psp(title: 'Sony PSP'),
-  psvita(title: 'Sony PS Vita'),
+  ps(brand: GamePlatformBrand.sony, generation: 5),
+  ps2(brand: GamePlatformBrand.sony, generation: 6),
+  ps3(brand: GamePlatformBrand.sony, generation: 7),
+  ps4(brand: GamePlatformBrand.sony, generation: 8),
+  ps5(brand: GamePlatformBrand.sony, generation: 9),
+  psp(brand: GamePlatformBrand.sony, generation: 7),
+  psvita(brand: GamePlatformBrand.sony, generation: 8),
   
-  xbox(title: 'Microsoft XBox'), 
-  xbox360(title: 'Microsoft XBox 360'), 
-  xboxone(title: 'Microsoft XBox One'), 
-  xboxseries(title: 'Microsoft XBox Series S/X');
+  xbox(brand: GamePlatformBrand.microsoft, generation: 6),
+  xbox360(brand: GamePlatformBrand.microsoft, generation: 7),
+  xboxone(brand: GamePlatformBrand.microsoft, generation: 8),
+  xboxseries(brand: GamePlatformBrand.microsoft, generation: 9);
 
   const GamePlatform({
-    required this.title
+    this.brand,
+    this.generation,
   });
 
-  final String title;
+  final int? generation;
+  final GamePlatformBrand? brand;
 }
+
+enum GamePlatformBrand { sega, nintendo, sony, microsoft }
