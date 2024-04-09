@@ -21,8 +21,8 @@ class HiveGame extends HiveObject {
     this.howLongToBeatStory,
     this.howLongToBeatStorySides,
     this.howLongToBeatCompletionist,
-    required this.status,
     this.tags = const [],
+    required this.status,
     this.parentId,
   });
 
@@ -72,10 +72,10 @@ class HiveGame extends HiveObject {
   final double? howLongToBeatCompletionist;
 
   @HiveField(15)
-  final String status;
+  final List<String> tags;
 
   @HiveField(16)
-  final List<String> tags;
+  final String status;
 
   @HiveField(17)
   final String? parentId;
@@ -115,8 +115,8 @@ class HiveGame extends HiveObject {
     ),
     personal: _toGamePersonal(),
     howLongToBeat: _toGameHowLongToBeat(),
-    status: GameStatus.values.byName(status),
     tags: tags.toSet(),
+    status: GameStatus.values.byName(status),
     parentId: parentId,
   );
 

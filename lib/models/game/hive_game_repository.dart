@@ -6,8 +6,8 @@ import 'hive_game.dart';
 
 class HiveGameRepository extends GameRepository {
   static const boxName = kDebugMode
-    ? 'games:v:08:debug'
-    : 'games:v:08';
+    ? 'games:v:09:debug'
+    : 'games:v:09';
 
   Box<HiveGame>? _box;
 

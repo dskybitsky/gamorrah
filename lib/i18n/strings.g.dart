@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 112
+/// Strings: 111
 ///
-/// Built on 2024-04-08 at 13:25 UTC
+/// Built on 2024-04-09 at 06:08 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -346,9 +346,8 @@ class _StringsUiGameTagsControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get dialogTitle => 'Choose ${_root.types.game.tags}';
-	String get placeholder => '${_root.types.game.tags}';
-	String get newTagPlaceholder => 'Add Tag';
+	String get title => '${_root.types.game.tags}:';
+	String get newTagPlaceholder => 'Enter new tag';
 }
 
 // Path: types.game
@@ -367,8 +366,8 @@ class _StringsTypesGameEn {
 	String get platforms => 'Platforms';
 	String get personal => 'Personal';
 	String get howLongToBeat => 'HowLongToBeat';
-	String get status => 'Status';
 	String get tags => 'Tags';
+	String get status => 'Status';
 }
 
 // Path: types.gameKind
@@ -579,9 +578,8 @@ extension on Translations {
 			case 'ui.gameHowLongToBeatControl.storySidesLabel': return ({required Object count}) => 'Story + Sides: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameHowLongToBeatControl.completionistLabel': return ({required Object count}) => 'Completionist: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameStatusControl.titleLabel': return '${_root.types.game.status}:';
-			case 'ui.gameTagsControl.dialogTitle': return 'Choose ${_root.types.game.tags}';
-			case 'ui.gameTagsControl.placeholder': return '${_root.types.game.tags}';
-			case 'ui.gameTagsControl.newTagPlaceholder': return 'Add Tag';
+			case 'ui.gameTagsControl.title': return '${_root.types.game.tags}:';
+			case 'ui.gameTagsControl.newTagPlaceholder': return 'Enter new tag';
 			case 'types.game.title': return 'Title';
 			case 'types.game.franchise': return 'Franchise';
 			case 'types.game.edition': return 'Edition';
@@ -591,8 +589,8 @@ extension on Translations {
 			case 'types.game.platforms': return 'Platforms';
 			case 'types.game.personal': return 'Personal';
 			case 'types.game.howLongToBeat': return 'HowLongToBeat';
-			case 'types.game.status': return 'Status';
 			case 'types.game.tags': return 'Tags';
+			case 'types.game.status': return 'Status';
 			case 'types.gameKind.none': return 'Game';
 			case 'types.gameKind.values.bundle': return 'Bundle';
 			case 'types.gameKind.values.dlc': return 'DLC/Expansion/Addon';

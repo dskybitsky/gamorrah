@@ -87,9 +87,8 @@
       "titleLabel": "@:types.game.status:"
     },
     "gameTagsControl": {
-      "dialogTitle": "Choose @:types.game.tags",
-      "placeholder": "@:types.game.tags",
-      "newTagPlaceholder": "Add Tag"
+      "title": "@:types.game.tags:",
+      "newTagPlaceholder": "Enter new tag"
     }
   },
   "types": {
@@ -103,8 +102,8 @@
       "platforms": "Platforms",
       "personal": "Personal",
       "howLongToBeat": "HowLongToBeat",
-      "status": "Status",
-      "tags": "Tags"
+      "tags": "Tags",
+      "status": "Status"
     },
     "gameKind": {
       "none": "Game",

@@ -32,8 +32,8 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       howLongToBeatStory: fields[12] as double?,
       howLongToBeatStorySides: fields[13] as double?,
       howLongToBeatCompletionist: fields[14] as double?,
-      status: fields[15] as String,
-      tags: (fields[16] as List).cast<String>(),
+      tags: (fields[15] as List).cast<String>(),
+      status: fields[16] as String,
       parentId: fields[17] as String?,
     );
   }
@@ -73,9 +73,9 @@ class HiveGameAdapter extends TypeAdapter<HiveGame> {
       ..writeByte(14)
       ..write(obj.howLongToBeatCompletionist)
       ..writeByte(15)
-      ..write(obj.status)
-      ..writeByte(16)
       ..write(obj.tags)
+      ..writeByte(16)
+      ..write(obj.status)
       ..writeByte(17)
       ..write(obj.parentId);
   }

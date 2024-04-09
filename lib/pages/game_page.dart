@@ -9,7 +9,7 @@ import 'package:gamorrah/state/game/games_bloc.dart';
 import 'package:gamorrah/widgets/game/game_how_long_to_beat_input.dart';
 import 'package:gamorrah/widgets/game/game_personal_input.dart';
 import 'package:gamorrah/widgets/game/game_status_input.dart';
-import 'package:gamorrah/widgets/game/game_tags_input.dart';
+import 'package:gamorrah/widgets/game/game_tags_choice.dart';
 import 'package:gamorrah/widgets/game/game_thumb.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
 import 'package:gamorrah/widgets/game/games_navigator.dart';
@@ -221,6 +221,20 @@ class _GamePageState extends State<GamePage> {
           },
         )
       );
+
+      widgets.add(VSpacer());
+
+      widgets.add(
+        GameTagsChoice(
+          value: _tags,
+          tags: state.tags.isEmpty ? { 'sample tag' } : state.tags,
+          onChanged: (tags) {
+            setState(() {
+              _tags = tags;
+            });
+          },
+        )
+      );
     } 
 
     if (game.parentId == null) {
@@ -232,20 +246,6 @@ class _GamePageState extends State<GamePage> {
           onChanged: (value) {
             setState(() {
               _status = value ?? GameStatus.backlog;
-            });
-          },
-        )
-      );
-
-      widgets.add(VSpacer());
-
-      widgets.add(
-        GameTagsInput(
-          value: _tags,
-          tags: state.tags,
-          onChanged: (tags) {
-            setState(() {
-              _tags = tags;
             });
           },
         )

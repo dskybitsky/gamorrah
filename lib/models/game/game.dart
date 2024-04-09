@@ -34,10 +34,10 @@ class Game {
   final GamePersonal? personal;
   final GameHowLongToBeat? howLongToBeat;
 
-  final GameStatus status;
-
   final Set<String> tags;
 
+  final GameStatus status;
+  
   final String? parentId;
 
   factory Game.create({
@@ -52,8 +52,8 @@ class Game {
     Set<GamePlatform> platforms = const {},
     GamePersonal? personal,
     GameHowLongToBeat? howLongToBeat,
-    GameStatus? status,
     Set<String> tags = const {},
+    GameStatus? status,
     String? parentId,
   }) => Game(
     id: id ?? const Uuid().v4(),
@@ -67,11 +67,11 @@ class Game {
     platforms: platforms,
     personal: personal,
     howLongToBeat: howLongToBeat,
-    status: status ?? GameStatus.backlog,
     tags: tags
       .map((tag) => tag.toLowerCase())
       .where((tag) => tag != '')
       .toSet(),
+    status: status ?? GameStatus.backlog,
     parentId: parentId,
   );
 
@@ -104,8 +104,8 @@ class Game {
       howLongToBeat: howLongToBeatJson != null
         ? GameHowLongToBeat.fromJson(howLongToBeatJson)
         : null,
-      status: GameStatus.values.byName(data['status']),
       tags: data['tags'] ?? {},
+      status: GameStatus.values.byName(data['status']),
       parentId: data['parentId'],
     );
   }
@@ -122,8 +122,8 @@ class Game {
     'platforms': platforms.map((e) => e.name).toList(),
     'personal': personal?.toJson(),
     'howLongToBeat': howLongToBeat?.toJson(),
-    'status': status.name,
     'tags': tags,
+    'status': status.name,
     'parentId': parentId,
   };
 
@@ -138,8 +138,8 @@ class Game {
     Optional<Set<GamePlatform>>? platforms,
     Optional<GamePersonal?>? personal,
     Optional<GameHowLongToBeat?>? howLongToBeat,
-    Optional<GameStatus?>? status,
     Optional<Set<String>>? tags,
+    Optional<GameStatus?>? status,
     Optional<String?>? parentId,
   }) => Game.create(
     id: id,
@@ -153,8 +153,8 @@ class Game {
     platforms: platforms != null ? platforms.value : this.platforms,
     personal: personal != null ? personal.value : this.personal,
     howLongToBeat: howLongToBeat != null ? howLongToBeat.value : this.howLongToBeat,
-    status: status != null ? status.value : this.status,
     tags: tags != null ? tags.value : this.tags,
+    status: status != null ? status.value : this.status,
     parentId: parentId != null ? parentId.value : this.parentId,
   );
 
