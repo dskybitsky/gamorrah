@@ -131,6 +131,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
             _platforms = _platforms!.copyWith(value: Optional(value));
           });
         },
+        compact: true,
       )),
     ]);
   }

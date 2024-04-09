@@ -6,7 +6,7 @@
 /// Locales: 1
 /// Strings: 143
 ///
-/// Built on 2024-04-09 at 11:52 UTC
+/// Built on 2024-04-09 at 12:50 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -393,7 +393,7 @@ class _StringsTypesGamePlatformEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get none => 'None';
+	String get none => 'Generic';
 	Map<String, String> get values => {
 		'pc': 'PC/Mac',
 		'mobile': 'Mobile',
@@ -650,7 +650,7 @@ extension on Translations {
 			case 'types.gameKind.values.bundle': return 'Bundle';
 			case 'types.gameKind.values.dlc': return 'DLC/Expansion/Addon';
 			case 'types.gameKind.values.content': return 'Content Pack';
-			case 'types.gamePlatform.none': return 'None';
+			case 'types.gamePlatform.none': return 'Generic';
 			case 'types.gamePlatform.values.pc': return 'PC/Mac';
 			case 'types.gamePlatform.values.mobile': return 'Mobile';
 			case 'types.gamePlatform.values.megadrive': return 'Sega MegaDrive';

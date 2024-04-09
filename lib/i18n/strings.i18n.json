@@ -113,7 +113,7 @@
       }
     },
     "gamePlatform": {
-      "none": "None",
+      "none": "Generic",
       "values(map)": {
         "pc": "PC/Mac",
         "mobile": "Mobile",
