@@ -28,7 +28,10 @@ class _GameTagsChoiceState extends State<GameTagsChoice> {
     super.initState();
 
     _value = widget.value.toList();
+    
     _tags = widget.tags.toList();
+    _tags.sort();
+
     _newTagController = TextEditingController();
   }
 
@@ -85,7 +88,8 @@ class _GameTagsChoiceState extends State<GameTagsChoice> {
 
     setState(() {
       if (!_tags.contains(normalizedValue)) {
-        _tags.add(value);  
+        _tags.add(value);
+        _tags.sort();
       }
       
       _value.add(value);

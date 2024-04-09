@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/games_view/games_view.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_dropdown.dart';
 import 'package:gamorrah/widgets/game/game_platforms_input.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
@@ -170,7 +170,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
     return Row(children: [
       Expanded(flex: 1, child: operatorDropDownMenu),
       HSpacer(),
-      Expanded(flex: 2, child: GamePersonalBeatenInput(
+      Expanded(flex: 2, child: GamePersonalBeatenDropdown(
         value: _beaten?.value,
         onChanged: (value) {
           setState(() { 

@@ -3,8 +3,8 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
 
-class GamePersonalBeatenInput extends StatelessWidget {
-  const GamePersonalBeatenInput({
+class GamePersonalBeatenDropdown extends StatelessWidget {
+  const GamePersonalBeatenDropdown({
     super.key,
     required this.value,
     this.onChanged,

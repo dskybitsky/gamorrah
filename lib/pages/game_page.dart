@@ -6,9 +6,9 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/pages/game_page_dialog.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
-import 'package:gamorrah/widgets/game/game_how_long_to_beat_input.dart';
-import 'package:gamorrah/widgets/game/game_personal_input.dart';
-import 'package:gamorrah/widgets/game/game_status_input.dart';
+import 'package:gamorrah/widgets/game/game_how_long_to_beat_tile.dart';
+import 'package:gamorrah/widgets/game/game_personal_tile.dart';
+import 'package:gamorrah/widgets/game/game_status_dropdown.dart';
 import 'package:gamorrah/widgets/game/game_tags_choice.dart';
 import 'package:gamorrah/widgets/game/game_thumb.dart';
 import 'package:gamorrah/widgets/game/games_list.dart';
@@ -199,7 +199,7 @@ class _GamePageState extends State<GamePage> {
       widgets.add(VSpacer(size: SpaceSize.l));
 
       widgets.add(
-        GamePersonalInput(
+        GamePersonalTile(
           value: _personal ?? GamePersonal(),
           onChanged: (personal) {
             setState(() {
@@ -212,7 +212,7 @@ class _GamePageState extends State<GamePage> {
       widgets.add(VSpacer());
 
       widgets.add(
-        GameHowLongToBeatInput(
+        GameHowLongToBeatTile(
           value: _howLongToBeat ?? GameHowLongToBeat(),
           onChanged: (howLongToBeat) {
             setState(() {
@@ -241,7 +241,7 @@ class _GamePageState extends State<GamePage> {
       widgets.add(VSpacer());
 
       widgets.add(
-        GameStatusInput(
+        GameStatusDropdown(
           value: _status,
           onChanged: (value) {
             setState(() {
