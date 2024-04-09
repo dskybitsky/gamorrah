@@ -28,6 +28,7 @@
       "filterBeatenOperatorLabel": "@:types.gamePersonal.beaten",
       "filterHowLongToBeatOperatorLabel": "@:types.game.howLongToBeat",
       "filterHowLongToBeatFieldLabel": "@:types.gamesFilterHowLongToBeatPredicate.field",
+      "filterTagsOperatorLabel": "@:types.game.tags",
       "saveViewButton": "Save current view as...",
       "saveViewDialogTitle": "Save view",
       "saveViewDialogIndexLabel": "#",
@@ -182,9 +183,9 @@
     },
     "gamesFilterPlatformsOperator": {
       "values(map)": {
-        "equal": "Equals to",
         "hasOneOf": "Has one of",
-        "hasNoneOf": "Has none of"
+        "hasNoneOf": "Has none of",
+        "equal": "Exactly"
       }
     },
     "gamesFilterBeatenOperator": {
@@ -207,6 +208,13 @@
         "story": "@:types.gameHowLongToBeat.story",
         "storySides": "@:types.gameHowLongToBeat.storySides",
         "completionist": "@:types.gameHowLongToBeat.completionist"
+      }
+    },
+    "gamesFilterTagsOperator": {
+      "values(map)": {
+        "hasOneOf": "Has one of",
+        "hasNoneOf": "Has none of",
+        "equal": "Exactly"
       }
     }
   }

@@ -7,11 +7,13 @@ class GameTagsChoice extends StatefulWidget {
     super.key,
     required this.value,
     this.tags = const {},
+    this.compact = false,
     this.onChanged,
   });
 
   final Set<String> value;
   final Set<String> tags;
+  final bool compact;
   final void Function(Set<String>)? onChanged;
 
   @override
@@ -59,11 +61,14 @@ class _GameTagsChoiceState extends State<GameTagsChoice> {
           onSelected: selection.onSelected(_tags[i]),
           label: Text(_tags[i]),
         ),
-        listBuilder: ChoiceList.createWrapped(
+        listBuilder: widget.compact ? ChoiceList.createScrollable(
+          spacing: 10,
+          runSpacing: 10,
+        ) : ChoiceList.createWrapped(
           spacing: 10,
           runSpacing: 10,
         ),
-        trailingBuilder: (state) {
+        trailingBuilder: widget.compact ? null : (state) {
           return TextField(
               controller: _newTagController,
               decoration: InputDecoration(

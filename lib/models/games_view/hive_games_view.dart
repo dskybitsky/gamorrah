@@ -53,7 +53,8 @@ class HiveGamesFilter extends HiveObject {
   HiveGamesFilter({
     this.platforms,
     this.beaten,
-    this.howLongToBeat
+    this.howLongToBeat,
+    this.tags,
   });
 
   @HiveField(0)
@@ -65,6 +66,9 @@ class HiveGamesFilter extends HiveObject {
   @HiveField(2)
   final HiveGamesFilterHowLongToBeatPredicate? howLongToBeat;
 
+  @HiveField(3)
+  final HiveGamesFilterTagsPredicate? tags;
+
   factory HiveGamesFilter.fromGamesFilter(GamesFilter gamesFilter) => HiveGamesFilter(
     platforms: gamesFilter.platforms != null
       ? HiveGamesFilterPlatformsPredicate.fromGamesFilterPlatformsPredicate(gamesFilter.platforms!)
@@ -75,12 +79,16 @@ class HiveGamesFilter extends HiveObject {
     howLongToBeat: gamesFilter.howLongToBeat != null
       ? HiveGamesFilterHowLongToBeatPredicate.fromGamesFilterBeatenPredicate(gamesFilter.howLongToBeat!)
       : null,
+    tags: gamesFilter.tags != null
+      ? HiveGamesFilterTagsPredicate.fromGamesFilterTagsPredicate(gamesFilter.tags!)
+      : null,
   );
 
   GamesFilter toGamesPageFilter() => GamesFilter(
     platforms: platforms?.toGamesFilterPlatformsPredicate(),
     beaten: beaten?.toGamesFilterBeatenPredicate(),
     howLongToBeat: howLongToBeat?.toGamesFilterHowLongToBeatPredicate(),
+    tags: tags?.toGamesFilterTagsPredicate(),
   );
 }
 
@@ -167,5 +175,31 @@ class HiveGamesFilterHowLongToBeatPredicate {
     operator: GamesFilterHowLongToBeatOperator.values.byName(operator),
     field: GamesFilterHowLongToBeatField.values.byName(field),
     value: value
+  );
+}
+
+@HiveType(typeId:16)
+class HiveGamesFilterTagsPredicate {
+  HiveGamesFilterTagsPredicate({
+    required this.operator,
+    required this.value,
+  });
+
+  @HiveField(0)
+  final String operator;
+
+  @HiveField(1)
+  final List<String> value;
+
+  factory HiveGamesFilterTagsPredicate.fromGamesFilterTagsPredicate(
+    GamesFilterTagsPredicate gamesFilterTagsPredicate
+  ) => HiveGamesFilterTagsPredicate(
+    operator: gamesFilterTagsPredicate.operator.name,
+    value: gamesFilterTagsPredicate.value.toList(),
+  );
+
+  GamesFilterTagsPredicate toGamesFilterTagsPredicate() => GamesFilterTagsPredicate(
+    operator: GamesFilterTagsOperator.values.byName(operator),
+    value: Set.from(value)
   );
 }

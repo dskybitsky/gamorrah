@@ -3,17 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 
-class GamePlatformsInput extends StatelessWidget {
-  const GamePlatformsInput({
+class GamePlatformsChoice extends StatelessWidget {
+  const GamePlatformsChoice({
     super.key,
     required this.value,
+    this.compact = false,
     this.onChanged,
-    this.compact = false
   });
 
   final Set<GamePlatform> value;
-  final void Function(Set<GamePlatform>)? onChanged;
   final bool compact;
+  final void Function(Set<GamePlatform>)? onChanged;
   
   @override
   Widget build(BuildContext context) {

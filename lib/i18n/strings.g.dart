@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 143
+/// Strings: 147
 ///
-/// Built on 2024-04-09 at 12:50 UTC
+/// Built on 2024-04-09 at 13:51 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -190,6 +190,7 @@ class _StringsTypesEn {
 	late final _StringsTypesGamesFilterHowLongToBeatPredicateEn gamesFilterHowLongToBeatPredicate = _StringsTypesGamesFilterHowLongToBeatPredicateEn._(_root);
 	late final _StringsTypesGamesFilterHowLongToBeatOperatorEn gamesFilterHowLongToBeatOperator = _StringsTypesGamesFilterHowLongToBeatOperatorEn._(_root);
 	late final _StringsTypesGamesFilterHowLongToBeatFieldEn gamesFilterHowLongToBeatField = _StringsTypesGamesFilterHowLongToBeatFieldEn._(_root);
+	late final _StringsTypesGamesFilterTagsOperatorEn gamesFilterTagsOperator = _StringsTypesGamesFilterTagsOperatorEn._(_root);
 }
 
 // Path: ui.general
@@ -240,6 +241,7 @@ class _StringsUiGamesPageEn {
 	String get filterBeatenOperatorLabel => '${_root.types.gamePersonal.beaten}';
 	String get filterHowLongToBeatOperatorLabel => '${_root.types.game.howLongToBeat}';
 	String get filterHowLongToBeatFieldLabel => '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
+	String get filterTagsOperatorLabel => '${_root.types.game.tags}';
 	String get saveViewButton => 'Save current view as...';
 	String get saveViewDialogTitle => 'Save view';
 	String get saveViewDialogIndexLabel => '#';
@@ -504,9 +506,9 @@ class _StringsTypesGamesFilterPlatformsOperatorEn {
 
 	// Translations
 	Map<String, String> get values => {
-		'equal': 'Equals to',
 		'hasOneOf': 'Has one of',
 		'hasNoneOf': 'Has none of',
+		'equal': 'Exactly',
 	};
 }
 
@@ -560,6 +562,20 @@ class _StringsTypesGamesFilterHowLongToBeatFieldEn {
 	};
 }
 
+// Path: types.gamesFilterTagsOperator
+class _StringsTypesGamesFilterTagsOperatorEn {
+	_StringsTypesGamesFilterTagsOperatorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	Map<String, String> get values => {
+		'hasOneOf': 'Has one of',
+		'hasNoneOf': 'Has none of',
+		'equal': 'Exactly',
+	};
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 
@@ -589,6 +605,7 @@ extension on Translations {
 			case 'ui.gamesPage.filterBeatenOperatorLabel': return '${_root.types.gamePersonal.beaten}';
 			case 'ui.gamesPage.filterHowLongToBeatOperatorLabel': return '${_root.types.game.howLongToBeat}';
 			case 'ui.gamesPage.filterHowLongToBeatFieldLabel': return '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
+			case 'ui.gamesPage.filterTagsOperatorLabel': return '${_root.types.game.tags}';
 			case 'ui.gamesPage.saveViewButton': return 'Save current view as...';
 			case 'ui.gamesPage.saveViewDialogTitle': return 'Save view';
 			case 'ui.gamesPage.saveViewDialogIndexLabel': return '#';
@@ -698,9 +715,9 @@ extension on Translations {
 			case 'types.gameHowLongToBeat.story': return 'Story';
 			case 'types.gameHowLongToBeat.storySides': return 'Story + Sides';
 			case 'types.gameHowLongToBeat.completionist': return 'Completionist';
-			case 'types.gamesFilterPlatformsOperator.values.equal': return 'Equals to';
 			case 'types.gamesFilterPlatformsOperator.values.hasOneOf': return 'Has one of';
 			case 'types.gamesFilterPlatformsOperator.values.hasNoneOf': return 'Has none of';
+			case 'types.gamesFilterPlatformsOperator.values.equal': return 'Exactly';
 			case 'types.gamesFilterBeatenOperator.values.equal': return 'Equals to';
 			case 'types.gamesFilterBeatenOperator.values.notEqual': return 'Not equals to';
 			case 'types.gamesFilterHowLongToBeatPredicate.field': return 'Field';
@@ -709,6 +726,9 @@ extension on Translations {
 			case 'types.gamesFilterHowLongToBeatField.values.story': return '${_root.types.gameHowLongToBeat.story}';
 			case 'types.gamesFilterHowLongToBeatField.values.storySides': return '${_root.types.gameHowLongToBeat.storySides}';
 			case 'types.gamesFilterHowLongToBeatField.values.completionist': return '${_root.types.gameHowLongToBeat.completionist}';
+			case 'types.gamesFilterTagsOperator.values.hasOneOf': return 'Has one of';
+			case 'types.gamesFilterTagsOperator.values.hasNoneOf': return 'Has none of';
+			case 'types.gamesFilterTagsOperator.values.equal': return 'Exactly';
 			default: return null;
 		}
 	}

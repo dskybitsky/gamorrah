@@ -50,18 +50,21 @@ class GamesFilter {
   GamesFilter({
     this.platforms,
     this.beaten,
-    this.howLongToBeat
+    this.howLongToBeat,
+    this.tags,
   });
   
   final GamesFilterPlatformsPredicate? platforms;
   final GamesFilterBeatenPredicate? beaten;
   final GamesFilterHowLongToBeatPredicate? howLongToBeat;
+  final GamesFilterTagsPredicate? tags;
 
   bool matches(Game game) {
     return (
       (platforms == null || platforms!.matches(game))
       && (beaten == null || beaten!.matches(game))
       && (howLongToBeat == null || howLongToBeat!.matches(game))
+      && (tags == null || tags!.matches(game))
     );
   }
 
@@ -73,10 +76,12 @@ class GamesFilter {
     Optional<GamesFilterPlatformsPredicate?>? platforms,
     Optional<GamesFilterBeatenPredicate?>? beaten,
     Optional<GamesFilterHowLongToBeatPredicate?>? howLongToBeat,
+    Optional<GamesFilterTagsPredicate?>? tags,
   }) => GamesFilter(
     platforms: platforms != null ? platforms.value : this.platforms,
     beaten: beaten != null ? beaten.value : this.beaten,
     howLongToBeat: howLongToBeat != null ? howLongToBeat.value : this.howLongToBeat,
+    tags: tags != null ? tags.value : this.tags,
   );
 }
 
@@ -84,7 +89,7 @@ abstract class GamesFilterPredicate {
   bool matches(Game game);
 }
 
-enum GamesFilterPlatformsOperator { equal, hasOneOf, hasNoneOf }
+enum GamesFilterPlatformsOperator { hasOneOf, hasNoneOf, equal }
 
 class GamesFilterPlatformsPredicate extends GamesFilterPredicate {
   GamesFilterPlatformsPredicate({
@@ -100,14 +105,14 @@ class GamesFilterPlatformsPredicate extends GamesFilterPredicate {
     final value = game.platforms;
 
     switch (operator) {
-      case GamesFilterPlatformsOperator.equal:
-        return setEquals(value, this.value);
-
       case GamesFilterPlatformsOperator.hasOneOf:
         return value.intersection(this.value).isNotEmpty;
 
       case GamesFilterPlatformsOperator.hasNoneOf:
         return value.intersection(this.value).isEmpty;
+
+      case GamesFilterPlatformsOperator.equal:
+        return setEquals(value, this.value);
     }
   }
 
@@ -195,6 +200,42 @@ class GamesFilterHowLongToBeatPredicate extends GamesFilterPredicate {
   }) => GamesFilterHowLongToBeatPredicate(
     operator: operator != null ? operator.value : this.operator,
     field: field != null ? field.value : this.field,
+    value: value != null ? value.value : this.value,
+  );
+}
+
+enum GamesFilterTagsOperator { hasOneOf, hasNoneOf, equal }
+
+class GamesFilterTagsPredicate extends GamesFilterPredicate {
+  GamesFilterTagsPredicate({
+    this.operator = GamesFilterTagsOperator.equal,
+    this.value = const {},
+  });
+
+  final GamesFilterTagsOperator operator;
+  final Set<String> value;
+  
+  @override
+  bool matches(Game game) {
+    final value = game.tags;
+
+    switch (operator) {
+      case GamesFilterTagsOperator.hasOneOf:
+        return value.intersection(this.value).isNotEmpty;
+
+      case GamesFilterTagsOperator.hasNoneOf:
+        return value.intersection(this.value).isEmpty;
+
+      case GamesFilterTagsOperator.equal:
+        return setEquals(value, this.value);
+    }
+  }
+
+  GamesFilterTagsPredicate copyWith({
+    Optional<GamesFilterTagsOperator>? operator,
+    Optional<Set<String>>? value,
+  }) => GamesFilterTagsPredicate(
+    operator: operator != null ? operator.value : this.operator,
     value: value != null ? value.value : this.value,
   );
 }

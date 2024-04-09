@@ -5,7 +5,7 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
-import 'package:gamorrah/widgets/game/game_platforms_input.dart';
+import 'package:gamorrah/widgets/game/game_platforms_choice.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamePageDialog extends StatefulWidget {
@@ -125,7 +125,7 @@ class _GamePageDialogState extends State<GamePageDialog> {
             ),
           ),
           VSpacer(),
-          GamePlatformsInput(
+          GamePlatformsChoice(
             value: _platforms,
             onChanged: (value) {
               setState((){ 
