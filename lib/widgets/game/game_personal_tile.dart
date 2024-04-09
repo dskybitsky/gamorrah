@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
-import 'package:gamorrah/widgets/game/game_personal_rating_input.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_dropdown.dart';
+import 'package:gamorrah/widgets/game/game_personal_rating_bar.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
-class GamePersonalInput extends StatelessWidget {
-  const GamePersonalInput({
+class GamePersonalTile extends StatelessWidget {
+  const GamePersonalTile({
     super.key,
     required this.value,
     this.onChanged,
@@ -27,7 +27,7 @@ class GamePersonalInput extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Flexible(child: GamePersonalBeatenInput(
+            Flexible(child: GamePersonalBeatenDropdown(
               value: value.beaten, 
               onChanged: _onBeatenChanged,
             )),
@@ -49,7 +49,7 @@ class GamePersonalInput extends StatelessWidget {
         VSpacer(),
         ListTile(
           title: Text(t.ui.gamePersonalControl.ratingLabel),
-          trailing: GamePersonalRatingInput(
+          trailing: GamePersonalRatingBar(
             value: value.rating, 
             onChanged: _onRatingChanged,
           ),

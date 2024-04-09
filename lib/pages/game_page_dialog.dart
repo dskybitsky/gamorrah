@@ -5,7 +5,7 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/state/game/games_bloc.dart';
-import 'package:gamorrah/widgets/game/game_platforms_input.dart';
+import 'package:gamorrah/widgets/game/game_platforms_choice.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamePageDialog extends StatefulWidget {
@@ -21,7 +21,7 @@ class _GamePageDialogState extends State<GamePageDialog> {
   late TextEditingController _titleController;
   late TextEditingController _franchiseController;
   late TextEditingController _editionController;
-  late int? _year;
+  late TextEditingController _yearController;
   late TextEditingController _thumbUrlController;
   late Set<GamePlatform> _platforms;
   
@@ -29,12 +29,23 @@ class _GamePageDialogState extends State<GamePageDialog> {
   void initState() {
     super.initState();
 
-     _titleController = TextEditingController(text: widget.game.title);
-     _franchiseController = TextEditingController(text: widget.game.franchise);
-     _editionController = TextEditingController(text: widget.game.edition);
-     _year = widget.game.year;
-     _thumbUrlController = TextEditingController(text: widget.game.thumbUrl);
-     _platforms = Set.from(widget.game.platforms);
+    _titleController = TextEditingController(text: widget.game.title);
+    _franchiseController = TextEditingController(text: widget.game.franchise);
+    _editionController = TextEditingController(text: widget.game.edition);
+    _yearController = TextEditingController(text: widget.game.year?.toString());
+    _thumbUrlController = TextEditingController(text: widget.game.thumbUrl);
+    _platforms = Set.from(widget.game.platforms);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _titleController.dispose();
+    _franchiseController.dispose();
+    _editionController.dispose();
+    _yearController.dispose();
+    _thumbUrlController.dispose();
   }
 
   @override
@@ -54,7 +65,7 @@ class _GamePageDialogState extends State<GamePageDialog> {
                 title: Optional(_titleController.text),
                 franchise: Optional(_franchiseController.text),
                 edition: Optional(_editionController.text),
-                year: Optional(_year),
+                year: Optional(int.tryParse(_yearController.text)),
                 thumbUrl: Optional(_thumbUrlController.text),
                 platforms: Optional(_platforms),
               ))
@@ -88,23 +99,21 @@ class _GamePageDialogState extends State<GamePageDialog> {
           ),
           VSpacer(),
           TextField(
-            controller: _editionController,
+            controller: _yearController,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly
+            ],
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: t.ui.gamePage.editionLabel,
+              labelText: t.ui.gamePage.yearLabel,
             ),
           ),
           VSpacer(),
           TextField(
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly
-            ],
-            onChanged: (value) {
-              _year = int.tryParse(value);
-            },
+            controller: _editionController,
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: t.ui.gamePage.yearLabel,
+              labelText: t.ui.gamePage.editionLabel,
             ),
           ),
           VSpacer(),
@@ -116,7 +125,7 @@ class _GamePageDialogState extends State<GamePageDialog> {
             ),
           ),
           VSpacer(),
-          GamePlatformsInput(
+          GamePlatformsChoice(
             value: _platforms,
             onChanged: (value) {
               setState((){ 

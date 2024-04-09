@@ -32,6 +32,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       emit(state.copyWith(
         phase: StatePhase.success,
         games: games,
+        tags: _extractTags(games),
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
@@ -52,7 +53,8 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
 
       emit(state.copyWith(
         phase: StatePhase.success,
-        games: games
+        games: games,
+        tags: _extractTags(games),
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
@@ -74,6 +76,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       emit(state.copyWith(
         phase: StatePhase.success,
         games: games,
+        tags: _extractTags(games),
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
@@ -100,6 +103,7 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       emit(state.copyWith(
         phase: StatePhase.success,
         games: games,
+        tags: _extractTags(games),
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
@@ -119,10 +123,21 @@ class GamesBloc extends Bloc<GamesEvent, GamesState> {
       emit(state.copyWith(
         phase: StatePhase.success,
         games: [],
+        tags: {},
       ));
     } catch (error, stacktrace) {
       print(stacktrace);
       emit(state.copyWith(phase: StatePhase.error));
     }
+  }
+
+  Set<String> _extractTags(Iterable<Game> games) {
+    final Set<String> tags = {};
+
+    for (var game in games) {
+      tags.addAll(game.tags);
+    }
+
+    return tags;
   }
 }

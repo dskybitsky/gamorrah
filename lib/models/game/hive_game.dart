@@ -21,6 +21,7 @@ class HiveGame extends HiveObject {
     this.howLongToBeatStory,
     this.howLongToBeatStorySides,
     this.howLongToBeatCompletionist,
+    this.tags = const [],
     required this.status,
     this.parentId,
   });
@@ -35,10 +36,10 @@ class HiveGame extends HiveObject {
   final String? franchise;
 
   @HiveField(3)
-  final String? edition;
+  final int? year;
 
   @HiveField(4)
-  final int? year;
+  final String? edition;
 
   @HiveField(5)
   final String? thumbUrl;
@@ -71,17 +72,20 @@ class HiveGame extends HiveObject {
   final double? howLongToBeatCompletionist;
 
   @HiveField(15)
-  final String status;
+  final List<String> tags;
 
   @HiveField(16)
+  final String status;
+
+  @HiveField(17)
   final String? parentId;
 
   factory HiveGame.fromGame(Game game) => HiveGame(
     id: game.id, 
     title: game.title,
     franchise: game.franchise,
-    edition: game.edition,
     year: game.year,
+    edition: game.edition,
     thumbUrl: game.thumbUrl,
     kind: game.kind?.name,
     index: game.index,
@@ -93,6 +97,7 @@ class HiveGame extends HiveObject {
     howLongToBeatStorySides: game.howLongToBeat?.storySides,
     howLongToBeatCompletionist: game.howLongToBeat?.completionist,
     status: game.status.name,
+    tags: game.tags.toList(),
     parentId: game.parentId,
   );
 
@@ -100,8 +105,8 @@ class HiveGame extends HiveObject {
     id: id, 
     title: title, 
     franchise: franchise,
-    edition: edition,
     year: year,
+    edition: edition,
     thumbUrl: thumbUrl,
     kind: kind != null ? GameKind.values.byName(kind!) : null,
     index: index,
@@ -110,6 +115,7 @@ class HiveGame extends HiveObject {
     ),
     personal: _toGamePersonal(),
     howLongToBeat: _toGameHowLongToBeat(),
+    tags: tags.toSet(),
     status: GameStatus.values.byName(status),
     parentId: parentId,
   );

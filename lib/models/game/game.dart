@@ -15,6 +15,7 @@ class Game {
     this.personal,
     this.howLongToBeat,
     required this.status,
+    this.tags = const {},
     this.parentId,
   });
 
@@ -22,8 +23,8 @@ class Game {
 
   final String title;
   final String? franchise;
-  final String? edition;
   final int? year;
+  final String? edition;
   final String? thumbUrl;
 
   final GameKind? kind;
@@ -33,36 +34,43 @@ class Game {
   final GamePersonal? personal;
   final GameHowLongToBeat? howLongToBeat;
 
-  final GameStatus status;
+  final Set<String> tags;
 
+  final GameStatus status;
+  
   final String? parentId;
 
   factory Game.create({
     String? id,
     required String title,
     String? franchise,
-    String? edition,
     int? year,
+    String? edition,
     String? thumbUrl,
     GameKind? kind,
     int? index,
     Set<GamePlatform> platforms = const {},
     GamePersonal? personal,
     GameHowLongToBeat? howLongToBeat,
+    Set<String> tags = const {},
     GameStatus? status,
     String? parentId,
   }) => Game(
     id: id ?? const Uuid().v4(),
     title: title, 
     franchise: _normalize(franchise),
-    edition: _normalize(edition),
     year: year,
+    edition: _normalize(edition),
     thumbUrl: _normalize(thumbUrl),
     kind: kind,
     index: index,
     platforms: platforms,
     personal: personal,
     howLongToBeat: howLongToBeat,
+    tags: tags
+      .map((tag) => tag.toLowerCase())
+      .where((tag) => tag != '')
+      .toSet(),
     status: status ?? GameStatus.backlog,
     parentId: parentId,
   );
@@ -77,8 +85,8 @@ class Game {
       id: data['id'], 
       title: data['title'],
       franchise: data['franchise'],
-      edition: data['edition'],
       year: data['year'],
+      edition: data['edition'],
       thumbUrl: data['thumbUrl'],
       kind: kindName != null
         ? GameKind.values.byName(kindName)
@@ -96,6 +104,7 @@ class Game {
       howLongToBeat: howLongToBeatJson != null
         ? GameHowLongToBeat.fromJson(howLongToBeatJson)
         : null,
+      tags: data['tags'] ?? {},
       status: GameStatus.values.byName(data['status']),
       parentId: data['parentId'],
     );
@@ -105,14 +114,15 @@ class Game {
     'id': id,
     'title': title,
     'franchise': franchise,
-    'edition': edition,
     'year': year,
+    'edition': edition,
     'thumbUrl': thumbUrl,
     'kind': kind?.name,
     'index': index,
     'platforms': platforms.map((e) => e.name).toList(),
     'personal': personal?.toJson(),
     'howLongToBeat': howLongToBeat?.toJson(),
+    'tags': tags,
     'status': status.name,
     'parentId': parentId,
   };
@@ -120,28 +130,30 @@ class Game {
   Game copyWith({
     Optional<String>? title,
     Optional<String?>? franchise,
-    Optional<String?>? edition,
     Optional<int?>? year,
+    Optional<String?>? edition,
     Optional<String?>? thumbUrl,
     Optional<GameKind?>? kind,
     Optional<int?>? index,
     Optional<Set<GamePlatform>>? platforms,
     Optional<GamePersonal?>? personal,
     Optional<GameHowLongToBeat?>? howLongToBeat,
+    Optional<Set<String>>? tags,
     Optional<GameStatus?>? status,
     Optional<String?>? parentId,
   }) => Game.create(
     id: id,
     title: title != null ? title.value : this.title,
     franchise: franchise != null ? franchise.value : this.franchise,
-    edition: edition != null ? edition.value : this.edition,
     year: year != null ? year.value : this.year,
+    edition: edition != null ? edition.value : this.edition,
     thumbUrl: thumbUrl != null ? thumbUrl.value : this.thumbUrl,
     kind: kind != null ? kind.value : this.kind,
     index: index != null ? index.value : this.index,
     platforms: platforms != null ? platforms.value : this.platforms,
     personal: personal != null ? personal.value : this.personal,
     howLongToBeat: howLongToBeat != null ? howLongToBeat.value : this.howLongToBeat,
+    tags: tags != null ? tags.value : this.tags,
     status: status != null ? status.value : this.status,
     parentId: parentId != null ? parentId.value : this.parentId,
   );
@@ -238,41 +250,45 @@ enum GameKind { bundle, dlc, content }
 enum GameStatus { backlog, playing, finished, wishlist }
 
 enum GamePlatform {
-  pc(title: 'PC/Mac'),
+  pc,
+  mobile,
   
-  mobile(title: 'Mobile'),
+  megadrive(brand: GamePlatformBrand.sega, generation: 4),
+  saturn(brand: GamePlatformBrand.sega, generation: 5),
+  dreamcast(brand: GamePlatformBrand.sega, generation: 6),
   
-  megadrive(title: 'Sega MegaDrive'), 
-  saturn(title: 'Sega Saturn'), 
-  dreamcast(title: 'Sega Dreamcast'),
-  
-  nes(title: 'Nintendo NES'),
-  snes(title: 'Nintendo SNES'),
-  gamecube(title: 'Nintendo GameCube'),
-  wii(title: 'Nintendo Wii'),
-  wiiu(title: 'Nintendo Wii U'), 
-  swtch(title: 'Nintendo Switch'), 
-  gb(title: 'Nintedo GameBoy'), 
-  gba(title: 'Nintendo GameBoy Advance'), 
-  ds(title: 'Nintendo DS'), 
-  ds3(title: 'Nintendo 3DS'),
+  nes(brand: GamePlatformBrand.nintendo, generation: 3),
+  snes(brand: GamePlatformBrand.nintendo, generation: 4),
+  n64(brand: GamePlatformBrand.nintendo, generation: 5),
+  gamecube(brand: GamePlatformBrand.nintendo, generation: 6),
+  wii(brand: GamePlatformBrand.nintendo, generation: 7),
+  wiiu(brand: GamePlatformBrand.nintendo, generation: 8),
+  swtch(brand: GamePlatformBrand.nintendo, generation: 8),
+  gb(brand: GamePlatformBrand.nintendo, generation: 4),
+  gba(brand: GamePlatformBrand.nintendo, generation: 6),
+  ds(brand: GamePlatformBrand.nintendo, generation: 7),
+  ds3(brand: GamePlatformBrand.nintendo, generation: 8),
 
-  ps(title: 'Sony PlayStation'),
-  ps2(title: 'Sony PlayStation 2'), 
-  ps3(title: 'Sony PlayStation 3'), 
-  ps4(title: 'Sony PlayStation 4/Pro'), 
-  ps5(title: 'Sony PlayStation 5'), 
-  psp(title: 'Sony PSP'),
-  psvita(title: 'Sony PS Vita'),
+  ps(brand: GamePlatformBrand.sony, generation: 5),
+  ps2(brand: GamePlatformBrand.sony, generation: 6),
+  ps3(brand: GamePlatformBrand.sony, generation: 7),
+  ps4(brand: GamePlatformBrand.sony, generation: 8),
+  ps5(brand: GamePlatformBrand.sony, generation: 9),
+  psp(brand: GamePlatformBrand.sony, generation: 7),
+  psvita(brand: GamePlatformBrand.sony, generation: 8),
   
-  xbox(title: 'Microsoft XBox'), 
-  xbox360(title: 'Microsoft XBox 360'), 
-  xboxone(title: 'Microsoft XBox One'), 
-  xboxseries(title: 'Microsoft XBox Series S/X');
+  xbox(brand: GamePlatformBrand.microsoft, generation: 6),
+  xbox360(brand: GamePlatformBrand.microsoft, generation: 7),
+  xboxone(brand: GamePlatformBrand.microsoft, generation: 8),
+  xboxseries(brand: GamePlatformBrand.microsoft, generation: 9);
 
   const GamePlatform({
-    required this.title
+    this.brand,
+    this.generation,
   });
 
-  final String title;
+  final int? generation;
+  final GamePlatformBrand? brand;
 }
+
+enum GamePlatformBrand { sega, nintendo, sony, microsoft }

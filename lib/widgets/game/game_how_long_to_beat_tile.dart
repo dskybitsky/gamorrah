@@ -5,8 +5,8 @@ import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/models/optional.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
-class GameHowLongToBeatInput extends StatelessWidget {
-  const GameHowLongToBeatInput({
+class GameHowLongToBeatTile extends StatelessWidget {
+  const GameHowLongToBeatTile({
     super.key,
     required this.value,
     this.onChanged,

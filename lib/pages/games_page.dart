@@ -129,7 +129,7 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         title: Text(t.types.gameStatus.values[widget.status.name]!),
-        actions: _buildActions(context, gamesViews),
+        actions: _buildActions(context, gamesViews, gamesState.tags),
         bottom: gamesViews.isNotEmpty
           ? TabBar(
               controller: _tabController,
@@ -187,7 +187,7 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
     );
   }
 
-  List<Widget> _buildActions(BuildContext context, List<GamesView> gamesViews) {
+  List<Widget> _buildActions(BuildContext context, List<GamesView> gamesViews, Set<String> tags) {
     final List<Widget> widgets = [];
 
     widgets.add(
@@ -219,6 +219,7 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
               filter: gamesViews.isNotEmpty
                 ? gamesViews[_tabIndex].filter
                 : _defaultFilter,
+              tags: tags,
               onChanged: (value) {
                 if (gamesViews.isNotEmpty) {
                   final newGamesView = gamesViews[_tabIndex].copyWith(

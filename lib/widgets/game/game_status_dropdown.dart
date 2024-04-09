@@ -3,8 +3,8 @@ import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/game/game.dart';
 import 'package:gamorrah/widgets/game/game_status_icon.dart';
 
-class GameStatusInput extends StatelessWidget {
-  const GameStatusInput({
+class GameStatusDropdown extends StatelessWidget {
+  const GameStatusDropdown({
     super.key,
     required this.value,
     this.onChanged,

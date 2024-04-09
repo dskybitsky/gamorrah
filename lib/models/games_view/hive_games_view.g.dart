@@ -66,19 +66,22 @@ class HiveGamesFilterAdapter extends TypeAdapter<HiveGamesFilter> {
       platforms: fields[0] as HiveGamesFilterPlatformsPredicate?,
       beaten: fields[1] as HiveGamesFilterBeatenPredicate?,
       howLongToBeat: fields[2] as HiveGamesFilterHowLongToBeatPredicate?,
+      tags: fields[3] as HiveGamesFilterTagsPredicate?,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveGamesFilter obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.platforms)
       ..writeByte(1)
       ..write(obj.beaten)
       ..writeByte(2)
-      ..write(obj.howLongToBeat);
+      ..write(obj.howLongToBeat)
+      ..writeByte(3)
+      ..write(obj.tags);
   }
 
   @override
@@ -205,6 +208,44 @@ class HiveGamesFilterHowLongToBeatPredicateAdapter
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is HiveGamesFilterHowLongToBeatPredicateAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class HiveGamesFilterTagsPredicateAdapter
+    extends TypeAdapter<HiveGamesFilterTagsPredicate> {
+  @override
+  final int typeId = 16;
+
+  @override
+  HiveGamesFilterTagsPredicate read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return HiveGamesFilterTagsPredicate(
+      operator: fields[0] as String,
+      value: (fields[1] as List).cast<String>(),
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, HiveGamesFilterTagsPredicate obj) {
+    writer
+      ..writeByte(2)
+      ..writeByte(0)
+      ..write(obj.operator)
+      ..writeByte(1)
+      ..write(obj.value);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HiveGamesFilterTagsPredicateAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

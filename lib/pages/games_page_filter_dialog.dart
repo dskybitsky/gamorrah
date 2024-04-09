@@ -3,17 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:gamorrah/i18n/strings.g.dart';
 import 'package:gamorrah/models/games_view/games_view.dart';
 import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_input.dart';
-import 'package:gamorrah/widgets/game/game_platforms_input.dart';
+import 'package:gamorrah/widgets/game/game_personal_beaten_dropdown.dart';
+import 'package:gamorrah/widgets/game/game_platforms_choice.dart';
+import 'package:gamorrah/widgets/game/game_tags_choice.dart';
 import 'package:gamorrah/widgets/ui/spacer.dart';
 
 class GamesPageFilterDialog extends StatefulWidget {
   const GamesPageFilterDialog({
     this.filter,
+    this.tags = const {},
     this.onChanged,
   });
 
   final GamesFilter? filter;
+  final Set<String> tags;
   final void Function(GamesFilter)? onChanged;
 
   @override
@@ -24,6 +27,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
   late GamesFilterBeatenPredicate? _beaten;
   late GamesFilterPlatformsPredicate? _platforms;
   late GamesFilterHowLongToBeatPredicate? _howLongToBeat;
+  late GamesFilterTagsPredicate? _tags;
   
   @override
   void initState() {
@@ -32,13 +36,14 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
     _beaten = widget.filter?.beaten;
     _platforms = widget.filter?.platforms;
     _howLongToBeat = widget.filter?.howLongToBeat;
+    _tags = widget.filter?.tags;
   }
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(t.ui.gamesPage.filterDialogTitle),
-      content: _buildContent(context),
+      content: _contentBuilder(context),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
@@ -54,11 +59,13 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
                     beaten: Optional(_beaten),
                     platforms: Optional(_platforms),
                     howLongToBeat: Optional(_howLongToBeat),
+                    tags: Optional(_tags),
                   )
                 : GamesFilter(
                   beaten: _beaten, 
                   platforms: _platforms,
                   howLongToBeat: _howLongToBeat,
+                  tags: _tags,
                 );
 
               onChanged(newFilter);
@@ -72,24 +79,26 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
     );
   }
 
-  Widget _buildContent(BuildContext context) {
+  Widget _contentBuilder(BuildContext context) {
     return SingleChildScrollView(
       child: SizedBox(
         width: 520,
         child: Column(
           children: [
-            _buildContentFilterPlatforms(context),
+            _contentFilterPlatformsBuilder(context),
             VSpacer(),
-            _buildContentFilterBeaten(context),
+            _contentFilterBeatenBuilder(context),
             VSpacer(),
-            _buildContentFilterHowLongToBeat(context),
+            _contentFilterHowLongToBeatBuilder(context),
+            VSpacer(),
+            _contentFilterTagsBuilder(context),
          ],
         ),
       )
     );
   }
 
-  Widget _buildContentFilterPlatforms(BuildContext context) {
+  Widget _contentFilterPlatformsBuilder(BuildContext context) {
     final operatorDropDownMenu = DropdownMenu<GamesFilterPlatformsOperator?>(
       label: Text(t.ui.gamesPage.filterPlatformsOperatorLabel),
       expandedInsets: EdgeInsets.zero,
@@ -124,8 +133,9 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
     return Row(children: [
       Expanded(flex: 1, child: operatorDropDownMenu),
       HSpacer(),
-      Expanded(flex: 2, child: GamePlatformsInput(
+      Expanded(flex: 2, child: GamePlatformsChoice(
         value: _platforms!.value,
+        compact: true,
         onChanged: (value) {
           setState(() {
             _platforms = _platforms!.copyWith(value: Optional(value));
@@ -135,7 +145,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
     ]);
   }
 
-  Widget _buildContentFilterBeaten(BuildContext context) {
+  Widget _contentFilterBeatenBuilder(BuildContext context) {
     final operatorDropDownMenu = DropdownMenu<GamesFilterBeatenOperator?>(
       label: Text(t.ui.gamesPage.filterBeatenOperatorLabel),
       expandedInsets: EdgeInsets.zero,
@@ -170,7 +180,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
     return Row(children: [
       Expanded(flex: 1, child: operatorDropDownMenu),
       HSpacer(),
-      Expanded(flex: 2, child: GamePersonalBeatenInput(
+      Expanded(flex: 2, child: GamePersonalBeatenDropdown(
         value: _beaten?.value,
         onChanged: (value) {
           setState(() { 
@@ -181,7 +191,7 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
     ]);
   }
 
-  Widget _buildContentFilterHowLongToBeat(BuildContext context) {
+  Widget _contentFilterHowLongToBeatBuilder(BuildContext context) {
     final operatorDropDownMenu = DropdownMenu<GamesFilterHowLongToBeatOperator?>(
       label: Text(t.ui.gamesPage.filterHowLongToBeatOperatorLabel),
       expandedInsets: EdgeInsets.zero,
@@ -250,6 +260,54 @@ class _GamesPageFilterDialogState extends State<GamesPageFilterDialog> {
           )),
         ],
       )),      
+    ]);
+  }
+
+  Widget _contentFilterTagsBuilder(BuildContext context) {
+    final operatorDropDownMenu = DropdownMenu<GamesFilterTagsOperator?>(
+      label: Text(t.ui.gamesPage.filterTagsOperatorLabel),
+      expandedInsets: EdgeInsets.zero,
+      initialSelection: _tags?.operator,
+      dropdownMenuEntries: [
+        DropdownMenuEntry(
+          value: null,
+          label: t.ui.general.offText,
+        ),
+        ...GamesFilterTagsOperator.values.map((operator) => DropdownMenuEntry(
+          value: operator,
+          label: t.types.gamesFilterTagsOperator.values[operator.name]!
+        ))
+      ], 
+      onSelected: (value) {
+        setState(() {
+          if (value == null) {
+            _tags = null;
+          } else {
+            _tags = GamesFilterTagsPredicate(operator: value);
+          }
+        });
+      }
+    );
+
+    if (_tags == null) {
+      return Row(
+        children: [Expanded(child: operatorDropDownMenu)]
+      );
+    }
+
+    return Row(children: [
+      Expanded(flex: 1, child: operatorDropDownMenu),
+      HSpacer(),
+      Expanded(flex: 2, child: GameTagsChoice(
+        value: _tags!.value,
+        tags: widget.tags,
+        compact: true,
+        onChanged: (value) {
+          setState(() {
+            _tags = _tags!.copyWith(value: Optional(value));
+          });
+        },
+      )),
     ]);
   }
 }

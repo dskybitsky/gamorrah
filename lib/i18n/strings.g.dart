@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 108
+/// Strings: 148
 ///
-/// Built on 2024-04-07 at 06:28 UTC
+/// Built on 2024-04-09 at 14:37 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -167,6 +167,7 @@ class _StringsUiEn {
 	late final _StringsUiGamePersonalControlEn gamePersonalControl = _StringsUiGamePersonalControlEn._(_root);
 	late final _StringsUiGameHowLongToBeatControlEn gameHowLongToBeatControl = _StringsUiGameHowLongToBeatControlEn._(_root);
 	late final _StringsUiGameStatusControlEn gameStatusControl = _StringsUiGameStatusControlEn._(_root);
+	late final _StringsUiGameTagsControlEn gameTagsControl = _StringsUiGameTagsControlEn._(_root);
 }
 
 // Path: types
@@ -178,6 +179,8 @@ class _StringsTypesEn {
 	// Translations
 	late final _StringsTypesGameEn game = _StringsTypesGameEn._(_root);
 	late final _StringsTypesGameKindEn gameKind = _StringsTypesGameKindEn._(_root);
+	late final _StringsTypesGamePlatformEn gamePlatform = _StringsTypesGamePlatformEn._(_root);
+	late final _StringsTypesGamePlatformBrandEn gamePlatformBrand = _StringsTypesGamePlatformBrandEn._(_root);
 	late final _StringsTypesGameStatusEn gameStatus = _StringsTypesGameStatusEn._(_root);
 	late final _StringsTypesGamePersonalEn gamePersonal = _StringsTypesGamePersonalEn._(_root);
 	late final _StringsTypesGamePersonalBeatenEn gamePersonalBeaten = _StringsTypesGamePersonalBeatenEn._(_root);
@@ -187,6 +190,7 @@ class _StringsTypesEn {
 	late final _StringsTypesGamesFilterHowLongToBeatPredicateEn gamesFilterHowLongToBeatPredicate = _StringsTypesGamesFilterHowLongToBeatPredicateEn._(_root);
 	late final _StringsTypesGamesFilterHowLongToBeatOperatorEn gamesFilterHowLongToBeatOperator = _StringsTypesGamesFilterHowLongToBeatOperatorEn._(_root);
 	late final _StringsTypesGamesFilterHowLongToBeatFieldEn gamesFilterHowLongToBeatField = _StringsTypesGamesFilterHowLongToBeatFieldEn._(_root);
+	late final _StringsTypesGamesFilterTagsOperatorEn gamesFilterTagsOperator = _StringsTypesGamesFilterTagsOperatorEn._(_root);
 }
 
 // Path: ui.general
@@ -237,6 +241,7 @@ class _StringsUiGamesPageEn {
 	String get filterBeatenOperatorLabel => '${_root.types.gamePersonal.beaten}';
 	String get filterHowLongToBeatOperatorLabel => '${_root.types.game.howLongToBeat}';
 	String get filterHowLongToBeatFieldLabel => '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
+	String get filterTagsOperatorLabel => '${_root.types.game.tags}';
 	String get saveViewButton => 'Save current view as...';
 	String get saveViewDialogTitle => 'Save view';
 	String get saveViewDialogIndexLabel => '#';
@@ -273,6 +278,7 @@ class _StringsUiGamePageEn {
 	String get statusLabel => '${_root.types.game.status}:';
 	String get defaultIncludedGameTitle => 'New included game';
 	String get deleteGameConfirmationMessage => 'This game will be deleted. Proceed?';
+	String get defaultTag => 'sample tag';
 }
 
 // Path: ui.settingsPage
@@ -298,8 +304,7 @@ class _StringsUiGamePlatformsControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get dialogTitle => 'Choose ${_root.types.game.platforms}';
-	String get placeholder => '${_root.types.game.platforms}';
+	String get title => '${_root.types.game.platforms}:';
 }
 
 // Path: ui.gamePersonalControl
@@ -338,6 +343,17 @@ class _StringsUiGameStatusControlEn {
 	String get titleLabel => '${_root.types.game.status}:';
 }
 
+// Path: ui.gameTagsControl
+class _StringsUiGameTagsControlEn {
+	_StringsUiGameTagsControlEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => '${_root.types.game.tags}:';
+	String get newTagPlaceholder => 'Enter new tag';
+}
+
 // Path: types.game
 class _StringsTypesGameEn {
 	_StringsTypesGameEn._(this._root);
@@ -354,6 +370,7 @@ class _StringsTypesGameEn {
 	String get platforms => 'Platforms';
 	String get personal => 'Personal';
 	String get howLongToBeat => 'HowLongToBeat';
+	String get tags => 'Tags';
 	String get status => 'Status';
 }
 
@@ -369,6 +386,61 @@ class _StringsTypesGameKindEn {
 		'bundle': 'Bundle',
 		'dlc': 'DLC/Expansion/Addon',
 		'content': 'Content Pack',
+	};
+}
+
+// Path: types.gamePlatform
+class _StringsTypesGamePlatformEn {
+	_StringsTypesGamePlatformEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get none => 'Generic';
+	Map<String, String> get values => {
+		'pc': 'PC/Mac',
+		'mobile': 'Mobile',
+		'megadrive': 'Sega MegaDrive',
+		'saturn': 'Sega Saturn',
+		'dreamcast': 'Sega Dreamcast',
+		'nes': 'Nintendo NES',
+		'snes': 'Nintendo SNES',
+		'n64': 'Nintendo 64',
+		'gamecube': 'Nintendo GameCube',
+		'wii': 'Nintendo Wii',
+		'wiiu': 'Nintendo Wii U',
+		'swtch': 'Nintendo Switch',
+		'gb': 'Nintedo GameBoy',
+		'gba': 'Nintendo GameBoy Advance',
+		'ds': 'Nintendo DS',
+		'ds3': 'Nintendo 3DS',
+		'ps': 'Sony PlayStation',
+		'ps2': 'Sony PlayStation 2',
+		'ps3': 'Sony PlayStation 3',
+		'ps4': 'Sony PlayStation 4/Pro',
+		'ps5': 'Sony PlayStation 5',
+		'psp': 'Sony PSP',
+		'psvita': 'Sony PS Vita',
+		'xbox': 'Microsoft XBox',
+		'xbox360': 'Microsoft XBox 360',
+		'xboxone': 'Microsoft XBox One',
+		'xboxseries': 'Microsoft XBox Series S/X',
+	};
+}
+
+// Path: types.gamePlatformBrand
+class _StringsTypesGamePlatformBrandEn {
+	_StringsTypesGamePlatformBrandEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get none => 'None';
+	Map<String, String> get values => {
+		'sega': 'Sega',
+		'nintendo': 'Nintedo',
+		'sony': 'Sony',
+		'microsoft': 'Microsoft',
 	};
 }
 
@@ -435,9 +507,9 @@ class _StringsTypesGamesFilterPlatformsOperatorEn {
 
 	// Translations
 	Map<String, String> get values => {
-		'equal': 'Equals to',
 		'hasOneOf': 'Has one of',
 		'hasNoneOf': 'Has none of',
+		'equal': 'Exactly',
 	};
 }
 
@@ -491,6 +563,20 @@ class _StringsTypesGamesFilterHowLongToBeatFieldEn {
 	};
 }
 
+// Path: types.gamesFilterTagsOperator
+class _StringsTypesGamesFilterTagsOperatorEn {
+	_StringsTypesGamesFilterTagsOperatorEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	Map<String, String> get values => {
+		'hasOneOf': 'Has one of',
+		'hasNoneOf': 'Has none of',
+		'equal': 'Exactly',
+	};
+}
+
 /// Flat map(s) containing all translations.
 /// Only for edge cases! For simple maps, use the map function of this library.
 
@@ -520,6 +606,7 @@ extension on Translations {
 			case 'ui.gamesPage.filterBeatenOperatorLabel': return '${_root.types.gamePersonal.beaten}';
 			case 'ui.gamesPage.filterHowLongToBeatOperatorLabel': return '${_root.types.game.howLongToBeat}';
 			case 'ui.gamesPage.filterHowLongToBeatFieldLabel': return '${_root.types.gamesFilterHowLongToBeatPredicate.field}';
+			case 'ui.gamesPage.filterTagsOperatorLabel': return '${_root.types.game.tags}';
 			case 'ui.gamesPage.saveViewButton': return 'Save current view as...';
 			case 'ui.gamesPage.saveViewDialogTitle': return 'Save view';
 			case 'ui.gamesPage.saveViewDialogIndexLabel': return '#';
@@ -547,6 +634,7 @@ extension on Translations {
 			case 'ui.gamePage.statusLabel': return '${_root.types.game.status}:';
 			case 'ui.gamePage.defaultIncludedGameTitle': return 'New included game';
 			case 'ui.gamePage.deleteGameConfirmationMessage': return 'This game will be deleted. Proceed?';
+			case 'ui.gamePage.defaultTag': return 'sample tag';
 			case 'ui.settingsPage.settingsTitle': return 'Settings';
 			case 'ui.settingsPage.importFromJsonButton': return 'Import from JSON';
 			case 'ui.settingsPage.importFromJsonSuccessMessage': return 'Import finished succesfully';
@@ -554,8 +642,7 @@ extension on Translations {
 			case 'ui.settingsPage.exportToJsonSuccessMessage': return 'Export finished succesfully';
 			case 'ui.settingsPage.deleteAllGamesButton': return 'Delete All Games';
 			case 'ui.settingsPage.deleteAllGamesConfirmationMessage': return 'All games will be deleted. Proceed?';
-			case 'ui.gamePlatformsControl.dialogTitle': return 'Choose ${_root.types.game.platforms}';
-			case 'ui.gamePlatformsControl.placeholder': return '${_root.types.game.platforms}';
+			case 'ui.gamePlatformsControl.title': return '${_root.types.game.platforms}:';
 			case 'ui.gamePersonalControl.headerLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.beatenLabel': return '${_root.types.gamePersonal.beaten}:';
 			case 'ui.gamePersonalControl.ratingLabel': return '${_root.types.gamePersonal.rating}:';
@@ -565,6 +652,8 @@ extension on Translations {
 			case 'ui.gameHowLongToBeatControl.storySidesLabel': return ({required Object count}) => 'Story + Sides: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameHowLongToBeatControl.completionistLabel': return ({required Object count}) => 'Completionist: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameStatusControl.titleLabel': return '${_root.types.game.status}:';
+			case 'ui.gameTagsControl.title': return '${_root.types.game.tags}:';
+			case 'ui.gameTagsControl.newTagPlaceholder': return 'Enter new tag';
 			case 'types.game.title': return 'Title';
 			case 'types.game.franchise': return 'Franchise';
 			case 'types.game.edition': return 'Edition';
@@ -574,11 +663,45 @@ extension on Translations {
 			case 'types.game.platforms': return 'Platforms';
 			case 'types.game.personal': return 'Personal';
 			case 'types.game.howLongToBeat': return 'HowLongToBeat';
+			case 'types.game.tags': return 'Tags';
 			case 'types.game.status': return 'Status';
 			case 'types.gameKind.none': return 'Game';
 			case 'types.gameKind.values.bundle': return 'Bundle';
 			case 'types.gameKind.values.dlc': return 'DLC/Expansion/Addon';
 			case 'types.gameKind.values.content': return 'Content Pack';
+			case 'types.gamePlatform.none': return 'Generic';
+			case 'types.gamePlatform.values.pc': return 'PC/Mac';
+			case 'types.gamePlatform.values.mobile': return 'Mobile';
+			case 'types.gamePlatform.values.megadrive': return 'Sega MegaDrive';
+			case 'types.gamePlatform.values.saturn': return 'Sega Saturn';
+			case 'types.gamePlatform.values.dreamcast': return 'Sega Dreamcast';
+			case 'types.gamePlatform.values.nes': return 'Nintendo NES';
+			case 'types.gamePlatform.values.snes': return 'Nintendo SNES';
+			case 'types.gamePlatform.values.n64': return 'Nintendo 64';
+			case 'types.gamePlatform.values.gamecube': return 'Nintendo GameCube';
+			case 'types.gamePlatform.values.wii': return 'Nintendo Wii';
+			case 'types.gamePlatform.values.wiiu': return 'Nintendo Wii U';
+			case 'types.gamePlatform.values.swtch': return 'Nintendo Switch';
+			case 'types.gamePlatform.values.gb': return 'Nintedo GameBoy';
+			case 'types.gamePlatform.values.gba': return 'Nintendo GameBoy Advance';
+			case 'types.gamePlatform.values.ds': return 'Nintendo DS';
+			case 'types.gamePlatform.values.ds3': return 'Nintendo 3DS';
+			case 'types.gamePlatform.values.ps': return 'Sony PlayStation';
+			case 'types.gamePlatform.values.ps2': return 'Sony PlayStation 2';
+			case 'types.gamePlatform.values.ps3': return 'Sony PlayStation 3';
+			case 'types.gamePlatform.values.ps4': return 'Sony PlayStation 4/Pro';
+			case 'types.gamePlatform.values.ps5': return 'Sony PlayStation 5';
+			case 'types.gamePlatform.values.psp': return 'Sony PSP';
+			case 'types.gamePlatform.values.psvita': return 'Sony PS Vita';
+			case 'types.gamePlatform.values.xbox': return 'Microsoft XBox';
+			case 'types.gamePlatform.values.xbox360': return 'Microsoft XBox 360';
+			case 'types.gamePlatform.values.xboxone': return 'Microsoft XBox One';
+			case 'types.gamePlatform.values.xboxseries': return 'Microsoft XBox Series S/X';
+			case 'types.gamePlatformBrand.none': return 'None';
+			case 'types.gamePlatformBrand.values.sega': return 'Sega';
+			case 'types.gamePlatformBrand.values.nintendo': return 'Nintedo';
+			case 'types.gamePlatformBrand.values.sony': return 'Sony';
+			case 'types.gamePlatformBrand.values.microsoft': return 'Microsoft';
 			case 'types.gameStatus.values.backlog': return 'Backlog';
 			case 'types.gameStatus.values.playing': return 'Playing';
 			case 'types.gameStatus.values.finished': return 'Finished';
@@ -594,9 +717,9 @@ extension on Translations {
 			case 'types.gameHowLongToBeat.story': return 'Story';
 			case 'types.gameHowLongToBeat.storySides': return 'Story + Sides';
 			case 'types.gameHowLongToBeat.completionist': return 'Completionist';
-			case 'types.gamesFilterPlatformsOperator.values.equal': return 'Equals to';
 			case 'types.gamesFilterPlatformsOperator.values.hasOneOf': return 'Has one of';
 			case 'types.gamesFilterPlatformsOperator.values.hasNoneOf': return 'Has none of';
+			case 'types.gamesFilterPlatformsOperator.values.equal': return 'Exactly';
 			case 'types.gamesFilterBeatenOperator.values.equal': return 'Equals to';
 			case 'types.gamesFilterBeatenOperator.values.notEqual': return 'Not equals to';
 			case 'types.gamesFilterHowLongToBeatPredicate.field': return 'Field';
@@ -605,6 +728,9 @@ extension on Translations {
 			case 'types.gamesFilterHowLongToBeatField.values.story': return '${_root.types.gameHowLongToBeat.story}';
 			case 'types.gamesFilterHowLongToBeatField.values.storySides': return '${_root.types.gameHowLongToBeat.storySides}';
 			case 'types.gamesFilterHowLongToBeatField.values.completionist': return '${_root.types.gameHowLongToBeat.completionist}';
+			case 'types.gamesFilterTagsOperator.values.hasOneOf': return 'Has one of';
+			case 'types.gamesFilterTagsOperator.values.hasNoneOf': return 'Has none of';
+			case 'types.gamesFilterTagsOperator.values.equal': return 'Exactly';
 			default: return null;
 		}
 	}
