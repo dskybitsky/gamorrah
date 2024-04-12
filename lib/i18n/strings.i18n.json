@@ -15,7 +15,8 @@
       "hoursCountShortText": "${count}h",
       "anyText": "Any",
       "confimationTitle": "Confirmation",
-      "notificationTitle": "Information"
+      "notificationTitle": "Information",
+      "errorTitle": "Error"
     },
     "homePage": {
       "settingsLink": "Settings"
@@ -66,6 +67,7 @@
       "importFromJsonSuccessMessage": "Import finished succesfully",
       "exportToJsonButton": "Export to JSON",
       "exportToJsonSuccessMessage": "Export finished succesfully",
+      "exportToJsonErrorMessage": "Export failed",
       "deleteAllGamesButton": "Delete All Games",
       "deleteAllGamesConfirmationMessage": "All games will be deleted. Proceed?"
     },

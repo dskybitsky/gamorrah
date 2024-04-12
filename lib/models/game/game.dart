@@ -104,7 +104,7 @@ class Game {
       howLongToBeat: howLongToBeatJson != null
         ? GameHowLongToBeat.fromJson(howLongToBeatJson)
         : null,
-      tags: data['tags'] ?? {},
+      tags: Set.from(data['tags'] ?? {}),
       status: GameStatus.values.byName(data['status']),
       parentId: data['parentId'],
     );
@@ -122,7 +122,7 @@ class Game {
     'platforms': platforms.map((e) => e.name).toList(),
     'personal': personal?.toJson(),
     'howLongToBeat': howLongToBeat?.toJson(),
-    'tags': tags,
+    'tags': tags.toList(),
     'status': status.name,
     'parentId': parentId,
   };

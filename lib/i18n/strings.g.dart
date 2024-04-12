@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 148
+/// Strings: 150
 ///
-/// Built on 2024-04-09 at 14:37 UTC
+/// Built on 2024-04-12 at 06:21 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -215,6 +215,7 @@ class _StringsUiGeneralEn {
 	String get anyText => 'Any';
 	String get confimationTitle => 'Confirmation';
 	String get notificationTitle => 'Information';
+	String get errorTitle => 'Error';
 }
 
 // Path: ui.homePage
@@ -293,6 +294,7 @@ class _StringsUiSettingsPageEn {
 	String get importFromJsonSuccessMessage => 'Import finished succesfully';
 	String get exportToJsonButton => 'Export to JSON';
 	String get exportToJsonSuccessMessage => 'Export finished succesfully';
+	String get exportToJsonErrorMessage => 'Export failed';
 	String get deleteAllGamesButton => 'Delete All Games';
 	String get deleteAllGamesConfirmationMessage => 'All games will be deleted. Proceed?';
 }
@@ -598,6 +600,7 @@ extension on Translations {
 			case 'ui.general.anyText': return 'Any';
 			case 'ui.general.confimationTitle': return 'Confirmation';
 			case 'ui.general.notificationTitle': return 'Information';
+			case 'ui.general.errorTitle': return 'Error';
 			case 'ui.homePage.settingsLink': return 'Settings';
 			case 'ui.gamesPage.addGameButton': return 'Add new game';
 			case 'ui.gamesPage.filterButton': return 'Filter games';
@@ -640,6 +643,7 @@ extension on Translations {
 			case 'ui.settingsPage.importFromJsonSuccessMessage': return 'Import finished succesfully';
 			case 'ui.settingsPage.exportToJsonButton': return 'Export to JSON';
 			case 'ui.settingsPage.exportToJsonSuccessMessage': return 'Export finished succesfully';
+			case 'ui.settingsPage.exportToJsonErrorMessage': return 'Export failed';
 			case 'ui.settingsPage.deleteAllGamesButton': return 'Delete All Games';
 			case 'ui.settingsPage.deleteAllGamesConfirmationMessage': return 'All games will be deleted. Proceed?';
 			case 'ui.gamePlatformsControl.title': return '${_root.types.game.platforms}:';
