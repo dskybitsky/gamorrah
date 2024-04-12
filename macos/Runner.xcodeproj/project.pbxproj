@@ -572,10 +572,10 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				FLUTTER_APPLICATION_PATH = "/Users/skybitsky/Projects/Personal/my-game-db";
-				FLUTTER_BUILD_NAME = 0.3.2;
-				FLUTTER_BUILD_NUMBER = 0.3.2;
+				FLUTTER_BUILD_NAME = 0.3.3;
+				FLUTTER_BUILD_NUMBER = 0.3.3;
 				FLUTTER_TARGET = "/Users/skybitsky/Projects/Personal/my-game-db/lib/main.dart";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Game DB";
@@ -585,7 +585,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14.6;
-				MARKETING_VERSION = 0.3.2;
+				MARKETING_VERSION = 0.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.skybitsky.my-game-db";
 				PRODUCT_NAME = "My Game DB";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -715,10 +715,10 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				FLUTTER_APPLICATION_PATH = "/Users/skybitsky/Projects/Personal/my-game-db";
-				FLUTTER_BUILD_NAME = 0.3.2;
-				FLUTTER_BUILD_NUMBER = 0.3.2;
+				FLUTTER_BUILD_NAME = 0.3.3;
+				FLUTTER_BUILD_NUMBER = 0.3.3;
 				FLUTTER_TARGET = "/Users/skybitsky/Projects/Personal/my-game-db/lib/main.dart";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Game DB";
@@ -728,7 +728,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14.6;
-				MARKETING_VERSION = 0.3.2;
+				MARKETING_VERSION = 0.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.skybitsky.my-game-db";
 				PRODUCT_NAME = "My Game DB";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -746,10 +746,10 @@
 				CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				FLUTTER_APPLICATION_PATH = "/Users/skybitsky/Projects/Personal/my-game-db";
-				FLUTTER_BUILD_NAME = 0.3.2;
-				FLUTTER_BUILD_NUMBER = 0.3.2;
+				FLUTTER_BUILD_NAME = 0.3.3;
+				FLUTTER_BUILD_NUMBER = 0.3.3;
 				FLUTTER_TARGET = "/Users/skybitsky/Projects/Personal/my-game-db/lib/main.dart";
 				INFOPLIST_FILE = Runner/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "My Game DB";
@@ -759,7 +759,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14.6;
-				MARKETING_VERSION = 0.3.2;
+				MARKETING_VERSION = 0.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.skybitsky.my-game-db";
 				PRODUCT_NAME = "My Game DB";
 				PROVISIONING_PROFILE_SPECIFIER = "";
