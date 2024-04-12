@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:my_game_db/i18n/strings.g.dart';
 import 'package:my_game_db/models/game/game.dart';
 import 'package:my_game_db/models/optional.dart';
 import 'package:my_game_db/widgets/ui/spacer.dart';
+import 'package:my_game_db/widgets/ui/text_input_formats.dart';
 
 class GameHowLongToBeatTile extends StatelessWidget {
   const GameHowLongToBeatTile({
@@ -27,56 +27,32 @@ class GameHowLongToBeatTile extends StatelessWidget {
           children: [
             Flexible(child: TextFormField(
               initialValue: value.story?.toString(),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              onChanged: (value) {
-                if (onChanged != null) {
-                  onChanged!(this.value.copyWith(
-                    story: Optional(double.tryParse(value))
-                  ));
-                }
-              },
+              inputFormatters: [TestInputFormats.hoursFormatter],
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: t.types.gameHowLongToBeat.story,
               ),
+              onChanged: _storyOnChanged,
             )),
             HSpacer(),
             Flexible(child: TextFormField(
               initialValue: value.storySides?.toString(),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              onChanged: (value) {
-                if (onChanged != null) {
-                  onChanged!(this.value.copyWith(
-                    storySides: Optional(double.tryParse(value))
-                  ));
-                }
-              },
+              inputFormatters: [TestInputFormats.hoursFormatter],
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: t.types.gameHowLongToBeat.storySides,
               ),
+              onChanged: _storySidesOnChanged,
             )),
             HSpacer(),
             Flexible(child: TextFormField(
               initialValue: value.completionist?.toString(),
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              onChanged: (value) {
-                if (onChanged != null) {
-                  onChanged!(this.value.copyWith(
-                    completionist: Optional(double.tryParse(value))
-                  ));
-                }
-              },
+              inputFormatters: [TestInputFormats.hoursFormatter],
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: t.types.gameHowLongToBeat.completionist,
               ),
+              onChanged: _completionistOnChanged,
             )),
           ],
         ),
@@ -108,5 +84,29 @@ class GameHowLongToBeatTile extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: widgets
     );
+  }
+
+  void _storyOnChanged(String value) {
+    if (onChanged != null) {
+      onChanged!(this.value.copyWith(
+        story: Optional(double.tryParse(value))
+      ));
+    }
+  }
+
+  void _storySidesOnChanged(value) {
+    if (onChanged != null) {
+      onChanged!(this.value.copyWith(
+        storySides: Optional(double.tryParse(value))
+      ));
+    }
+  }
+
+  void _completionistOnChanged (value) {
+    if (onChanged != null) {
+      onChanged!(this.value.copyWith(
+        completionist: Optional(double.tryParse(value))
+      ));
+    }
   }
 }
