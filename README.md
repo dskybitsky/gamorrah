@@ -14,7 +14,7 @@ So far, only basic functionalilty has been implemented:
 
 ## Download
 
-See [Releases|https://github.com/dskybitsky/my-game-db/releases]. For now, only macOS release as available.
+See [https://github.com/dskybitsky/my-game-db/releases|Releases]. For now, only macOS release as available.
 
 ## Privacy Statement
 
