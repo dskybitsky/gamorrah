@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/pages/games_page.dart';
-import 'package:gamorrah/pages/game_page.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/pages/games_page.dart';
+import 'package:my_game_db/pages/game_page.dart';
 
 class GamesNavigator extends StatelessWidget {
   const GamesNavigator({ 

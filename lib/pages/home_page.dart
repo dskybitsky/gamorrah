@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/pages/settings_page.dart';
-import 'package:gamorrah/state/preferences/preferences_bloc.dart';
-import 'package:gamorrah/state/state_phase.dart';
-import 'package:gamorrah/widgets/game/game_status_icon.dart';
-import 'package:gamorrah/widgets/game/games_navigator.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/pages/settings_page.dart';
+import 'package:my_game_db/state/preferences/preferences_bloc.dart';
+import 'package:my_game_db/state/state_phase.dart';
+import 'package:my_game_db/widgets/game/game_status_icon.dart';
+import 'package:my_game_db/widgets/game/games_navigator.dart';
 
 class HomePage extends StatefulWidget {
 

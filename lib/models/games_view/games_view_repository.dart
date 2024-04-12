@@ -1,4 +1,4 @@
-import 'package:gamorrah/models/games_view/games_view.dart';
+import 'package:my_game_db/models/games_view/games_view.dart';
 
 abstract class GamesViewRepository {
   Future<Iterable<GamesView>> get();

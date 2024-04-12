@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gamorrah/models/preferences/preferences.dart';
-import 'package:gamorrah/models/preferences/preferences_repository.dart';
-import 'package:gamorrah/state/state_phase.dart';
+import 'package:my_game_db/models/preferences/preferences.dart';
+import 'package:my_game_db/models/preferences/preferences_repository.dart';
+import 'package:my_game_db/state/state_phase.dart';
 
 part 'preferences_event.dart';
 part 'preferences_state.dart';

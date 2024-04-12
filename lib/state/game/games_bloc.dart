@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/game/game_repository.dart';
-import 'package:gamorrah/state/state_phase.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/models/game/game_repository.dart';
+import 'package:my_game_db/state/state_phase.dart';
 
 part 'games_event.dart';
 part 'games_state.dart';

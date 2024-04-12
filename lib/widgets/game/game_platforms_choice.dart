@@ -1,7 +1,7 @@
 import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/models/game/game.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
+import 'package:my_game_db/models/game/game.dart';
 
 class GamePlatformsChoice extends StatelessWidget {
   const GamePlatformsChoice({

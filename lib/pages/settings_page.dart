@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/state/game/games_bloc.dart';
-import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
-import 'package:gamorrah/widgets/ui/notification_dialog.dart';
-import 'package:gamorrah/widgets/ui/spacer.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/state/game/games_bloc.dart';
+import 'package:my_game_db/widgets/ui/confirmation_dialog.dart';
+import 'package:my_game_db/widgets/ui/error_dialog.dart';
+import 'package:my_game_db/widgets/ui/notification_dialog.dart';
+import 'package:my_game_db/widgets/ui/spacer.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage();
@@ -95,18 +96,30 @@ class SettingsPage extends StatelessWidget {
 
     File file = File(inputFile.files.single.path!);
 
-    final json = file.readAsStringSync();
+    try {
+      final data = jsonDecode(file.readAsStringSync());
 
-    final data = jsonDecode(json);
+      final gamesData = data['games'] as List;
 
-    final gamesData = data['games'] as List;
+      final games = gamesData
+        .map((gameData) => Game.fromJson(gameData))
+        .toList();
 
-    final games = gamesData
-      .map((gameData) => Game.fromJson(gameData))
-      .toList();
+      context.read<GamesBloc>().add(SaveGames(games: games));
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return ErrorDialog(
+            message: t.ui.settingsPage.exportToJsonErrorMessage,
+            details: error.toString(),
+          );
+        }
+      );
 
-    context.read<GamesBloc>().add(SaveGames(games: games));
-
+      return;
+    }
+    
     showDialog(
       context: context,
       builder: (_) {
@@ -119,7 +132,7 @@ class SettingsPage extends StatelessWidget {
 
   void _handleExport(BuildContext context) async {
     String? outputFile = await FilePicker.platform.saveFile(
-      fileName: 'Gamorrah.json',
+      fileName: 'my_game_db.json',
     );
 
     if (outputFile == null) {
@@ -140,7 +153,21 @@ class SettingsPage extends StatelessWidget {
       'games': games.map((e) => e.toJson()).toList(),
     };
 
-    file.writeAsStringSync(jsonEncode(data));
+    try {
+      file.writeAsStringSync(jsonEncode(data));
+    } catch (error) {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return ErrorDialog(
+            message: t.ui.settingsPage.exportToJsonErrorMessage,
+            details: error.toString(),
+          );
+        }
+      );
+
+      return;
+    }
     
     showDialog(
       context: context,

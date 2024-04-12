@@ -1,8 +1,8 @@
-name: gamorrah
-description: "Game tracking application."
+name: my_game_db
+description: "Game tracking application"
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 0.3.2
+version: 0.3.3
 
 environment:
   sdk: '>=3.2.6 <4.0.0'

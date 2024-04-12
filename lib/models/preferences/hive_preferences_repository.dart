@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:gamorrah/models/preferences/preferences.dart';
-import 'package:gamorrah/models/preferences/preferences_repository.dart';
+import 'package:my_game_db/models/preferences/preferences.dart';
+import 'package:my_game_db/models/preferences/preferences_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_preferences.dart';
 

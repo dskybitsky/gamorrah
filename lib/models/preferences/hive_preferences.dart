@@ -1,4 +1,4 @@
-import 'package:gamorrah/models/preferences/preferences.dart';
+import 'package:my_game_db/models/preferences/preferences.dart';
 import 'package:hive/hive.dart';
 
 part 'hive_preferences.g.dart';

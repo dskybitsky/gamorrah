@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/widgets/game/game_thumb.dart';
-import 'package:gamorrah/widgets/game/games_navigator.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/widgets/game/game_thumb.dart';
+import 'package:my_game_db/widgets/game/games_navigator.dart';
 import 'package:reorderables/reorderables.dart';
 
 class GamesList extends StatelessWidget {

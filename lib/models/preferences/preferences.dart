@@ -1,4 +1,4 @@
-import 'package:gamorrah/models/optional.dart';
+import 'package:my_game_db/models/optional.dart';
 
 class Preferences {
   const Preferences({
