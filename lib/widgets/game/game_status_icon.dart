@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gamorrah/models/game/game.dart';
+import 'package:my_game_db/models/game/game.dart';
 
 class GameStatusIcon extends StatelessWidget {
   const GameStatusIcon({

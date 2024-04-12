@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_dropdown.dart';
-import 'package:gamorrah/widgets/game/game_personal_rating_bar.dart';
-import 'package:gamorrah/widgets/ui/spacer.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/models/optional.dart';
+import 'package:my_game_db/widgets/game/game_personal_beaten_dropdown.dart';
+import 'package:my_game_db/widgets/game/game_personal_rating_bar.dart';
+import 'package:my_game_db/widgets/ui/spacer.dart';
 
 class GamePersonalTile extends StatelessWidget {
   const GamePersonalTile({

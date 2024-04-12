@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/state/game/games_bloc.dart';
-import 'package:gamorrah/widgets/game/game_platforms_choice.dart';
-import 'package:gamorrah/widgets/ui/spacer.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/models/optional.dart';
+import 'package:my_game_db/state/game/games_bloc.dart';
+import 'package:my_game_db/widgets/game/game_platforms_choice.dart';
+import 'package:my_game_db/widgets/ui/spacer.dart';
 
 class GamePageDialog extends StatefulWidget {
   const GamePageDialog({ required this.game });

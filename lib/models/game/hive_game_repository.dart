@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/game/game_repository.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/models/game/game_repository.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'hive_game.dart';
 

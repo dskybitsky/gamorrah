@@ -1,4 +1,4 @@
-import 'package:gamorrah/models/preferences/preferences.dart';
+import 'package:my_game_db/models/preferences/preferences.dart';
 
 abstract class PreferencesRepository {
   Future<Preferences> get();

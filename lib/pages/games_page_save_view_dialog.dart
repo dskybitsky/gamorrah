@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/models/games_view/games_view.dart';
-import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/widgets/ui/spacer.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
+import 'package:my_game_db/models/games_view/games_view.dart';
+import 'package:my_game_db/models/optional.dart';
+import 'package:my_game_db/widgets/ui/spacer.dart';
 
 class GamesPageSaveViewDialog extends StatefulWidget {
   const GamesPageSaveViewDialog({

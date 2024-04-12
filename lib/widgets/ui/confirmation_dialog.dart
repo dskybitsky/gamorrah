@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
 
 class ConfirmationDialog extends StatelessWidget {
   ConfirmationDialog({

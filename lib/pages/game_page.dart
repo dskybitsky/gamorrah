@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:collection/collection.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/optional.dart';
-import 'package:gamorrah/pages/game_page_dialog.dart';
-import 'package:gamorrah/state/game/games_bloc.dart';
-import 'package:gamorrah/widgets/game/game_how_long_to_beat_tile.dart';
-import 'package:gamorrah/widgets/game/game_personal_tile.dart';
-import 'package:gamorrah/widgets/game/game_status_dropdown.dart';
-import 'package:gamorrah/widgets/game/game_tags_choice.dart';
-import 'package:gamorrah/widgets/game/game_thumb.dart';
-import 'package:gamorrah/widgets/game/games_list.dart';
-import 'package:gamorrah/widgets/game/games_navigator.dart';
-import 'package:gamorrah/widgets/ui/confirmation_dialog.dart';
-import 'package:gamorrah/widgets/ui/spacer.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/models/optional.dart';
+import 'package:my_game_db/pages/game_page_dialog.dart';
+import 'package:my_game_db/state/game/games_bloc.dart';
+import 'package:my_game_db/widgets/game/game_how_long_to_beat_tile.dart';
+import 'package:my_game_db/widgets/game/game_personal_tile.dart';
+import 'package:my_game_db/widgets/game/game_status_dropdown.dart';
+import 'package:my_game_db/widgets/game/game_tags_choice.dart';
+import 'package:my_game_db/widgets/game/game_thumb.dart';
+import 'package:my_game_db/widgets/game/games_list.dart';
+import 'package:my_game_db/widgets/game/games_navigator.dart';
+import 'package:my_game_db/widgets/ui/confirmation_dialog.dart';
+import 'package:my_game_db/widgets/ui/spacer.dart';
 
 class GamePage extends StatefulWidget {
   const GamePage({ 

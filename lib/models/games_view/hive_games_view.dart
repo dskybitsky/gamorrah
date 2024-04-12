@@ -1,5 +1,5 @@
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/models/games_view/games_view.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/models/games_view/games_view.dart';
 import 'package:hive/hive.dart';
 
 part 'hive_games_view.g.dart';

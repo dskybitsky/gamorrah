@@ -1,6 +1,6 @@
-# gamorrah
+# My Game DB
 
-Game Tracking Application.
+Game Tracking Application
 
 ## Getting Started
 

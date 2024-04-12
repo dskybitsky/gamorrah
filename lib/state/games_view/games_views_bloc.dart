@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gamorrah/models/games_view/games_view.dart';
-import 'package:gamorrah/models/games_view/games_view_repository.dart';
-import 'package:gamorrah/state/state_phase.dart';
+import 'package:my_game_db/models/games_view/games_view.dart';
+import 'package:my_game_db/models/games_view/games_view_repository.dart';
+import 'package:my_game_db/state/state_phase.dart';
 
 part 'games_views_event.dart';
 part 'games_views_state.dart';

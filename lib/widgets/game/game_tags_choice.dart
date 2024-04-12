@@ -1,6 +1,6 @@
 import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
-import 'package:gamorrah/i18n/strings.g.dart';
+import 'package:my_game_db/i18n/strings.g.dart';
 
 class GameTagsChoice extends StatefulWidget {
   const GameTagsChoice({

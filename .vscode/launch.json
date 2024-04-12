@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "gamorrah (dev mode)",
+            "name": "my_game_db (dev mode)",
             "request": "launch",
             "type": "dart",
         },
         {
-            "name": "gamorrah (profile mode)",
+            "name": "my_game_db (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "gamorrah (release mode)",
+            "name": "my_game_db (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

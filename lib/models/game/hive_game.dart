@@ -1,4 +1,4 @@
-import 'package:gamorrah/models/game/game.dart';
+import 'package:my_game_db/models/game/game.dart';
 import 'package:hive/hive.dart';
 
 part 'hive_game.g.dart';

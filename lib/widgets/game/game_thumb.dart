@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:gamorrah/models/game/game.dart';
-import 'package:gamorrah/widgets/game/game_personal_beaten_icon.dart';
+import 'package:my_game_db/models/game/game.dart';
+import 'package:my_game_db/widgets/game/game_personal_beaten_icon.dart';
 
 enum GameThumbType { small, medium, large }
 
