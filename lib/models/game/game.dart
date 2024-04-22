@@ -1,7 +1,7 @@
 import 'package:my_game_db/models/optional.dart';
 import 'package:uuid/uuid.dart';
 
-class Game {
+class Game implements Comparable<Game> {
   Game({
     required this.id,
     required this.title,
@@ -159,6 +159,25 @@ class Game {
   );
 
   static String? _normalize(String? s) => s == '' ? null : s;
+
+  @override
+  int compareTo(Game other) {
+    if (id == other.id) {
+      return 0;
+    }
+    
+    final franchisedTitle = franchise ?? title;
+    final otherFranchisedTitle = other.franchise ?? other.title;
+              
+    if (franchisedTitle == otherFranchisedTitle) {
+      final order = index ?? year ?? 0;
+      final otherOrder = other.index ?? other.year ?? 0;
+                
+      return order.compareTo(otherOrder);
+    }
+            
+    return franchisedTitle.compareTo(otherFranchisedTitle);
+  }
 }
 
 class GamePersonal {
