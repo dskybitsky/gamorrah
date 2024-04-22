@@ -176,6 +176,10 @@ class Game implements Comparable<Game> {
 
   @override
   int compareTo(Game other) {
+    if (id == other.id) {
+      return 0;
+    }
+    
     final franchisedTitle = franchise ?? title;
     final otherFranchisedTitle = other.franchise ?? other.title;
               

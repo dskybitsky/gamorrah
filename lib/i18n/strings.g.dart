@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 151
+/// Strings: 153
 ///
-/// Built on 2024-04-22 at 05:48 UTC
+/// Built on 2024-04-22 at 08:30 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -206,6 +206,7 @@ class _StringsUiGeneralEn {
 	String get saveButton => 'Save';
 	String get applyButton => 'Apply';
 	String get deleteButton => 'Delete';
+	String get clearButton => 'Clear';
 	String get errorText => 'Error';
 	String get emptyText => 'Empty';
 	String get noText => 'No';
@@ -365,6 +366,7 @@ class _StringsUiGamesControlEn {
 
 	// Translations
 	String get title => 'Parent game';
+	String get dialogTitle => 'Choose game';
 }
 
 // Path: types.game
@@ -601,6 +603,7 @@ extension on Translations {
 			case 'ui.general.saveButton': return 'Save';
 			case 'ui.general.applyButton': return 'Apply';
 			case 'ui.general.deleteButton': return 'Delete';
+			case 'ui.general.clearButton': return 'Clear';
 			case 'ui.general.errorText': return 'Error';
 			case 'ui.general.emptyText': return 'Empty';
 			case 'ui.general.noText': return 'No';
@@ -670,6 +673,7 @@ extension on Translations {
 			case 'ui.gameTagsControl.title': return '${_root.types.game.tags}';
 			case 'ui.gameTagsControl.newTagPlaceholder': return 'Enter new tag';
 			case 'ui.gamesControl.title': return 'Parent game';
+			case 'ui.gamesControl.dialogTitle': return 'Choose game';
 			case 'types.game.title': return 'Title';
 			case 'types.game.franchise': return 'Franchise';
 			case 'types.game.edition': return 'Edition';

@@ -6,6 +6,7 @@
       "saveButton": "Save",
       "applyButton": "Apply",
       "deleteButton": "Delete",
+      "clearButton": "Clear",
       "errorText": "Error",
       "emptyText": "Empty",
       "noText": "No",
@@ -94,7 +95,8 @@
       "newTagPlaceholder": "Enter new tag"
     },
     "gamesControl": {
-      "title": "Parent game"
+      "title": "Parent game",
+      "dialogTitle": "Choose game"
     }
   },
   "types": {

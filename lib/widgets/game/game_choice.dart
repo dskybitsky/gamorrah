@@ -51,9 +51,9 @@ class _GameChoiceState extends State<GameChoice> {
       itemSkip: (state, i) =>
         !ChoiceSearch.match(choices[i].title, state.search?.value),
       itemBuilder: (state, i) {
-        return RadioListTile<ChoiceData<Game>>(
-          value: choices[i],
-          groupValue: state.single,
+        return RadioListTile<String>(
+          value: choices[i].value.id,
+          groupValue: state.single?.value.id,
           onChanged: (value) {
             state.select(choices[i]);
           },
@@ -74,9 +74,28 @@ class _GameChoiceState extends State<GameChoice> {
         );
       },
       modalHeaderBuilder: ChoiceModal.createHeader(
+        title: Text(t.ui.gamesControl.dialogTitle),
         automaticallyImplyLeading: false,
         actionsBuilder: [
           ChoiceModal.createSpacer(width: 5),
+        ],
+      ),
+      modalFooterBuilder: ChoiceModalFooter.create(
+        mainAxisAlignment: MainAxisAlignment.start,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12.0,
+          vertical: 7.0,
+        ),
+        children: [
+          (state) {
+            return TextButton(
+              onPressed: () {
+                state.clear();
+                state.closeModal();
+              },
+              child: Text(t.ui.general.clearButton),
+            );
+          },
         ],
       ),
       promptDelegate: ChoicePrompt.delegatePopupDialog(
@@ -95,7 +114,7 @@ class _GameChoiceState extends State<GameChoice> {
   }
 
   ChoiceData<Game> _createChoice(Game game) {
-    return ChoiceData(
+    return ChoiceData<Game>(
       value: game, 
       title: game.title,
       subtitle: game.edition,
