@@ -80,29 +80,21 @@ class _GameChoiceState extends State<GameChoice> {
           ChoiceModal.createSpacer(width: 5),
         ],
       ),
-      modalFooterBuilder: ChoiceModalFooter.create(
-        mainAxisAlignment: MainAxisAlignment.start,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12.0,
-          vertical: 7.0,
-        ),
-        children: [
-          (state) {
-            return TextButton(
-              onPressed: () {
-                state.clear();
-                state.closeModal();
-              },
-              child: Text(t.ui.general.clearButton),
-            );
-          },
-        ],
-      ),
       promptDelegate: ChoicePrompt.delegatePopupDialog(
         maxHeightFactor: .7,
         constraints: const BoxConstraints(maxWidth: 300),
       ),
-      anchorBuilder: ChoiceAnchor.create(inline: true),
+      anchorBuilder: ChoiceAnchor.create(
+        inline: true,
+        trailing: _value != null ? Padding(
+          padding: EdgeInsets.only(left: 8),
+          child: IconButton(
+          onPressed: () => setState(() {
+            _value = null;
+          }), 
+          icon: Icon(Icons.close)
+        )) : null,
+      ),
     );
   }
 

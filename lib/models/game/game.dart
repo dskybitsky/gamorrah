@@ -40,20 +40,6 @@ class Game implements Comparable<Game> {
   
   final String? parentId;
 
-  String get fullTitle {
-    String result = title;
-
-    if (edition != null && edition!.isNotEmpty) {
-      result = "$result $edition";
-    }
-
-    if (year != null) {
-      result = "$result ($year)";
-    }
-
-    return result;
-  }
-
   factory Game.create({
     String? id,
     required String title,
