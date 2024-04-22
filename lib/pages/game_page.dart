@@ -6,6 +6,7 @@ import 'package:my_game_db/models/game/game.dart';
 import 'package:my_game_db/models/optional.dart';
 import 'package:my_game_db/pages/game_page_dialog.dart';
 import 'package:my_game_db/state/game/games_bloc.dart';
+import 'package:my_game_db/widgets/game/game_choice.dart';
 import 'package:my_game_db/widgets/game/game_how_long_to_beat_tile.dart';
 import 'package:my_game_db/widgets/game/game_personal_tile.dart';
 import 'package:my_game_db/widgets/game/game_status_dropdown.dart';
@@ -38,6 +39,8 @@ class _GamePageState extends State<GamePage> {
   late GameStatus _status;
 
   late Set<String> _tags;
+
+  late String? _parentId;
   
   @override
   void initState() {
@@ -53,6 +56,8 @@ class _GamePageState extends State<GamePage> {
     _status = game?.status ?? GameStatus.backlog;
      
     _tags = game?.tags ?? {};
+
+    _parentId = game?.parentId;
   }
 
   @override
@@ -163,6 +168,19 @@ class _GamePageState extends State<GamePage> {
 
     widgets.add(VSpacer());
 
+    widgets.add(GameChoice(
+      value: _parentId,
+      id: game.id,
+      games: state.games.toList(),
+      onChanged: (value) {
+        setState(() {
+          _parentId = value;
+        });
+      },
+    ));
+
+    widgets.add(VSpacer());
+
     if (game.parentId == null) {
       widgets.add(
         SwitchListTile(
@@ -264,6 +282,7 @@ class _GamePageState extends State<GamePage> {
               howLongToBeat: Optional(_howLongToBeat),
               tags: Optional(_tags),
               status: Optional(_status),
+              parentId: Optional(_parentId),
             ))
           );
           Navigator.pop(context);

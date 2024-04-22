@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:collection/collection.dart';
 import 'package:my_game_db/i18n/strings.g.dart';
 import 'package:my_game_db/models/game/game.dart';
 import 'package:my_game_db/models/games_view/games_view.dart';
@@ -330,7 +331,7 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
   }
 
   List<Game> _getGames(GamesState state) {
-    final games = state.games
+    return state.games
       .where((game) {
         if (game.status != widget.status) {
           return false;
@@ -342,23 +343,8 @@ class _GamesPageState extends State<GamesPage> with TickerProviderStateMixin {
 
         return true;
       })
+      .sorted()
       .toList();
-
-    games.sort((Game gameA, Game gameB) {
-      final franchisedTitleA = gameA.franchise ?? gameA.title;
-      final franchisedTitleB = gameB.franchise ?? gameB.title;
-              
-      if (franchisedTitleA == franchisedTitleB) {
-        final franchisedIndexA = gameA.index ?? gameA.year ?? 0;
-        final franchisedIndexB = gameB.index ?? gameB.year ?? 0;
-                  
-        return franchisedIndexA.compareTo(franchisedIndexB);
-      }
-              
-      return franchisedTitleA.compareTo(franchisedTitleB);
-    });
-
-    return games;
   }
 
   List<Game> _filterGames(List<Game> games, GamesFilter? filter) {

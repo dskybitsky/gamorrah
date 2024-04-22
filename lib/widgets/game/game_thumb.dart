@@ -3,7 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:my_game_db/models/game/game.dart';
 import 'package:my_game_db/widgets/game/game_personal_beaten_icon.dart';
 
-enum GameThumbType { small, medium, large }
+enum GameThumbType { micro, small, medium, large }
 
 class GameThumb extends StatelessWidget {
   const GameThumb({
@@ -19,18 +19,24 @@ class GameThumb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Center(
-        child: _buildImage(context),
-      ),
+    final size = _getSize();
+
+    return SizedBox(
+      height: size.height,
+      width: size.width,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Center(
+          child: _buildImage(context),
+        ),
+      )
     );
   }
 
   Widget _buildImage(BuildContext context) {
     String? thumbUrl = game.thumbUrl;
     final size = _getSize();
-
+    
     if (thumbUrl == null || !_isValidUrl(thumbUrl)) {
       return Container(
         height: size.height,
@@ -51,7 +57,7 @@ class GameThumb extends StatelessWidget {
             fit: BoxFit.fill,
           ),
         ),
-        child: _getOverlay(context),
+        child: type != GameThumbType.micro ? _getOverlay(context) : null,
       ),
       placeholder: (context, url) => CircularProgressIndicator(),
     );
@@ -94,7 +100,7 @@ class GameThumb extends StatelessWidget {
   }
 
   BoxDecoration _buildBoxDecoration(BuildContext context, DecorationImage? decorationImage) {
-    final borderRadius = type == GameThumbType.small
+    final borderRadius = type == GameThumbType.micro || type == GameThumbType.small
       ? BorderRadius.circular(6)
       : BorderRadius.circular(12);
 
@@ -125,6 +131,7 @@ class GameThumb extends StatelessWidget {
   }
 
   Size _getSize() => switch (type) {
+    (GameThumbType.micro) => Size(30, 40),
     (GameThumbType.small) => Size(90, 120),
     (GameThumbType.medium) => Size(150, 200),
     (GameThumbType.large) => Size(264, 352),

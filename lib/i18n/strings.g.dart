@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 150
+/// Strings: 151
 ///
-/// Built on 2024-04-12 at 06:21 UTC
+/// Built on 2024-04-22 at 05:48 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -168,6 +168,7 @@ class _StringsUiEn {
 	late final _StringsUiGameHowLongToBeatControlEn gameHowLongToBeatControl = _StringsUiGameHowLongToBeatControlEn._(_root);
 	late final _StringsUiGameStatusControlEn gameStatusControl = _StringsUiGameStatusControlEn._(_root);
 	late final _StringsUiGameTagsControlEn gameTagsControl = _StringsUiGameTagsControlEn._(_root);
+	late final _StringsUiGamesControlEn gamesControl = _StringsUiGamesControlEn._(_root);
 }
 
 // Path: types
@@ -264,19 +265,19 @@ class _StringsUiGamePageEn {
 	// Translations
 	String get dialogTitle => 'Edit Game Information';
 	String get addIncludedItemButton => 'Add Included Item';
-	String get titleLabel => '${_root.types.game.title}:';
+	String get titleLabel => '${_root.types.game.title}';
 	String get titlePlaceholder => '${_root.types.game.title}';
-	String get franchiseLabel => '${_root.types.game.franchise}:';
+	String get franchiseLabel => '${_root.types.game.franchise}';
 	String get franchisePlaceholder => '${_root.types.game.franchise}';
-	String get editionLabel => '${_root.types.game.edition}:';
+	String get editionLabel => '${_root.types.game.edition}';
 	String get editionPlaceholder => '${_root.types.game.edition}';
-	String get yearLabel => '${_root.types.game.year}:';
+	String get yearLabel => '${_root.types.game.year}';
 	String get yearPlaceholder => '${_root.types.game.year}';
-	String get thumbUrlLabel => '${_root.types.game.thumbUrl}:';
+	String get thumbUrlLabel => '${_root.types.game.thumbUrl}';
 	String get thumbUrlPlaceholder => 'URL';
-	String get kindLabel => '${_root.types.game.kind}:';
-	String get platformsLabel => '${_root.types.game.platforms}:';
-	String get statusLabel => '${_root.types.game.status}:';
+	String get kindLabel => '${_root.types.game.kind}';
+	String get platformsLabel => '${_root.types.game.platforms}';
+	String get statusLabel => '${_root.types.game.status}';
 	String get defaultIncludedGameTitle => 'New included game';
 	String get deleteGameConfirmationMessage => 'This game will be deleted. Proceed?';
 	String get defaultTag => 'sample tag';
@@ -306,7 +307,7 @@ class _StringsUiGamePlatformsControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get title => '${_root.types.game.platforms}:';
+	String get title => '${_root.types.game.platforms}';
 }
 
 // Path: ui.gamePersonalControl
@@ -316,10 +317,10 @@ class _StringsUiGamePersonalControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get headerLabel => '${_root.types.gamePersonal.beaten}:';
-	String get beatenLabel => '${_root.types.gamePersonal.beaten}:';
-	String get ratingLabel => '${_root.types.gamePersonal.rating}:';
-	String get timeSpentLabel => '${_root.types.gamePersonal.timeSpent}:';
+	String get headerLabel => '${_root.types.gamePersonal.beaten}';
+	String get beatenLabel => '${_root.types.gamePersonal.beaten}';
+	String get ratingLabel => '${_root.types.gamePersonal.rating}';
+	String get timeSpentLabel => '${_root.types.gamePersonal.timeSpent}';
 }
 
 // Path: ui.gameHowLongToBeatControl
@@ -329,7 +330,7 @@ class _StringsUiGameHowLongToBeatControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get headerLabel => '${_root.types.game.howLongToBeat}:';
+	String get headerLabel => '${_root.types.game.howLongToBeat}';
 	String storyLabel({required Object count}) => 'Story: ${_root.ui.general.hoursCountText(count: count)}';
 	String storySidesLabel({required Object count}) => 'Story + Sides: ${_root.ui.general.hoursCountText(count: count)}';
 	String completionistLabel({required Object count}) => 'Completionist: ${_root.ui.general.hoursCountText(count: count)}';
@@ -342,7 +343,7 @@ class _StringsUiGameStatusControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get titleLabel => '${_root.types.game.status}:';
+	String get titleLabel => '${_root.types.game.status}';
 }
 
 // Path: ui.gameTagsControl
@@ -352,8 +353,18 @@ class _StringsUiGameTagsControlEn {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
-	String get title => '${_root.types.game.tags}:';
+	String get title => '${_root.types.game.tags}';
 	String get newTagPlaceholder => 'Enter new tag';
+}
+
+// Path: ui.gamesControl
+class _StringsUiGamesControlEn {
+	_StringsUiGamesControlEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get title => 'Parent game';
 }
 
 // Path: types.game
@@ -622,19 +633,19 @@ extension on Translations {
 			case 'ui.gamesPage.presetNamePlaceholder': return 'Preset Name';
 			case 'ui.gamePage.dialogTitle': return 'Edit Game Information';
 			case 'ui.gamePage.addIncludedItemButton': return 'Add Included Item';
-			case 'ui.gamePage.titleLabel': return '${_root.types.game.title}:';
+			case 'ui.gamePage.titleLabel': return '${_root.types.game.title}';
 			case 'ui.gamePage.titlePlaceholder': return '${_root.types.game.title}';
-			case 'ui.gamePage.franchiseLabel': return '${_root.types.game.franchise}:';
+			case 'ui.gamePage.franchiseLabel': return '${_root.types.game.franchise}';
 			case 'ui.gamePage.franchisePlaceholder': return '${_root.types.game.franchise}';
-			case 'ui.gamePage.editionLabel': return '${_root.types.game.edition}:';
+			case 'ui.gamePage.editionLabel': return '${_root.types.game.edition}';
 			case 'ui.gamePage.editionPlaceholder': return '${_root.types.game.edition}';
-			case 'ui.gamePage.yearLabel': return '${_root.types.game.year}:';
+			case 'ui.gamePage.yearLabel': return '${_root.types.game.year}';
 			case 'ui.gamePage.yearPlaceholder': return '${_root.types.game.year}';
-			case 'ui.gamePage.thumbUrlLabel': return '${_root.types.game.thumbUrl}:';
+			case 'ui.gamePage.thumbUrlLabel': return '${_root.types.game.thumbUrl}';
 			case 'ui.gamePage.thumbUrlPlaceholder': return 'URL';
-			case 'ui.gamePage.kindLabel': return '${_root.types.game.kind}:';
-			case 'ui.gamePage.platformsLabel': return '${_root.types.game.platforms}:';
-			case 'ui.gamePage.statusLabel': return '${_root.types.game.status}:';
+			case 'ui.gamePage.kindLabel': return '${_root.types.game.kind}';
+			case 'ui.gamePage.platformsLabel': return '${_root.types.game.platforms}';
+			case 'ui.gamePage.statusLabel': return '${_root.types.game.status}';
 			case 'ui.gamePage.defaultIncludedGameTitle': return 'New included game';
 			case 'ui.gamePage.deleteGameConfirmationMessage': return 'This game will be deleted. Proceed?';
 			case 'ui.gamePage.defaultTag': return 'sample tag';
@@ -646,18 +657,19 @@ extension on Translations {
 			case 'ui.settingsPage.exportToJsonErrorMessage': return 'Export failed';
 			case 'ui.settingsPage.deleteAllGamesButton': return 'Delete All Games';
 			case 'ui.settingsPage.deleteAllGamesConfirmationMessage': return 'All games will be deleted. Proceed?';
-			case 'ui.gamePlatformsControl.title': return '${_root.types.game.platforms}:';
-			case 'ui.gamePersonalControl.headerLabel': return '${_root.types.gamePersonal.beaten}:';
-			case 'ui.gamePersonalControl.beatenLabel': return '${_root.types.gamePersonal.beaten}:';
-			case 'ui.gamePersonalControl.ratingLabel': return '${_root.types.gamePersonal.rating}:';
-			case 'ui.gamePersonalControl.timeSpentLabel': return '${_root.types.gamePersonal.timeSpent}:';
-			case 'ui.gameHowLongToBeatControl.headerLabel': return '${_root.types.game.howLongToBeat}:';
+			case 'ui.gamePlatformsControl.title': return '${_root.types.game.platforms}';
+			case 'ui.gamePersonalControl.headerLabel': return '${_root.types.gamePersonal.beaten}';
+			case 'ui.gamePersonalControl.beatenLabel': return '${_root.types.gamePersonal.beaten}';
+			case 'ui.gamePersonalControl.ratingLabel': return '${_root.types.gamePersonal.rating}';
+			case 'ui.gamePersonalControl.timeSpentLabel': return '${_root.types.gamePersonal.timeSpent}';
+			case 'ui.gameHowLongToBeatControl.headerLabel': return '${_root.types.game.howLongToBeat}';
 			case 'ui.gameHowLongToBeatControl.storyLabel': return ({required Object count}) => 'Story: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameHowLongToBeatControl.storySidesLabel': return ({required Object count}) => 'Story + Sides: ${_root.ui.general.hoursCountText(count: count)}';
 			case 'ui.gameHowLongToBeatControl.completionistLabel': return ({required Object count}) => 'Completionist: ${_root.ui.general.hoursCountText(count: count)}';
-			case 'ui.gameStatusControl.titleLabel': return '${_root.types.game.status}:';
-			case 'ui.gameTagsControl.title': return '${_root.types.game.tags}:';
+			case 'ui.gameStatusControl.titleLabel': return '${_root.types.game.status}';
+			case 'ui.gameTagsControl.title': return '${_root.types.game.tags}';
 			case 'ui.gameTagsControl.newTagPlaceholder': return 'Enter new tag';
+			case 'ui.gamesControl.title': return 'Parent game';
 			case 'types.game.title': return 'Title';
 			case 'types.game.franchise': return 'Franchise';
 			case 'types.game.edition': return 'Edition';

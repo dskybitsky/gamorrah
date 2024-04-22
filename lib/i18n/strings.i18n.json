@@ -44,19 +44,19 @@
     "gamePage": {
       "dialogTitle": "Edit Game Information",
       "addIncludedItemButton": "Add Included Item",
-      "titleLabel": "@:types.game.title:",
+      "titleLabel": "@:types.game.title",
       "titlePlaceholder": "@:types.game.title",
-      "franchiseLabel": "@:types.game.franchise:",
+      "franchiseLabel": "@:types.game.franchise",
       "franchisePlaceholder": "@:types.game.franchise",
-      "editionLabel": "@:types.game.edition:",
+      "editionLabel": "@:types.game.edition",
       "editionPlaceholder": "@:types.game.edition",
-      "yearLabel": "@:types.game.year:",
+      "yearLabel": "@:types.game.year",
       "yearPlaceholder": "@:types.game.year",
-      "thumbUrlLabel": "@:types.game.thumbUrl:",
+      "thumbUrlLabel": "@:types.game.thumbUrl",
       "thumbUrlPlaceholder": "URL",
-      "kindLabel": "@:types.game.kind:",
-      "platformsLabel": "@:types.game.platforms:", 
-      "statusLabel": "@:types.game.status:",
+      "kindLabel": "@:types.game.kind",
+      "platformsLabel": "@:types.game.platforms", 
+      "statusLabel": "@:types.game.status",
       "defaultIncludedGameTitle": "New included game",
       "deleteGameConfirmationMessage": "This game will be deleted. Proceed?",
       "defaultTag": "sample tag"
@@ -72,26 +72,29 @@
       "deleteAllGamesConfirmationMessage": "All games will be deleted. Proceed?"
     },
     "gamePlatformsControl": {
-      "title": "@:types.game.platforms:"
+      "title": "@:types.game.platforms"
     },
     "gamePersonalControl": {
-      "headerLabel": "@:types.gamePersonal.beaten:",
-      "beatenLabel": "@:types.gamePersonal.beaten:",
-      "ratingLabel": "@:types.gamePersonal.rating:",
-      "timeSpentLabel": "@:types.gamePersonal.timeSpent:"
+      "headerLabel": "@:types.gamePersonal.beaten",
+      "beatenLabel": "@:types.gamePersonal.beaten",
+      "ratingLabel": "@:types.gamePersonal.rating",
+      "timeSpentLabel": "@:types.gamePersonal.timeSpent"
     },
     "gameHowLongToBeatControl": {
-      "headerLabel": "@:types.game.howLongToBeat:",
+      "headerLabel": "@:types.game.howLongToBeat",
       "storyLabel": "Story: @:ui.general.hoursCountText",
       "storySidesLabel": "Story + Sides: @:ui.general.hoursCountText",
       "completionistLabel": "Completionist: @:ui.general.hoursCountText"
     },
     "gameStatusControl": {
-      "titleLabel": "@:types.game.status:"
+      "titleLabel": "@:types.game.status"
     },
     "gameTagsControl": {
-      "title": "@:types.game.tags:",
+      "title": "@:types.game.tags",
       "newTagPlaceholder": "Enter new tag"
+    },
+    "gamesControl": {
+      "title": "Parent game"
     }
   },
   "types": {
