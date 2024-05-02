@@ -7,17 +7,19 @@ import 'package:my_game_db/models/game/hive_game_repository.dart';
 import 'package:my_game_db/models/games_view/games_view_repository.dart';
 import 'package:my_game_db/models/games_view/hive_games_view.dart';
 import 'package:my_game_db/models/games_view/hive_games_view_repository.dart';
-import 'package:my_game_db/models/preferences/hive_preferences.dart';
-import 'package:my_game_db/models/preferences/hive_preferences_repository.dart';
-import 'package:my_game_db/models/preferences/preferences_repository.dart';
+import 'package:my_game_db/models/settings/hive_settings.dart';
+import 'package:my_game_db/models/settings/hive_settings_repository.dart';
+import 'package:my_game_db/models/settings/settings.dart';
+import 'package:my_game_db/models/settings/settings_repository.dart';
 import 'package:my_game_db/state/game/games_bloc.dart';
 import 'package:my_game_db/state/games_view/games_views_bloc.dart';
 import 'package:my_game_db/pages/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:my_game_db/state/settings/settings_bloc.dart';
+import 'package:my_game_db/state/state_phase.dart';
+import 'package:my_game_db/themes.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
-
-import 'state/preferences/preferences_bloc.dart';
 
 void main() async {
   SystemTheme.accentColor.load();
@@ -34,7 +36,7 @@ void main() async {
 
 Future<void> _initHive() async {
   Hive.registerAdapter(HiveGameAdapter());
-  Hive.registerAdapter(HivePreferencesAdapter());
+  Hive.registerAdapter(HiveSettingsAdapter());
   Hive.registerAdapter(HiveGamesViewAdapter());
   Hive.registerAdapter(HiveGamesFilterAdapter());
   Hive.registerAdapter(HiveGamesFilterPlatformsPredicateAdapter());
@@ -61,25 +63,28 @@ Future<void> _initWindow() async {
 }
 
 class MyApp extends StatelessWidget {
-  
   @override
   Widget build(BuildContext context) {
-    const seedColor = Colors.deepPurple;
-
-    return MaterialApp(
-      title: 'My Game DB',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: seedColor,
-          brightness: Brightness.light,
+    return RepositoryProvider<SettingsRepository>(
+      create: (context) => HiveSettingsRepository(),
+      child: BlocProvider(
+        create: (context) => SettingsBloc(
+          settingsRepository: context.read<SettingsRepository>()
+        )..add(LoadSettings()),
+        child: BlocBuilder<SettingsBloc, SettingsState>(
+          builder: (context, state) => state.phase.isSuccess 
+            ? _appBuilder(context, state.settings)
+            : Container(),
         ),
       ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: seedColor,
-          brightness: Brightness.dark,
-        )
-      ),
+    );
+  }
+
+  Widget _appBuilder(BuildContext context, Settings settings) {
+    return MaterialApp(
+      title: 'My Game DB',
+      theme: settings.theme ?? Themes.theme,
+      darkTheme: settings.darkTheme ?? Themes.darkTheme,
       home: MultiRepositoryProvider(
         providers: [
           RepositoryProvider<GameRepository>(
@@ -87,9 +92,6 @@ class MyApp extends StatelessWidget {
           ),
           RepositoryProvider<GamesViewRepository>(
             create: (context) => HiveGamesViewRepository(),
-          ),
-          RepositoryProvider<PreferencesRepository>(
-            create: (context) => HivePreferencesRepository(),
           ),
         ],
         child: MultiBlocProvider(
@@ -103,12 +105,7 @@ class MyApp extends StatelessWidget {
               create: (context) => GamesViewsBloc(
                 gamesViewRepository: context.read<GamesViewRepository>(),
               )..add(LoadGamesViews()),
-            ),
-            BlocProvider<PreferencesBloc>(
-              create: (context) => PreferencesBloc(
-                preferencesRepository: context.read<PreferencesRepository>(),
-              )..add(LoadPrefernces()),
-            ),
+            ),            
           ],
           child: HomePage(),
         ),

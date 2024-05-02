@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_game_db/i18n/strings.g.dart';
 import 'package:my_game_db/models/game/game.dart';
 import 'package:my_game_db/pages/settings_page.dart';
-import 'package:my_game_db/state/preferences/preferences_bloc.dart';
-import 'package:my_game_db/state/state_phase.dart';
 import 'package:my_game_db/widgets/game/game_status_icon.dart';
 import 'package:my_game_db/widgets/game/games_navigator.dart';
 
@@ -31,31 +28,7 @@ class _HomePageState extends State<HomePage> {
   
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PreferencesBloc, PreferencesState>(
-      builder: (context, state) {
-        if (state.phase.isInitial) {
-          return Container();
-        }
-
-        if (state.phase.isLoading) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-
-        if (state.phase.isError) {
-          return Center(
-            child: Text(t.ui.general.errorText),
-          );
-        }
-        
-        return _buildContent(context, state);
-      },
-    );
-  }
-
-  Widget _buildContent(BuildContext context, PreferencesState preferencesState) {
-    final destinations = _getDestinations(preferencesState);
+    final destinations = _getDestinations();
     final selectedDestination = destinations[_destinationIndex];
 
     return Row(
@@ -79,13 +52,13 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-
-  List<_HomePageDestination> _getDestinations(PreferencesState state) {
+  
+  List<_HomePageDestination> _getDestinations() {
     return [
-      _getGamesDestination(GameStatus.backlog, state),
-      _getGamesDestination(GameStatus.playing, state),
-      _getGamesDestination(GameStatus.finished, state),
-      _getGamesDestination(GameStatus.wishlist, state),
+      _getGamesDestination(GameStatus.backlog),
+      _getGamesDestination(GameStatus.playing),
+      _getGamesDestination(GameStatus.finished),
+      _getGamesDestination(GameStatus.wishlist),
       _HomePageDestination(
         title: t.ui.settingsPage.settingsTitle, 
         icon: Icon(Icons.settings),
@@ -94,7 +67,7 @@ class _HomePageState extends State<HomePage> {
     ];
   }
 
-  _HomePageDestination _getGamesDestination(GameStatus status, PreferencesState state) {
+  _HomePageDestination _getGamesDestination(GameStatus status) {
     return _HomePageDestination(
       icon: GameStatusIcon(value: status), 
       title: t.types.gameStatus.values[status.name]!,
